@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -19,8 +18,6 @@
   --sub:#64748b;--border:#e2e8f0;--sidebar-w:248px;
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* LOGIN */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy),#1565c0)}
 .login-box{background:white;border-radius:20px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
 .login-logo{text-align:center;margin-bottom:24px}
@@ -33,8 +30,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lf-group input:focus{border-color:var(--sky)}
 .login-btn{width:100%;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border:none;border-radius:10px;padding:13px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
 .login-error{background:#fee2e2;color:var(--red);border-radius:8px;padding:10px 12px;font-size:0.82rem;margin-bottom:12px;display:none}
-
-/* LAYOUT */
 #dashScreen{display:none;min-height:100vh}
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:50;overflow-y:auto}
 .sidebar-brand{padding:20px 16px 16px;border-bottom:1px solid rgba(255,255,255,0.1)}
@@ -54,32 +49,24 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .sidebar-user-role{font-size:0.68rem;color:rgba(255,255,255,0.4)}
 .logout-btn{width:100%;background:rgba(220,38,38,0.12);color:#fca5a5;border:1px solid rgba(220,38,38,0.25);border-radius:8px;padding:9px;font-size:0.82rem;cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.2s}
 .logout-btn:hover{background:rgba(220,38,38,0.22)}
-
 .main{margin-left:var(--sidebar-w);padding:24px;min-height:100vh}
 .page{display:none}
 .page.active{display:block}
-
-/* PAGE HEADER */
 .page-header{margin-bottom:24px}
 .page-title{font-family:'Baloo 2',cursive;font-size:1.55rem;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:10px}
 .page-title .title-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
 .ti-blue{background:#dbeafe;color:var(--blue)}
 .ti-gold{background:#fef9c3;color:#92400e}
-.ti-green{background:#dcfce7;color:#15803d}
 .ti-red{background:#fee2e2;color:var(--red)}
 .ti-purple{background:#ede9fe;color:var(--purple)}
 .page-sub{font-size:0.84rem;color:var(--sub);margin-top:4px;margin-left:50px;display:flex;align-items:center;gap:8px}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-/* CARDS */
 .card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border)}
 .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .card-title{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;align-items:center;gap:8px}
 .card-action{background:none;border:none;color:var(--blue);cursor:pointer;font-size:0.8rem;font-weight:600;display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;transition:background 0.15s}
 .card-action:hover{background:#dbeafe}
-
-/* METRICS */
 .metric-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:20px}
 .metric-card{background:var(--card);border-radius:14px;padding:18px 20px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;overflow:hidden;transition:transform 0.2s}
 .metric-card:hover{transform:translateY(-2px)}
@@ -87,19 +74,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .mc-blue::before{background:linear-gradient(90deg,var(--blue),var(--sky))}
 .mc-gold::before{background:linear-gradient(90deg,#f59e0b,var(--gold))}
 .mc-green::before{background:linear-gradient(90deg,var(--green),#22c55e)}
-.mc-red::before{background:linear-gradient(90deg,var(--red),#ef4444)}
 .mc-purple::before{background:linear-gradient(90deg,var(--purple),#8b5cf6)}
 .metric-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .metric-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}
 .mi-blue{background:#dbeafe;color:var(--blue)}
 .mi-gold{background:#fef9c3;color:#92400e}
 .mi-green{background:#dcfce7;color:#15803d}
-.mi-red{background:#fee2e2;color:var(--red)}
 .mi-purple{background:#ede9fe;color:var(--purple)}
 .metric-value{font-family:'Baloo 2',cursive;font-size:1.75rem;font-weight:800;color:var(--navy);line-height:1}
 .metric-label{font-size:0.75rem;color:var(--sub);margin-top:3px;font-weight:500}
-
-/* TABLE */
 .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:0.83rem}
 thead{background:var(--navy)}
@@ -112,40 +95,27 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 .badge-green{background:#dcfce7;color:#15803d}
 .badge-blue{background:#dbeafe;color:#1d4ed8}
 .badge-gold{background:#fef9c3;color:#854d0e}
-.badge-red{background:#fee2e2;color:#991b1b}
-.badge-purple{background:#ede9fe;color:#5b21b6}
-
-/* CONTROLS */
 .table-controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .search-wrap{flex:1;min-width:200px;position:relative}
 .search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:0.85rem}
 .search-input{width:100%;padding:9px 12px 9px 32px;border:2px solid var(--border);border-radius:10px;font-size:0.84rem;outline:none;transition:border-color 0.2s}
 .search-input:focus{border-color:var(--sky)}
 .filter-select{padding:9px 12px;border:2px solid var(--border);border-radius:10px;font-size:0.84rem;outline:none;background:white;cursor:pointer;color:var(--text)}
-
-/* PENDING MANAGEMENT */
 .pending-section{margin-bottom:20px}
 .pending-header{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.95rem;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .pending-count-pill{background:var(--red);color:white;font-size:0.7rem;padding:2px 8px;border-radius:20px;font-family:Inter,sans-serif;font-weight:700}
 .pending-table-wrap{overflow-x:auto;border-radius:12px;border:2px solid #fecaca}
-.pending-table-wrap table thead{background:#991b1b}
 .pending-item-row{background:#fff5f5}
 .pending-item-row:hover{background:#fee2e2}
-
-/* ACTION BUTTONS */
 .btn-approve{background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:7px;padding:5px 12px;font-size:0.75rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s}
 .btn-approve:hover{background:#bbf7d0}
 .btn-reject{background:#fee2e2;color:var(--red);border:1px solid #fca5a5;border-radius:7px;padding:5px 12px;font-size:0.75rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;margin-left:4px}
 .btn-reject:hover{background:#fecaca}
 .btn-fulfill{background:#dcfce7;color:#15803d;border:none;border-radius:7px;padding:5px 12px;font-size:0.74rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
-
-/* ANALYTICS CHARTS */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .chart-card{background:var(--card);border-radius:16px;padding:20px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 .chart-title{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.9rem;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:7px}
 .chart-wrap{position:relative;width:100%}
-
-/* CAT ANALYTICS */
 .cat-analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
 .cat-analytics-card{background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.04)}
 .cac-title{font-family:'Baloo 2',cursive;font-size:0.9rem;font-weight:700;color:var(--navy);margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;gap:6px}
@@ -156,77 +126,51 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 .cac-bar{width:60px;height:5px;background:#e8f0fe;border-radius:3px;overflow:hidden;flex-shrink:0}
 .cac-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--blue));border-radius:3px}
 .cac-votes{font-size:0.74rem;color:var(--sub);white-space:nowrap;min-width:30px;text-align:right}
-
-/* NOMINEE MANAGER */
 .nm-cat-select{padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-size:0.9rem;width:100%;margin-bottom:16px;outline:none;background:white}
 .nominee-manage-list{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
 .nominee-manage-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fafc;border-radius:10px;border:1px solid var(--border)}
 .nm-name{font-size:0.88rem;font-weight:500;color:var(--navy)}
 .nm-votes{font-size:0.74rem;color:var(--sub);margin-top:1px}
-.nm-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:0.75rem;padding:4px 9px;border-radius:6px;background:#fee2e2;display:inline-flex;align-items:center;gap:4px;font-weight:600}
+.nm-del{background:#fee2e2;border:none;color:var(--red);cursor:pointer;font-size:0.75rem;padding:4px 9px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;font-weight:600}
 .add-nominee-row{display:flex;gap:10px;margin-top:12px}
 .add-nominee-row input{flex:1;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-size:0.88rem;outline:none}
 .add-nominee-row input:focus{border-color:var(--sky)}
 .btn-add{background:var(--green);color:white;border:none;border-radius:8px;padding:9px 18px;font-weight:600;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:6px}
-
-/* SETTINGS */
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .settings-card{background:var(--card);border-radius:16px;padding:22px;border:1px solid var(--border)}
 .settings-card h3{font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
 .sf-group{margin-bottom:12px}
-.sf-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--sub);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.sf-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--sub);margin-bottom:4px}
 .sf-group input{width:100%;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-size:0.9rem;outline:none;transition:border-color 0.2s;color:var(--text)}
 .sf-group input:focus{border-color:var(--sky)}
 .btn-save{background:linear-gradient(135deg,var(--blue),var(--sky));color:white;border:none;border-radius:8px;padding:10px 22px;font-weight:600;font-size:0.84rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:opacity 0.2s}
 .btn-save:hover{opacity:0.9}
 .btn-danger{background:#fee2e2;color:var(--red);border:1px solid #fca5a5;border-radius:8px;padding:8px 18px;font-weight:600;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .btn-danger:hover{background:#fecaca}
-
-/* BANNER */
-.banner-mgmt-grid{display:grid;gap:20px}
 .banner-slot-admin{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;padding:16px;text-align:center;color:var(--sub);font-size:0.8rem;min-height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
 .banner-slot-admin img{max-width:100%;max-height:100px;border-radius:8px}
 .banner-url-input{width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-size:0.82rem;margin-bottom:8px;outline:none}
 .banner-url-input:focus{border-color:var(--sky)}
 .banner-btns{display:flex;gap:8px;align-items:center}
-
-/* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:white;padding:12px 18px;border-radius:10px;font-size:0.84rem;font-weight:500;z-index:999;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:8px}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:white;padding:12px 18px;border-radius:10px;font-size:0.84rem;font-weight:500;z-index:999;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.2);align-items:center;gap:8px}
 .toast.show{display:flex;animation:slideInToast 0.3s ease}
 @keyframes slideInToast{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* LOADING */
 .loading{text-align:center;padding:40px;color:var(--sub)}
 .spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--sky);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* PAGINATION */
 .pagination{display:flex;gap:6px;justify-content:center;margin-top:14px;flex-wrap:wrap}
 .page-btn{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:0.8rem;transition:all 0.15s}
 .page-btn.active{background:var(--blue);color:white;border-color:var(--blue)}
 .page-btn:hover:not(.active){background:#f0f4f8}
-
-/* REVENUE SPLIT */
-.rev-split{display:flex;align-items:center;gap:12px;margin-top:12px}
-.rev-bar-outer{flex:1;height:8px;border-radius:4px;background:#e8f0fe;overflow:hidden}
-.rev-bar-vote{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--sky))}
-.rev-bar-merch{height:100%;border-radius:4px;background:linear-gradient(90deg,#f59e0b,var(--gold))}
-.rev-label{font-size:0.75rem;color:var(--sub);white-space:nowrap;font-weight:600}
-
-/* PENDING ALERT */
 .pending-alert{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:14px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .pa-icon{font-size:1.3rem;color:#92400e;flex-shrink:0}
 .pa-text{flex:1}
 .pa-title{font-weight:700;color:#78350f;font-size:0.9rem}
 .pa-sub{font-size:0.78rem;color:#92400e;margin-top:2px}
 .pa-btn{background:#f59e0b;color:white;border:none;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px}
-
-/* TIME CHART SELECTOR */
 .chart-period-btns{display:flex;gap:4px;margin-bottom:12px}
 .cpb{background:#f0f4f8;border:1px solid var(--border);color:var(--sub);border-radius:6px;padding:4px 10px;font-size:0.74rem;font-weight:600;cursor:pointer;transition:all 0.15s}
 .cpb.active{background:var(--blue);color:white;border-color:var(--blue)}
-
-/* MOBILE */
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);transition:transform 0.3s}
   .sidebar.open{transform:translateX(0)}
@@ -251,7 +195,7 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
     <div class="login-error" id="loginError"></div>
     <div class="lf-group">
       <label><i class="fas fa-envelope"></i> Email Address</label>
-      <input type="email" id="loginEmail" placeholder="ssohis@25.com" autocomplete="email"/>
+      <input type="email" id="loginEmail" placeholder="ssohis@26.com" autocomplete="email"/>
     </div>
     <div class="lf-group">
       <label><i class="fas fa-lock"></i> Password</label>
@@ -305,18 +249,14 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
         <div class="page-sub"><div class="live-dot"></div><span id="overviewSub">Connecting to live data...</span></div>
       </div>
       <div class="metric-grid" id="metricsGrid"><div class="loading"><div class="spinner"></div>Loading metrics...</div></div>
-
-      <!-- Pending Alerts -->
       <div id="pendingAlertOverview" style="display:none" class="pending-alert">
         <div class="pa-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <div class="pa-text">
-          <div class="pa-title">⚠️ Pending Payments Require Action</div>
-          <div class="pa-sub" id="pendingAlertText">Voters have paid but not been verified yet.</div>
+          <div class="pa-title">Pending Payments Require Action</div>
+          <div class="pa-sub" id="pendingAlertText"></div>
         </div>
-        <button class="pa-btn" onclick="showPage('pending',document.querySelector('.nav-item:nth-child(3)'))"><i class="fas fa-arrow-right"></i> Review Now</button>
+        <button class="pa-btn" onclick="showPage('pending',document.querySelectorAll('.nav-item')[2])"><i class="fas fa-arrow-right"></i> Review Now</button>
       </div>
-
-      <!-- Revenue Split -->
       <div class="card" style="margin-bottom:16px">
         <div class="card-header">
           <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--blue)"></i> Revenue Breakdown</div>
@@ -324,8 +264,6 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
         </div>
         <div id="revSplitSection"><div class="loading"><div class="spinner"></div></div></div>
       </div>
-
-      <!-- Recent Transactions -->
       <div class="card" style="margin-bottom:16px">
         <div class="card-header">
           <div class="card-title"><i class="fas fa-receipt" style="color:var(--blue)"></i> Recent Transactions</div>
@@ -333,13 +271,11 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th><i class="fas fa-clock"></i> Time</th><th><i class="fas fa-user"></i> Voter</th><th><i class="fas fa-trophy"></i> Category</th><th><i class="fas fa-star"></i> Nominee</th><th><i class="fas fa-vote-yea"></i> Votes</th><th><i class="fas fa-naira-sign"></i> Amount</th><th><i class="fas fa-hashtag"></i> Ref</th></tr></thead>
+            <thead><tr><th>Time</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
             <tbody id="recentTxTable"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
-
-      <!-- Top Leaders -->
       <div class="card">
         <div class="card-header">
           <div class="card-title"><i class="fas fa-medal" style="color:var(--gold)"></i> Current Leaders Per Category</div>
@@ -353,12 +289,12 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
     <div class="page" id="page-transactions">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-receipt"></i></div> Transactions</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Full payment log — votes and merch orders</div>
+        <div class="page-sub"><i class="fas fa-info-circle"></i> Full payment log</div>
       </div>
       <div class="table-controls">
         <div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="txSearch" placeholder="Search name, email, nominee, ref..." oninput="filterTxTable()"/></div>
         <select class="filter-select" id="txTypeFilter" onchange="filterTxTable()">
-          <option value=""><i class="fas fa-filter"></i> All Types</option>
+          <option value="">All Types</option>
           <option value="vote">Votes Only</option>
           <option value="merch">Merch Only</option>
         </select>
@@ -372,45 +308,40 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th><i class="fas fa-calendar"></i> Date/Time</th><th><i class="fas fa-user"></i> Name</th><th><i class="fas fa-envelope"></i> Email</th><th><i class="fas fa-phone"></i> Phone</th><th><i class="fas fa-tag"></i> Type</th><th><i class="fas fa-trophy"></i> Category</th><th><i class="fas fa-star"></i> Nominee/Item</th><th><i class="fas fa-vote-yea"></i> Votes</th><th><i class="fas fa-money-bill"></i> Amount</th><th><i class="fas fa-hashtag"></i> Ref</th></tr></thead>
-          <tbody id="txTableBody"><tr><td colspan="10" style="text-align:center;padding:30px;color:var(--sub)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+          <thead><tr><th>Date/Time</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Category</th><th>Nominee/Item</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
+          <tbody id="txTableBody"></tbody>
         </table>
       </div>
       <div class="pagination" id="txPagination"></div>
     </div>
 
-    <!-- PENDING PAYMENTS -->
+    <!-- PENDING -->
     <div class="page" id="page-pending">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-red"><i class="fas fa-clock"></i></div> Pending Payments</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Voters who paid via bank transfer but haven't been verified — approve or reject</div>
+        <div class="page-sub"><i class="fas fa-info-circle"></i> Verify bank transfers then approve or reject</div>
       </div>
-      <div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#f59e0b">
+      <div class="card" style="margin-bottom:14px;background:#fffbeb;border-color:#f59e0b">
         <div style="display:flex;align-items:flex-start;gap:12px">
-          <div style="font-size:1.5rem;color:#92400e;flex-shrink:0"><i class="fas fa-info-circle"></i></div>
-          <div>
-            <div style="font-weight:700;color:#78350f;font-size:0.9rem;margin-bottom:4px">How Pending Payments Work</div>
-            <div style="font-size:0.8rem;color:#92400e;line-height:1.6">When a voter selects "Bank Transfer" or "USSD" on the voting site and closes the window, their vote isn't automatically confirmed. They appear here with their transaction reference. <strong>Verify the reference in your bank app</strong>, then approve to credit their votes — or reject if payment was not received.</div>
-          </div>
+          <div style="font-size:1.5rem;color:#92400e"><i class="fas fa-info-circle"></i></div>
+          <div style="font-size:0.8rem;color:#92400e;line-height:1.6">When a voter selects "Bank Transfer" or "USSD" and closes the Flutterwave window, their vote isn't automatically confirmed. They appear here. <strong>Verify the reference in your bank app</strong>, then approve to credit their votes — or reject if payment was not received.</div>
         </div>
       </div>
-
       <div class="pending-section">
         <div class="pending-header"><i class="fas fa-vote-yea" style="color:var(--red)"></i> Pending Vote Payments <span class="pending-count-pill" id="pendingVoteCountPill">0</span></div>
         <div id="pendingVotesList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
       </div>
-
       <div class="pending-section" style="margin-top:28px">
         <div class="pending-header"><i class="fas fa-shopping-bag" style="color:#d97706"></i> Pending Merch Payments <span class="pending-count-pill" style="background:#d97706" id="pendingMerchCountPill">0</span></div>
         <div id="pendingMerchList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
       </div>
     </div>
 
-    <!-- ANALYTICS / CHARTS -->
+    <!-- ANALYTICS -->
     <div class="page" id="page-analytics">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-chart-line"></i></div> Revenue Charts</div>
-        <div class="page-sub"><div class="live-dot"></div> Live revenue analytics and voting trends</div>
+        <div class="page-sub"><div class="live-dot"></div> Live revenue analytics</div>
       </div>
       <div class="metric-grid" id="analyticsMetrics" style="margin-bottom:20px"></div>
       <div class="analytics-grid">
@@ -420,19 +351,19 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
             <button class="cpb active" onclick="setRevChartPeriod('hourly',this)">Hourly</button>
             <button class="cpb" onclick="setRevChartPeriod('daily',this)">Daily</button>
           </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="revTimeChart" role="img" aria-label="Revenue over time line chart">Revenue timeline</canvas></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="revTimeChart"></canvas></div>
         </div>
         <div class="chart-card">
           <div class="chart-title"><i class="fas fa-chart-pie" style="color:var(--gold)"></i> Revenue Sources</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="revSourceChart" role="img" aria-label="Revenue split between votes and merch">Revenue by source</canvas></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="revSourceChart"></canvas></div>
         </div>
         <div class="chart-card">
           <div class="chart-title"><i class="fas fa-chart-bar" style="color:var(--green)"></i> Top Voted Categories</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="catVoteChart" role="img" aria-label="Votes per category bar chart">Category votes</canvas></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="catVoteChart"></canvas></div>
         </div>
         <div class="chart-card">
           <div class="chart-title"><i class="fas fa-shopping-bag" style="color:var(--purple)"></i> Merch Orders by Item</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="merchChart" role="img" aria-label="Merch orders pie chart">Merch breakdown</canvas></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="merchChart"></canvas></div>
         </div>
       </div>
     </div>
@@ -457,7 +388,7 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
       </div>
       <div class="card">
         <div class="sf-group">
-          <label><i class="fas fa-list"></i> Select Category</label>
+          <label>Select Category</label>
           <select class="nm-cat-select" id="nmCatSelect" onchange="renderNomineeManager()"></select>
         </div>
         <div id="nomineeManagerList"></div>
@@ -472,13 +403,13 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
     <div class="page" id="page-merch">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-gold"><i class="fas fa-shopping-bag"></i></div> Merch Orders</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Gele and Cap orders from fans</div>
+        <div class="page-sub"><i class="fas fa-info-circle"></i> Gele and Cap orders</div>
       </div>
       <div class="table-controls">
         <div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="merchSearch" placeholder="Search by name, phone..." oninput="filterMerchTable()"/></div>
         <select class="filter-select" id="merchItemFilter" onchange="filterMerchTable()">
           <option value="">All Items</option>
-          <option value="gele"><i class="fas fa-hat-wizard"></i> Gele Only</option>
+          <option value="gele">Gele Only</option>
           <option value="cap">Cap Only</option>
         </select>
         <select class="filter-select" id="merchStatusFilter" onchange="filterMerchTable()">
@@ -493,8 +424,8 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th><i class="fas fa-calendar"></i> Date</th><th><i class="fas fa-user"></i> Name</th><th><i class="fas fa-phone"></i> Phone</th><th><i class="fas fa-envelope"></i> Email</th><th><i class="fas fa-box"></i> Item</th><th><i class="fas fa-money-bill"></i> Amount</th><th><i class="fas fa-map-marker-alt"></i> Address</th><th><i class="fas fa-circle-check"></i> Status</th><th><i class="fas fa-tools"></i> Action</th></tr></thead>
-          <tbody id="merchTableBody"><tr><td colspan="9" style="text-align:center;padding:30px;color:var(--sub)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+          <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Item</th><th>Amount</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="merchTableBody"></tbody>
         </table>
       </div>
     </div>
@@ -503,7 +434,7 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
     <div class="page" id="page-banners">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-ad"></i></div> Banner Ads</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Manage advertisement banners shown on the voting site</div>
+        <div class="page-sub"><i class="fas fa-info-circle"></i> Manage banners shown on the voting site</div>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
@@ -531,33 +462,33 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
     <div class="page" id="page-settings">
       <div class="page-header">
         <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-cog"></i></div> Settings</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Configure voting prices, merch prices, and event details</div>
+        <div class="page-sub"><i class="fas fa-info-circle"></i> Configure prices and event details</div>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <h3><i class="fas fa-vote-yea"></i> Voting Prices</h3>
-          <div class="sf-group"><label><i class="fas fa-tag"></i> Base Vote Price (₦)</label><input type="number" id="s_vote_base" placeholder="50"/></div>
-          <div class="sf-group"><label><i class="fas fa-percentage"></i> Processing Fee Per Vote (₦)</label><input type="number" id="s_vote_fee" placeholder="20"/></div>
-          <div class="sf-group"><label><i class="fas fa-sort-amount-up"></i> Minimum Votes Per Purchase</label><input type="number" id="s_min_votes" placeholder="10"/></div>
+          <div class="sf-group"><label>Base Vote Price (&#8358;)</label><input type="number" id="s_vote_base" placeholder="50"/></div>
+          <div class="sf-group"><label>Processing Fee Per Vote (&#8358;)</label><input type="number" id="s_vote_fee" placeholder="20"/></div>
+          <div class="sf-group"><label>Minimum Votes Per Purchase</label><input type="number" id="s_min_votes" placeholder="10"/></div>
           <button class="btn-save" onclick="saveSettings('voting')"><i class="fas fa-save"></i> Save Voting Settings</button>
         </div>
         <div class="settings-card">
           <h3><i class="fas fa-shopping-bag"></i> Merch Prices</h3>
-          <div class="sf-group"><label><i class="fas fa-hat-wizard"></i> Gele Price (₦)</label><input type="number" id="s_gele_price" placeholder="5000"/></div>
-          <div class="sf-group"><label><i class="fas fa-hat-cowboy"></i> Cap Price (₦)</label><input type="number" id="s_cap_price" placeholder="3000"/></div>
+          <div class="sf-group"><label>Gele Price (&#8358;)</label><input type="number" id="s_gele_price" placeholder="5000"/></div>
+          <div class="sf-group"><label>Cap Price (&#8358;)</label><input type="number" id="s_cap_price" placeholder="3000"/></div>
           <button class="btn-save" onclick="saveSettings('merch')"><i class="fas fa-save"></i> Save Merch Settings</button>
         </div>
         <div class="settings-card">
           <h3><i class="fas fa-calendar-alt"></i> Event Info</h3>
-          <div class="sf-group"><label><i class="fas fa-calendar"></i> Event Date</label><input type="text" id="s_event_date" placeholder="3rd July, 2026"/></div>
-          <div class="sf-group"><label><i class="fas fa-clock"></i> Event Time</label><input type="text" id="s_event_time" placeholder="12 Noon"/></div>
-          <div class="sf-group"><label><i class="fas fa-map-marker-alt"></i> Venue</label><input type="text" id="s_event_venue" placeholder="To Be Announced"/></div>
-          <div class="sf-group"><label><i class="fas fa-tshirt"></i> Dress Code</label><input type="text" id="s_dress_code" placeholder="A Touch of White or Blue"/></div>
+          <div class="sf-group"><label>Event Date</label><input type="text" id="s_event_date" placeholder="3rd July, 2026"/></div>
+          <div class="sf-group"><label>Event Time</label><input type="text" id="s_event_time" placeholder="12 Noon"/></div>
+          <div class="sf-group"><label>Venue</label><input type="text" id="s_event_venue" placeholder="To Be Announced"/></div>
+          <div class="sf-group"><label>Dress Code</label><input type="text" id="s_dress_code" placeholder="A Touch of White or Blue"/></div>
           <button class="btn-save" onclick="saveSettings('event')"><i class="fas fa-save"></i> Save Event Settings</button>
         </div>
         <div class="settings-card">
           <h3><i class="fas fa-exclamation-triangle" style="color:var(--red)"></i> Danger Zone</h3>
-          <p style="font-size:0.82rem;color:var(--sub);margin-bottom:14px">These actions are irreversible. Use with extreme caution.</p>
+          <p style="font-size:0.82rem;color:var(--sub);margin-bottom:14px">These actions are irreversible.</p>
           <button class="btn-danger" onclick="confirmReset('votes')"><i class="fas fa-trash"></i> Reset All Votes</button>
           <br/><br/>
           <button class="btn-danger" onclick="confirmReset('merch')"><i class="fas fa-trash"></i> Clear Merch Orders</button>
@@ -573,13 +504,51 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 <div class="toast" id="toast"></div>
 
 <script>
+// =============================================
+// HARDCODED CREDENTIALS — change password here
+// =============================================
+const ADMIN_EMAIL    = "ssohis@26.com";
+const ADMIN_PASSWORD = "Ssohis26";
+
+// =============================================
+// FIREBASE — Firestore only, no Auth
+// =============================================
 const firebaseConfig={apiKey:"AIzaSyDW8V2SjNITrA4LcdmeILh944mTbOKnM0c",authDomain:"rewarderhub.firebaseapp.com",projectId:"rewarderhub",storageBucket:"rewarderhub.appspot.com",messagingSenderId:"85965945106",appId:"1:85965945106:web:fa0a57d8968926e1041bcb"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
-const auth=firebase.auth();
 
-const ADMIN_EMAIL="ssohis@25.com";
+// =============================================
+// LOGIN
+// =============================================
+function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass  = document.getElementById('loginPassword').value;
+  const err   = document.getElementById('loginError');
+  err.style.display = 'none';
+  if(email !== ADMIN_EMAIL.toLowerCase() || pass !== ADMIN_PASSWORD){
+    err.textContent = 'Invalid email or password.';
+    err.style.display = 'block';
+    return;
+  }
+  sessionStorage.setItem('adminLoggedIn','true');
+  showDashboard();
+}
+function doLogout(){
+  sessionStorage.removeItem('adminLoggedIn');
+  location.reload();
+}
+function showDashboard(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('dashScreen').style.display='block';
+  initDashboard();
+}
+// Stay logged in on refresh
+if(sessionStorage.getItem('adminLoggedIn')==='true') showDashboard();
+document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
+// =============================================
+// CATEGORIES
+// =============================================
 const CATEGORIES=[
   {id:"finalist_male",name:"Finalist of the Year (Male)",icon:"fa-graduation-cap"},
   {id:"finalist_female",name:"Finalist of the Year (Female)",icon:"fa-graduation-cap"},
@@ -678,46 +647,19 @@ const DEFAULT_NOMINEES={
   "alumnus":["Comr. Zeenah","Comr. Olaezekiel","Mr Seun SUG","DMF","Justice","Jhayne Zoey","Scholar Coker","Scholar Hex","Temitope Martins"]
 };
 
+// =============================================
 // STATE
+// =============================================
 let allVotes=[],allMerch=[],allPendingVotes=[],allPendingMerch=[];
 let liveVoteCounts={};
-let txPage=1; const TX_PER_PAGE=25; let filteredTx=[];
+let txPage=1;const TX_PER_PAGE=25;let filteredTx=[];
 let nominees={};
 let revChartPeriod='hourly';
 let chartInstances={};
 
-
-// ─── HARDCODED LOGIN ──────────────────────────────────────────────────────────
-function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass  = document.getElementById('loginPassword').value;
-  const err   = document.getElementById('loginError');
-  err.style.display = 'none';
-
-  if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-    // Store session so page refresh keeps user logged in
-    sessionStorage.setItem('adminLoggedIn', '1');
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashScreen').style.display  = 'block';
-    initDashboard();
-  } else {
-    err.textContent = 'Access denied. Invalid credentials.';
-    err.style.display = 'block';
-  }
-}
-
-function doLogout() {
-  sessionStorage.removeItem('adminLoggedIn');
-  location.reload();
-}
-  
-function doLogout(){auth.signOut().then(()=>{location.reload();});}
-document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-auth.onAuthStateChanged(user=>{
-  if(user&&user.email===ADMIN_EMAIL){document.getElementById('loginScreen').style.display='none';document.getElementById('dashScreen').style.display='block';initDashboard();}
-});
-
+// =============================================
 // INIT
+// =============================================
 function initDashboard(){
   loadNomineesFromDB();
   loadAllData();
@@ -738,7 +680,9 @@ function showPage(name,navEl){
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
 
-// DATA LOAD
+// =============================================
+// DATA
+// =============================================
 function loadAllData(){
   db.collection('votes').orderBy('timestamp','desc').onSnapshot(snap=>{
     allVotes=[];liveVoteCounts={};
@@ -752,30 +696,20 @@ function loadAllData(){
   });
 }
 
-// PENDING — read from Firestore 'pending_payments' collection
 function loadPendingPayments(){
   db.collection('pending_payments').orderBy('savedAt','desc').onSnapshot(snap=>{
     allPendingVotes=[];allPendingMerch=[];
-    snap.forEach(doc=>{
-      const d={id:doc.id,...doc.data()};
-      if(d.type==='merch') allPendingMerch.push(d);
-      else allPendingVotes.push(d);
-    });
-    updatePendingBadges();
-    renderPendingVotes();
-    renderPendingMerch();
-    updateOverviewPendingAlert();
+    snap.forEach(doc=>{const d={id:doc.id,...doc.data()};if(d.type==='merch') allPendingMerch.push(d);else allPendingVotes.push(d);});
+    updatePendingBadges();renderPendingVotes();renderPendingMerch();updateOverviewPendingAlert();
   });
 }
 
 function updatePendingBadges(){
   const total=allPendingVotes.length+allPendingMerch.length;
   const pill=document.getElementById('sidebarPendingCount');
-  const vPill=document.getElementById('pendingVoteCountPill');
-  const mPill=document.getElementById('pendingMerchCountPill');
   if(pill){pill.textContent=total;pill.style.display=total>0?'inline-block':'none';}
-  if(vPill) vPill.textContent=allPendingVotes.length;
-  if(mPill) mPill.textContent=allPendingMerch.length;
+  document.getElementById('pendingVoteCountPill').textContent=allPendingVotes.length;
+  document.getElementById('pendingMerchCountPill').textContent=allPendingMerch.length;
 }
 
 function updateOverviewPendingAlert(){
@@ -785,100 +719,76 @@ function updateOverviewPendingAlert(){
   if(total>0){
     el.style.display='flex';
     document.getElementById('pendingAlertText').textContent=`${allPendingVotes.length} pending vote payment${allPendingVotes.length!==1?'s':''} and ${allPendingMerch.length} pending merch order${allPendingMerch.length!==1?'s':''} need verification.`;
-  } else {
-    el.style.display='none';
-  }
+  } else el.style.display='none';
 }
 
+// =============================================
+// PENDING RENDERS
+// =============================================
 function renderPendingVotes(){
   const el=document.getElementById('pendingVotesList');
   if(!el) return;
-  if(allPendingVotes.length===0){
-    el.innerHTML=`<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending vote payments</div></div>`;
-    return;
-  }
-  el.innerHTML=`<div class="pending-table-wrap"><table>
-    <thead><tr><th><i class="fas fa-clock"></i> Received</th><th><i class="fas fa-user"></i> Voter</th><th><i class="fas fa-trophy"></i> Category</th><th><i class="fas fa-star"></i> Nominee</th><th><i class="fas fa-vote-yea"></i> Votes</th><th><i class="fas fa-money-bill"></i> Amount</th><th><i class="fas fa-hashtag"></i> Tx Ref</th><th><i class="fas fa-tools"></i> Action</th></tr></thead>
-    <tbody>${allPendingVotes.map(p=>`<tr class="pending-item-row">
-      <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
-      <td><strong>${p.voterName||p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.voterEmail||p.email||''}</span></td>
-      <td style="font-size:0.78rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.categoryName||'-'}</td>
-      <td><strong>${p.nominee||'-'}</strong></td>
-      <td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${p.votes||0}</span></td>
-      <td><strong>₦${(p.amount||0).toLocaleString()}</strong></td>
-      <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
-      <td style="white-space:nowrap">
-        <button class="btn-approve" onclick="approvePendingVote('${p.id}')"><i class="fas fa-check"></i> Approve</button>
-        <button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button>
-      </td>
-    </tr>`).join('')}</tbody>
-  </table></div>`;
+  if(allPendingVotes.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending vote payments</div></div>';return;}
+  el.innerHTML=`<div class="pending-table-wrap"><table><thead><tr><th>Received</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Tx Ref</th><th>Action</th></tr></thead><tbody>
+  ${allPendingVotes.map(p=>`<tr class="pending-item-row">
+    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
+    <td><strong>${p.voterName||p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.voterEmail||p.email||''}</span></td>
+    <td style="font-size:0.78rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.categoryName||'-'}</td>
+    <td><strong>${p.nominee||'-'}</strong></td>
+    <td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${p.votes||0}</span></td>
+    <td><strong>&#8358;${(p.amount||0).toLocaleString()}</strong></td>
+    <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
+    <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingVote('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td>
+  </tr>`).join('')}</tbody></table></div>`;
 }
 
 function renderPendingMerch(){
   const el=document.getElementById('pendingMerchList');
   if(!el) return;
-  if(allPendingMerch.length===0){
-    el.innerHTML=`<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending merch orders</div></div>`;
-    return;
-  }
-  el.innerHTML=`<div class="pending-table-wrap" style="border-color:#fed7aa"><table>
-    <thead style=""><tr><th style="background:#78350f"><i class="fas fa-clock"></i> Received</th><th style="background:#78350f"><i class="fas fa-user"></i> Customer</th><th style="background:#78350f"><i class="fas fa-box"></i> Item</th><th style="background:#78350f"><i class="fas fa-money-bill"></i> Amount</th><th style="background:#78350f"><i class="fas fa-phone"></i> Phone</th><th style="background:#78350f"><i class="fas fa-hashtag"></i> Tx Ref</th><th style="background:#78350f"><i class="fas fa-tools"></i> Action</th></tr></thead>
-    <tbody>${allPendingMerch.map(p=>`<tr class="pending-item-row" style="background:#fff7ed">
-      <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
-      <td><strong>${p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.email||''}</span></td>
-      <td><span class="badge badge-gold"><i class="fas ${p.item==='gele'?'fa-hat-wizard':'fa-hat-cowboy'}"></i> ${p.item==='gele'?'Gele':'Cap'}</span></td>
-      <td><strong>₦${(p.amount||0).toLocaleString()}</strong></td>
-      <td>${p.phone||'-'}</td>
-      <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
-      <td style="white-space:nowrap">
-        <button class="btn-approve" onclick="approvePendingMerch('${p.id}')"><i class="fas fa-check"></i> Approve</button>
-        <button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button>
-      </td>
-    </tr>`).join('')}</tbody>
-  </table></div>`;
+  if(allPendingMerch.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending merch orders</div></div>';return;}
+  el.innerHTML=`<div class="pending-table-wrap" style="border-color:#fed7aa"><table><thead><tr>
+    <th style="background:#78350f">Received</th><th style="background:#78350f">Customer</th><th style="background:#78350f">Item</th><th style="background:#78350f">Amount</th><th style="background:#78350f">Phone</th><th style="background:#78350f">Tx Ref</th><th style="background:#78350f">Action</th>
+  </tr></thead><tbody>
+  ${allPendingMerch.map(p=>`<tr class="pending-item-row" style="background:#fff7ed">
+    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
+    <td><strong>${p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.email||''}</span></td>
+    <td><span class="badge badge-gold"><i class="fas ${p.item==='gele'?'fa-hat-wizard':'fa-hat-cowboy'}"></i> ${p.item==='gele'?'Gele':'Cap'}</span></td>
+    <td><strong>&#8358;${(p.amount||0).toLocaleString()}</strong></td>
+    <td>${p.phone||'-'}</td>
+    <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
+    <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingMerch('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td>
+  </tr>`).join('')}</tbody></table></div>`;
 }
 
 async function approvePendingVote(docId){
-  const p=allPendingVotes.find(x=>x.id===docId);
-  if(!p) return;
-  if(!confirm(`Approve ${p.votes} votes for "${p.nominee}" (${p.categoryName})?\nRef: ${p.txRef}\nAmount: ₦${(p.amount||0).toLocaleString()}`)) return;
+  const p=allPendingVotes.find(x=>x.id===docId);if(!p) return;
+  if(!confirm(`Approve ${p.votes} votes for "${p.nominee}"?\nRef: ${p.txRef}\nAmount: \u20a6${(p.amount||0).toLocaleString()}`)) return;
   try{
-    await db.collection('votes').add({
-      txRef:p.txRef,voterName:p.voterName||p.name,voterEmail:p.voterEmail||p.email,
-      categoryId:p.categoryId,categoryName:p.categoryName,
-      nominee:p.nominee,votes:p.votes,amount:p.amount,
-      voteFee:(p.votes||0)*20,baseRevenue:(p.votes||0)*50,
-      type:'vote',approvedByAdmin:true,
-      timestamp:firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('votes').add({txRef:p.txRef,voterName:p.voterName||p.name,voterEmail:p.voterEmail||p.email,categoryId:p.categoryId,categoryName:p.categoryName,nominee:p.nominee,votes:p.votes,amount:p.amount,voteFee:(p.votes||0)*20,baseRevenue:(p.votes||0)*50,type:'vote',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
     await db.collection('pending_payments').doc(docId).delete();
     showToast('<i class="fas fa-check-circle"></i> Vote approved & credited!');
   }catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
 }
 
 async function approvePendingMerch(docId){
-  const p=allPendingMerch.find(x=>x.id===docId);
-  if(!p) return;
-  if(!confirm(`Approve ${p.item} order for ${p.name}?\nRef: ${p.txRef}\nAmount: ₦${(p.amount||0).toLocaleString()}`)) return;
+  const p=allPendingMerch.find(x=>x.id===docId);if(!p) return;
+  if(!confirm(`Approve ${p.item} order for ${p.name}?\nRef: ${p.txRef}\nAmount: \u20a6${(p.amount||0).toLocaleString()}`)) return;
   try{
-    await db.collection('merch_orders').add({
-      txRef:p.txRef,name:p.name,email:p.email,phone:p.phone,address:p.address||'',
-      item:p.item,price:p.amount,status:'paid',approvedByAdmin:true,
-      timestamp:firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('merch_orders').add({txRef:p.txRef,name:p.name,email:p.email,phone:p.phone,address:p.address||'',item:p.item,price:p.amount,status:'paid',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
     await db.collection('pending_payments').doc(docId).delete();
     showToast('<i class="fas fa-check-circle"></i> Merch order approved!');
   }catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
 }
 
 async function rejectPending(docId){
-  if(!confirm('Reject and remove this pending payment? This cannot be undone.')) return;
+  if(!confirm('Reject and remove this pending payment? Cannot be undone.')) return;
   await db.collection('pending_payments').doc(docId).delete();
-  showToast('<i class="fas fa-trash"></i> Pending payment rejected & removed.');
+  showToast('<i class="fas fa-trash"></i> Pending payment rejected.');
 }
 
-// OVERVIEW METRICS
+// =============================================
+// OVERVIEW
+// =============================================
 function updateOverview(){
   const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
   const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
@@ -890,27 +800,26 @@ function updateOverview(){
   document.getElementById('overviewSub').textContent=`Last updated: ${new Date().toLocaleTimeString()} · ${totalTx} total transactions`;
   document.getElementById('metricsGrid').innerHTML=`
     <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes Cast</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">₦${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
+    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">&#8358;${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
     <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-receipt"></i></div></div><div class="metric-value">${totalTx}</div><div class="metric-label">Total Transactions</div></div>
-    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-chart-line"></i></div></div><div class="metric-value">₦${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">₦${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
+    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-chart-line"></i></div></div><div class="metric-value">&#8358;${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
+    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">&#8358;${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
     <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-hat-wizard"></i></div></div><div class="metric-value">${geleOrders}</div><div class="metric-label">Gele Orders</div></div>
     <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-hat-cowboy"></i></div></div><div class="metric-value">${capOrders}</div><div class="metric-label">Cap Orders</div></div>
     <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-trophy"></i></div></div><div class="metric-value">${CATEGORIES.length}</div><div class="metric-label">Active Categories</div></div>
   `;
-  // Revenue split
   const vPct=totalRevenue>0?Math.round((voteRevenue/totalRevenue)*100):0;
   const mPct=100-vPct;
   document.getElementById('revSplitSection').innerHTML=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
       <div style="background:#f0f6ff;border-radius:10px;padding:14px;border-left:3px solid var(--blue)">
         <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-vote-yea"></i> Vote Revenue</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">₦${voteRevenue.toLocaleString()}</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">&#8358;${voteRevenue.toLocaleString()}</div>
         <div style="font-size:0.75rem;color:var(--blue);margin-top:2px">${vPct}% of total</div>
       </div>
       <div style="background:#fefce8;border-radius:10px;padding:14px;border-left:3px solid #f59e0b">
         <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-shopping-bag"></i> Merch Revenue</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">₦${merchRevenue.toLocaleString()}</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">&#8358;${merchRevenue.toLocaleString()}</div>
         <div style="font-size:0.75rem;color:#d97706;margin-top:2px">${mPct}% of total</div>
       </div>
     </div>
@@ -924,11 +833,9 @@ function updateOverview(){
         <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></div> Votes ${vPct}%</div>
         <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></div> Merch ${mPct}%</div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-// RECENT TX
 function renderRecentTx(){
   const rows=allVotes.slice(0,10).map(v=>`<tr>
     <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td>
@@ -936,15 +843,14 @@ function renderRecentTx(){
     <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.78rem">${v.categoryName||'-'}</td>
     <td>${v.nominee||'-'}</td>
     <td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${v.votes||0}</span></td>
-    <td><strong>₦${(v.amount||0).toLocaleString()}</strong></td>
+    <td><strong>&#8358;${(v.amount||0).toLocaleString()}</strong></td>
     <td style="font-size:0.71rem;color:var(--sub);font-family:monospace">${(v.txRef||'').slice(-10)}</td>
-  </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)"><i class="fas fa-inbox"></i> No transactions yet</td></tr>';
+  </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)">No transactions yet</td></tr>';
   document.getElementById('recentTxTable').innerHTML=rows;
 }
 
-// TOP NOMINEES
 function renderTopNominees(){
-  const leaders=CATEGORIES.map(cat=>{
+  document.getElementById('topNominees').innerHTML=CATEGORIES.map(cat=>{
     let best={name:'No votes yet',votes:0};
     Object.keys(liveVoteCounts).filter(k=>k.startsWith(cat.id+'::')).forEach(k=>{const n=k.split('::')[1];const v=liveVoteCounts[k];if(v>best.votes)best={name:n,votes:v};});
     return `<div style="background:#f8fafc;border-radius:10px;padding:12px;border:1px solid var(--border)">
@@ -953,97 +859,75 @@ function renderTopNominees(){
       <div style="font-size:0.74rem;color:var(--blue);margin-top:2px"><i class="fas fa-vote-yea"></i> ${best.votes} votes</div>
     </div>`;
   }).join('');
-  document.getElementById('topNominees').innerHTML=leaders;
 }
 
+// =============================================
 // CHARTS
-function setRevChartPeriod(period,btn){
-  revChartPeriod=period;
-  document.querySelectorAll('.cpb').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCharts();
-}
-
-function destroyChart(id){
-  if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}
-}
+// =============================================
+function setRevChartPeriod(period,btn){revChartPeriod=period;document.querySelectorAll('.cpb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCharts();}
+function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}}
 
 function renderCharts(){
   if(!document.getElementById('page-analytics').classList.contains('active')) return;
-  const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
   const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
   const geleOrders=allMerch.filter(m=>m.item==='gele').length;
   const capOrders=allMerch.filter(m=>m.item==='cap').length;
   const merchRevenue=allMerch.reduce((s,m)=>s+(m.price||0),0);
   const totalRevenue=voteRevenue+merchRevenue;
-
+  const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
   document.getElementById('analyticsMetrics').innerHTML=`
     <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">₦${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
-    <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-chart-bar"></i></div></div><div class="metric-value">₦${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
-    <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">₦${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
+    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">&#8358;${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
+    <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-chart-bar"></i></div></div><div class="metric-value">&#8358;${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
+    <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">&#8358;${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
   `;
-
-  // Revenue over time
   destroyChart('revTimeChart');
-  const timeData=buildTimeData(revChartPeriod);
-  const ctx1=document.getElementById('revTimeChart');
-  if(ctx1) chartInstances['revTimeChart']=new Chart(ctx1,{type:'line',data:{labels:timeData.labels,datasets:[
-    {label:'Vote Revenue (₦)',data:timeData.voteRevenue,borderColor:'#1565c0',backgroundColor:'rgba(21,101,192,0.1)',fill:true,tension:0.4,pointRadius:3,borderWidth:2},
-    {label:'Merch Revenue (₦)',data:timeData.merchRevenue,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',fill:true,tension:0.4,pointRadius:3,borderDash:[4,4],borderWidth:2}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},maxRotation:45,autoSkip:false}},y:{ticks:{callback:v=>'₦'+v.toLocaleString(),font:{size:10}}}}}});
-
-  // Revenue source pie
+  const td=buildTimeData(revChartPeriod);
+  const c1=document.getElementById('revTimeChart');
+  if(c1) chartInstances['revTimeChart']=new Chart(c1,{type:'line',data:{labels:td.labels,datasets:[{label:'Vote Revenue',data:td.voteRevenue,borderColor:'#1565c0',backgroundColor:'rgba(21,101,192,0.1)',fill:true,tension:0.4,pointRadius:3,borderWidth:2},{label:'Merch Revenue',data:td.merchRevenue,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',fill:true,tension:0.4,pointRadius:3,borderDash:[4,4],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},maxRotation:45}},y:{ticks:{callback:v=>'&#8358;'+v.toLocaleString(),font:{size:10}}}}}});
   destroyChart('revSourceChart');
-  const ctx2=document.getElementById('revSourceChart');
-  if(ctx2) chartInstances['revSourceChart']=new Chart(ctx2,{type:'doughnut',data:{labels:['Vote Revenue','Merch Revenue'],datasets:[{data:[voteRevenue,merchRevenue],backgroundColor:['#1565c0','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
-
-  // Top voted categories bar
+  const c2=document.getElementById('revSourceChart');
+  if(c2) chartInstances['revSourceChart']=new Chart(c2,{type:'doughnut',data:{labels:['Vote Revenue','Merch Revenue'],datasets:[{data:[voteRevenue,merchRevenue],backgroundColor:['#1565c0','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
   destroyChart('catVoteChart');
-  const catData=CATEGORIES.map(c=>({name:c.name.length>22?c.name.slice(0,22)+'…':c.name,votes:Object.keys(liveVoteCounts).filter(k=>k.startsWith(c.id+'::')).reduce((s,k)=>s+liveVoteCounts[k],0)})).sort((a,b)=>b.votes-a.votes).slice(0,10);
-  const ctx3=document.getElementById('catVoteChart');
-  if(ctx3) chartInstances['catVoteChart']=new Chart(ctx3,{type:'bar',data:{labels:catData.map(c=>c.name),datasets:[{label:'Votes',data:catData.map(c=>c.votes),backgroundColor:'rgba(21,101,192,0.75)',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
-
-  // Merch doughnut
+  const catData=CATEGORIES.map(c=>({name:c.name.length>22?c.name.slice(0,22)+'...':c.name,votes:Object.keys(liveVoteCounts).filter(k=>k.startsWith(c.id+'::')).reduce((s,k)=>s+liveVoteCounts[k],0)})).sort((a,b)=>b.votes-a.votes).slice(0,10);
+  const c3=document.getElementById('catVoteChart');
+  if(c3) chartInstances['catVoteChart']=new Chart(c3,{type:'bar',data:{labels:catData.map(c=>c.name),datasets:[{label:'Votes',data:catData.map(c=>c.votes),backgroundColor:'rgba(21,101,192,0.75)',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
   destroyChart('merchChart');
-  const ctx4=document.getElementById('merchChart');
-  if(ctx4) chartInstances['merchChart']=new Chart(ctx4,{type:'doughnut',data:{labels:['Gele ('+geleOrders+')','Cap ('+capOrders+')'],datasets:[{data:[geleOrders,capOrders],backgroundColor:['#f4b942','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12}}}}});
+  const c4=document.getElementById('merchChart');
+  if(c4) chartInstances['merchChart']=new Chart(c4,{type:'doughnut',data:{labels:['Gele ('+geleOrders+')','Cap ('+capOrders+')'],datasets:[{data:[geleOrders,capOrders],backgroundColor:['#f4b942','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12}}}}});
 }
 
 function buildTimeData(period){
-  const now=new Date();
-  const labels=[],voteRevenue=[],merchRevenue=[];
+  const now=new Date(),labels=[],voteRevenue=[],merchRevenue=[];
   const buckets=period==='hourly'?24:30;
   for(let i=buckets-1;i>=0;i--){
-    const d=new Date(now);
-    let label;
+    const d=new Date(now);let label;
     if(period==='hourly'){d.setHours(d.getHours()-i);label=d.getHours()+':00';}
     else{d.setDate(d.getDate()-i);label=(d.getMonth()+1)+'/'+(d.getDate());}
     labels.push(label);
-    const start=new Date(d); const end=new Date(d);
+    const start=new Date(d),end=new Date(d);
     if(period==='hourly'){start.setMinutes(0,0,0);end.setMinutes(59,59,999);}
     else{start.setHours(0,0,0,0);end.setHours(23,59,59,999);}
-    const vRev=allVotes.filter(v=>{const t=v.timestamp?.toDate?v.timestamp.toDate():new Date((v.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,v)=>s+(v.amount||0),0);
-    const mRev=allMerch.filter(m=>{const t=m.timestamp?.toDate?m.timestamp.toDate():new Date((m.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,m)=>s+(m.price||0),0);
-    voteRevenue.push(vRev);
-    merchRevenue.push(mRev);
+    voteRevenue.push(allVotes.filter(v=>{const t=v.timestamp?.toDate?v.timestamp.toDate():new Date((v.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,v)=>s+(v.amount||0),0));
+    merchRevenue.push(allMerch.filter(m=>{const t=m.timestamp?.toDate?m.timestamp.toDate():new Date((m.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,m)=>s+(m.price||0),0));
   }
   return{labels,voteRevenue,merchRevenue};
 }
 
-// TX TABLE
+// =============================================
+// TRANSACTIONS
+// =============================================
 function populateCatFilter(){
   const sel=document.getElementById('txCatFilter');
   CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
 }
-
 function renderTxTable(){
   filteredTx=filterTxData();
   const total=filteredTx.length;
   document.getElementById('txCount').textContent=`Showing ${total} transaction${total!==1?'s':''}`;
   const start=(txPage-1)*TX_PER_PAGE;
   const page=filteredTx.slice(start,start+TX_PER_PAGE);
-  const rows=page.map(v=>`<tr>
+  document.getElementById('txTableBody').innerHTML=page.map(v=>`<tr>
     <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td>
     <td>${v.voterName||v.name||'-'}</td>
     <td style="font-size:0.77rem">${v.voterEmail||v.email||'-'}</td>
@@ -1052,19 +936,16 @@ function renderTxTable(){
     <td style="font-size:0.77rem;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v.categoryName||v.item||'-'}</td>
     <td>${v.nominee||v.item||'-'}</td>
     <td>${v.votes||1}</td>
-    <td><strong>₦${(v.amount||v.price||0).toLocaleString()}</strong></td>
+    <td><strong>&#8358;${(v.amount||v.price||0).toLocaleString()}</strong></td>
     <td style="font-size:0.7rem;color:var(--sub);font-family:monospace">${(v.txRef||'').slice(-12)}</td>
-  </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--sub)"><i class="fas fa-inbox"></i> No transactions found</td></tr>';
-  document.getElementById('txTableBody').innerHTML=rows;
+  </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--sub)">No transactions found</td></tr>';
   renderPagination(total);
 }
-
 function filterTxData(){
   const q=(document.getElementById('txSearch').value||'').toLowerCase();
   const type=document.getElementById('txTypeFilter').value;
   const cat=document.getElementById('txCatFilter').value;
-  const all=[...allVotes,...allMerch].sort((a,b)=>(b.timestamp?.seconds||0)-(a.timestamp?.seconds||0));
-  return all.filter(v=>{
+  return [...allVotes,...allMerch].sort((a,b)=>(b.timestamp?.seconds||0)-(a.timestamp?.seconds||0)).filter(v=>{
     if(type&&v.type!==type&&!(type==='merch'&&v.item)) return false;
     if(cat&&v.categoryId!==cat) return false;
     if(q){const str=`${v.voterName||v.name||''} ${v.voterEmail||v.email||''} ${v.nominee||''} ${v.categoryName||''} ${v.txRef||''}`.toLowerCase();if(!str.includes(q))return false;}
@@ -1079,12 +960,12 @@ function renderPagination(total){
 function goTxPage(p){txPage=p;renderTxTable();window.scrollTo(0,0);}
 function exportCSV(){
   const data=filterTxData();
-  const headers=['Date','Name','Email','Phone','Type','Category','Nominee/Item','Votes','Amount','TxRef'];
-  const rows=data.map(v=>[fmtTime(v.timestamp),v.voterName||v.name||'',v.voterEmail||v.email||'',v.voterPhone||v.phone||'',v.type||'merch',v.categoryName||v.item||'',v.nominee||v.item||'',v.votes||1,v.amount||v.price||0,v.txRef||'']);
-  downloadCSV([headers,...rows],'ssohis_transactions.csv');
+  downloadCSV([['Date','Name','Email','Phone','Type','Category','Nominee/Item','Votes','Amount','TxRef'],...data.map(v=>[fmtTime(v.timestamp),v.voterName||v.name||'',v.voterEmail||v.email||'',v.voterPhone||v.phone||'',v.type||'merch',v.categoryName||v.item||'',v.nominee||v.item||'',v.votes||1,v.amount||v.price||0,v.txRef||''])],'ssohis_transactions.csv');
 }
 
-// CAT ANALYTICS
+// =============================================
+// CATEGORY ANALYTICS
+// =============================================
 function renderCatAnalytics(){
   const q=(document.getElementById('catSearch')?.value||'').toLowerCase();
   const cats=CATEGORIES.filter(c=>!q||c.name.toLowerCase().includes(q));
@@ -1093,29 +974,21 @@ function renderCatAnalytics(){
     const ranked=catNominees.map(n=>({name:n,votes:liveVoteCounts[`${cat.id}::${n}`]||0})).sort((a,b)=>b.votes-a.votes);
     const total=ranked.reduce((s,n)=>s+n.votes,0);
     const max=ranked[0]?.votes||1;
-    const items=ranked.slice(0,8).map((n,i)=>{
-      const cls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
-      const pct=max>0?Math.round((n.votes/max)*100):0;
-      return `<div class="cac-item">
-        <div class="cac-rank ${cls}">${i+1}</div>
-        <div class="cac-name">${n.name}</div>
-        <div class="cac-bar"><div class="cac-fill" style="width:${pct}%"></div></div>
-        <div class="cac-votes">${n.votes}</div>
-      </div>`;
-    }).join('')||'<div style="font-size:0.78rem;color:var(--sub);padding:4px 0"><i class="fas fa-hourglass-start"></i> No votes yet</div>';
     return `<div class="cat-analytics-card">
       <div class="cac-title"><span><i class="fas ${cat.icon}" style="color:var(--blue);margin-right:4px"></i>${cat.name}</span><span style="background:#dbeafe;color:#1d4ed8;font-size:0.68rem;padding:2px 8px;border-radius:10px;font-weight:600">${total} votes</span></div>
-      ${items}
+      ${ranked.slice(0,8).map((n,i)=>`<div class="cac-item"><div class="cac-rank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i+1}</div><div class="cac-name">${n.name}</div><div class="cac-bar"><div class="cac-fill" style="width:${max>0?Math.round((n.votes/max)*100):0}%"></div></div><div class="cac-votes">${n.votes}</div></div>`).join('')||'<div style="font-size:0.78rem;color:var(--sub)">No votes yet</div>'}
     </div>`;
   }).join('');
 }
 function filterCatAnalytics(){renderCatAnalytics();}
 
+// =============================================
 // NOMINEE MANAGER
+// =============================================
 async function loadNomineesFromDB(){
   try{
     const doc=await db.collection('settings').doc('nominees').get();
-    if(doc.exists&&doc.data().data){nominees=doc.data().data;}
+    if(doc.exists&&doc.data().data) nominees=doc.data().data;
     else{nominees={...DEFAULT_NOMINEES};await db.collection('settings').doc('nominees').set({data:nominees});}
   }catch(e){nominees={...DEFAULT_NOMINEES};}
   renderCatAnalytics();renderNomineeManager();
@@ -1125,22 +998,14 @@ function populateNomCatSelect(){
   CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
 }
 function renderNomineeManager(){
-  const catId=document.getElementById('nmCatSelect').value;
-  if(!catId) return;
+  const catId=document.getElementById('nmCatSelect').value;if(!catId) return;
   const list=nominees[catId]||[];
-  document.getElementById('nomineeManagerList').innerHTML=`
-    <div class="nominee-manage-list">
-      ${list.map((n,i)=>`<div class="nominee-manage-item">
-        <div><div class="nm-name"><i class="fas fa-user" style="color:var(--blue);font-size:0.75rem"></i> ${n}</div><div class="nm-votes"><i class="fas fa-vote-yea"></i> ${liveVoteCounts[catId+'::'+n]||0} votes</div></div>
-        <button class="nm-del" onclick="deleteNominee('${catId}',${i})"><i class="fas fa-times"></i> Remove</button>
-      </div>`).join('')||'<div style="color:var(--sub);font-size:0.85rem;padding:10px 0"><i class="fas fa-inbox"></i> No nominees yet.</div>'}
-    </div>
-  `;
+  document.getElementById('nomineeManagerList').innerHTML=`<div class="nominee-manage-list">${list.map((n,i)=>`<div class="nominee-manage-item"><div><div class="nm-name"><i class="fas fa-user" style="color:var(--blue);font-size:0.75rem"></i> ${n}</div><div class="nm-votes">${liveVoteCounts[catId+'::'+n]||0} votes</div></div><button class="nm-del" onclick="deleteNominee('${catId}',${i})"><i class="fas fa-times"></i> Remove</button></div>`).join('')||'<div style="color:var(--sub);font-size:0.85rem;padding:10px 0">No nominees yet.</div>'}</div>`;
 }
 async function addNominee(){
   const catId=document.getElementById('nmCatSelect').value;
   const name=document.getElementById('newNomineeName').value.trim();
-  if(!name){showToast('<i class="fas fa-exclamation"></i> Enter a nominee name');return;}
+  if(!name){showToast('Enter a nominee name');return;}
   if(!nominees[catId]) nominees[catId]=[];
   nominees[catId].push(name);
   await saveNominees();
@@ -1151,13 +1016,14 @@ async function addNominee(){
 async function deleteNominee(catId,idx){
   if(!confirm('Remove this nominee?')) return;
   nominees[catId].splice(idx,1);
-  await saveNominees();
-  renderNomineeManager();
+  await saveNominees();renderNomineeManager();
   showToast('<i class="fas fa-trash"></i> Nominee removed.');
 }
 async function saveNominees(){await db.collection('settings').doc('nominees').set({data:nominees});}
 
-// MERCH TABLE
+// =============================================
+// MERCH
+// =============================================
 function renderMerchTable(){
   const q=(document.getElementById('merchSearch')?.value||'').toLowerCase();
   const item=document.getElementById('merchItemFilter')?.value||'';
@@ -1165,77 +1031,57 @@ function renderMerchTable(){
   const filtered=allMerch.filter(m=>{
     if(item&&m.item!==item) return false;
     if(status&&m.status!==status) return false;
-    if(q){const s=`${m.name||''} ${m.phone||''} ${m.email||''}`.toLowerCase();if(!s.includes(q))return false;}
+    if(q&&!`${m.name||''} ${m.phone||''} ${m.email||''}`.toLowerCase().includes(q)) return false;
     return true;
   });
   document.getElementById('merchCount').textContent=`${filtered.length} order${filtered.length!==1?'s':''}`;
   document.getElementById('merchTableBody').innerHTML=filtered.map(m=>`<tr>
     <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(m.timestamp)}</td>
-    <td>${m.name||'-'}</td>
-    <td>${m.phone||'-'}</td>
+    <td>${m.name||'-'}</td><td>${m.phone||'-'}</td>
     <td style="font-size:0.77rem">${m.email||'-'}</td>
     <td>${m.item==='gele'?'<span class="badge badge-gold"><i class="fas fa-hat-wizard"></i> Gele</span>':'<span class="badge badge-blue"><i class="fas fa-hat-cowboy"></i> Cap</span>'}</td>
-    <td>₦${(m.price||0).toLocaleString()}</td>
+    <td>&#8358;${(m.price||0).toLocaleString()}</td>
     <td style="font-size:0.77rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">${m.address||'-'}</td>
     <td>${m.status==='fulfilled'?'<span class="badge badge-green"><i class="fas fa-check-circle"></i> Fulfilled</span>':'<span class="badge badge-gold"><i class="fas fa-clock"></i> Paid</span>'}</td>
     <td>${m.status!=='fulfilled'?`<button class="btn-fulfill" onclick="fulfillOrder('${m.id}')"><i class="fas fa-check"></i> Fulfill</button>`:'-'}</td>
-  </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--sub)"><i class="fas fa-inbox"></i> No merch orders yet</td></tr>';
+  </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--sub)">No merch orders yet</td></tr>';
 }
-async function fulfillOrder(id){
-  await db.collection('merch_orders').doc(id).update({status:'fulfilled'});
-  showToast('<i class="fas fa-check-circle"></i> Order marked as fulfilled!');
-}
+async function fulfillOrder(id){await db.collection('merch_orders').doc(id).update({status:'fulfilled'});showToast('<i class="fas fa-check-circle"></i> Order fulfilled!');}
 function filterMerchTable(){renderMerchTable();}
-function exportMerchCSV(){
-  const headers=['Date','Name','Phone','Email','Item','Price','Address','Status','TxRef'];
-  const rows=allMerch.map(m=>[fmtTime(m.timestamp),m.name||'',m.phone||'',m.email||'',m.item||'',m.price||0,m.address||'',m.status||'',m.txRef||'']);
-  downloadCSV([headers,...rows],'ssohis_merch_orders.csv');
-}
+function exportMerchCSV(){downloadCSV([['Date','Name','Phone','Email','Item','Price','Address','Status','TxRef'],...allMerch.map(m=>[fmtTime(m.timestamp),m.name||'',m.phone||'',m.email||'',m.item||'',m.price||0,m.address||'',m.status||'',m.txRef||''])],'ssohis_merch_orders.csv');}
 
+// =============================================
 // BANNERS
+// =============================================
 async function loadBannersAdmin(){
-  try{
-    const doc=await db.collection('settings').doc('banners').get();
-    if(doc.exists){
-      const d=doc.data();
-      ['top','mid','bottom'].forEach(slot=>{
-        if(d[slot]?.url){
-          document.getElementById(`${slot}BannerUrl`).value=d[slot].url;
-          document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${d[slot].url}" alt="Banner"/>`;
-        }
-      });
-    }
-  }catch(e){}
+  try{const doc=await db.collection('settings').doc('banners').get();
+  if(doc.exists){const d=doc.data();['top','mid','bottom'].forEach(slot=>{if(d[slot]?.url){document.getElementById(`${slot}BannerUrl`).value=d[slot].url;document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${d[slot].url}" alt="Banner"/>`;}}); }}catch(e){}
 }
 async function saveBanner(slot){
   const url=document.getElementById(`${slot}BannerUrl`).value.trim();
-  if(!url){showToast('<i class="fas fa-exclamation"></i> Enter a banner image URL');return;}
-  const current=(await db.collection('settings').doc('banners').get()).data()||{};
-  current[slot]={url};
+  if(!url){showToast('Enter a banner URL');return;}
+  const snap=await db.collection('settings').doc('banners').get();
+  const current=snap.data()||{};current[slot]={url};
   await db.collection('settings').doc('banners').set(current);
   document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${url}" alt="Banner"/>`;
-  showToast(`<i class="fas fa-check-circle"></i> ${slot.charAt(0).toUpperCase()+slot.slice(1)} banner saved!`);
+  showToast(`<i class="fas fa-check-circle"></i> ${slot} banner saved!`);
 }
 async function clearBanner(slot){
   if(!confirm('Clear this banner?')) return;
-  const doc=await db.collection('settings').doc('banners').get();
-  const current=doc.data()||{};delete current[slot];
+  const snap=await db.collection('settings').doc('banners').get();
+  const current=snap.data()||{};delete current[slot];
   await db.collection('settings').doc('banners').set(current);
   document.getElementById(`${slot}BannerUrl`).value='';
   document.getElementById(`${slot}BannerPreview`).innerHTML='<i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i>';
   showToast('<i class="fas fa-trash"></i> Banner cleared.');
 }
 
+// =============================================
 // SETTINGS
+// =============================================
 async function loadSettings(){
-  try{
-    const doc=await db.collection('settings').doc('config').get();
-    if(doc.exists){
-      const d=doc.data();
-      const map={vote_base:'s_vote_base',vote_fee:'s_vote_fee',min_votes:'s_min_votes',gele_price:'s_gele_price',cap_price:'s_cap_price',event_date:'s_event_date',event_time:'s_event_time',event_venue:'s_event_venue',dress_code:'s_dress_code'};
-      Object.entries(map).forEach(([k,id])=>{if(d[k]!==undefined){const el=document.getElementById(id);if(el)el.value=d[k];}});
-    }
-  }catch(e){}
+  try{const doc=await db.collection('settings').doc('config').get();
+  if(doc.exists){const d=doc.data();const map={vote_base:'s_vote_base',vote_fee:'s_vote_fee',min_votes:'s_min_votes',gele_price:'s_gele_price',cap_price:'s_cap_price',event_date:'s_event_date',event_time:'s_event_time',event_venue:'s_event_venue',dress_code:'s_dress_code'};Object.entries(map).forEach(([k,id])=>{if(d[k]!==undefined){const el=document.getElementById(id);if(el)el.value=d[k];}});}}catch(e){}
 }
 async function saveSettings(group){
   const data={};
@@ -1246,18 +1092,18 @@ async function saveSettings(group){
   showToast('<i class="fas fa-check-circle"></i> Settings saved!');
 }
 async function confirmReset(type){
-  if(!confirm(`⚠️ Are you sure you want to reset all ${type}? This CANNOT be undone!`)) return;
+  if(!confirm(`Are you sure you want to reset all ${type}? CANNOT be undone!`)) return;
   if(!confirm(`Final confirmation: Delete ALL ${type} records?`)) return;
-  const colMap={votes:'votes',merch:'merch_orders',pending:'pending_payments'};
-  const col=colMap[type]||type;
+  const col={votes:'votes',merch:'merch_orders',pending:'pending_payments'}[type]||type;
   const snap=await db.collection(col).get();
-  const batch=db.batch();
-  snap.forEach(doc=>batch.delete(doc.ref));
+  const batch=db.batch();snap.forEach(doc=>batch.delete(doc.ref));
   await batch.commit();
-  showToast(`<i class="fas fa-trash"></i> All ${type} have been reset.`);
+  showToast(`<i class="fas fa-trash"></i> All ${type} reset.`);
 }
 
+// =============================================
 // UTILS
+// =============================================
 function fmtTime(ts){
   if(!ts) return '-';
   let d;
@@ -1275,42 +1121,9 @@ function downloadCSV(rows,filename){
   URL.revokeObjectURL(url);
 }
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.innerHTML=msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer=setTimeout(()=>t.classList.remove('show'),3500);
+  const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
+  clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
-
-<!-- VOTING SITE PENDING BRIDGE SCRIPT INSTRUCTIONS -->
-<!-- On the VOTING SITE: when a voter closes the Flutterwave modal with a pending bank transfer,
-     save their data to Firestore 'pending_payments' collection like so:
-
-  db.collection('pending_payments').add({
-    type: 'vote',        // or 'merch'
-    txRef: txRef,
-    voterName: userProfile.name,
-    voterEmail: userProfile.email,
-    categoryId: currentCat.id,
-    categoryName: currentCat.name,
-    nominee: selectedNominee,
-    votes: voteQty,
-    amount: total,
-    savedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  For merch pending:
-  db.collection('pending_payments').add({
-    type: 'merch',
-    txRef: txRef,
-    name: name, email: email, phone: phone, address: address,
-    item: type, amount: price,
-    savedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  Admin dashboard subscribes in real-time and can approve (credit votes / create merch order)
-  or reject (delete from pending_payments). -->
-
 </body>
   </html>
