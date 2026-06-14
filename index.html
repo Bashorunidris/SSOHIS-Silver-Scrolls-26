@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SSOHIS Silver Scrolls '26 — Vote Now</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1b3e;--blue:#1565c0;--sky:#2196f3;--gold:#f4b942;
+  --white:#ffffff;--cream:#f0f6ff;--glass:rgba(255,255,255,0.12);
+  --card-bg:#ffffff;--text:#0d1b3e;--sub:#455a7a;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{background:var(--navy);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.3);flex-wrap:wrap}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-logos{display:flex;align-items:center;gap:6px}
+.nav-logo{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(244,185,66,0.4);display:flex;align-items:center;justify-content:center;font-size:1rem;overflow:hidden;flex-shrink:0}
+.nav-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.nav-brand{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--gold);letter-spacing:1px;white-space:nowrap}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.nav-links button{background:none;border:none;color:rgba(255,255,255,0.75);font-size:0.82rem;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;font-family:'Inter',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+.nav-links button:hover{color:var(--gold);background:rgba(255,255,255,0.06)}
+.nav-links button.active{color:var(--navy);background:var(--gold)}
+.nav-user{display:flex;align-items:center;gap:8px}
+.nav-user-name{color:var(--gold);font-size:0.8rem;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-edit-btn{background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:0.72rem;padding:4px 10px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.nav-edit-btn:hover{background:rgba(255,255,255,0.18);color:white}
+
+/* PAGE HEADER NAV */
+.page-header-nav{display:flex;gap:8px;flex-wrap:nowrap;justify-content:flex-start;padding:14px 20px;background:#e8f0fe;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.page-header-nav::-webkit-scrollbar{height:4px}
+.phn-btn{background:white;border:2px solid #d6e4fb;color:var(--navy);font-family:'Baloo 2',cursive;font-weight:700;font-size:0.82rem;padding:8px 16px;border-radius:30px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0}
+.phn-btn:hover{border-color:var(--sky);transform:translateY(-2px);box-shadow:0 4px 10px rgba(21,101,192,0.15)}
+.phn-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.phn-btn.merch-cta{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+/* PAGE SYSTEM */
+.page-view{display:none;animation:fadeIn 0.4s ease}
+.page-view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0d1b3e 0%,#1565c0 45%,#42a5f5 100%);padding:60px 20px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;left:-30px;top:20px;font-size:8rem;opacity:0.08;transform:rotate(-15deg)}
+.hero::after{content:'';position:absolute;right:-30px;bottom:10px;font-size:8rem;opacity:0.08;transform:rotate(15deg)}
+.hero-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti-piece{position:absolute;top:-20px;font-size:1.4rem;animation:fall linear infinite;opacity:0.6}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.hero-badge{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Baloo 2',cursive;font-weight:800;font-size:0.75rem;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;position:relative;z-index:2}
+.hero h1{font-family:'Baloo 2',cursive;font-size:clamp(2.5rem,8vw,5rem);font-weight:800;color:var(--white);line-height:1;text-shadow:0 4px 20px rgba(0,0,0,0.3);margin-bottom:6px;position:relative;z-index:2}
+.hero h1 span{color:var(--gold);display:inline-block;animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{0%,100%{text-shadow:0 0 10px rgba(244,185,66,0.5)}50%{text-shadow:0 0 25px rgba(244,185,66,0.9)}}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,0.85);margin-bottom:4px;font-weight:500;position:relative;z-index:2}
+.hero-edition{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--gold);font-weight:700;margin-bottom:24px;position:relative;z-index:2}
+.hero-info{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:30px;position:relative;z-index:2}
+.hero-pill{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);color:white;padding:6px 16px;border-radius:30px;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:6px}
+.hero-pill i{color:var(--gold)}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;padding:14px 36px;border-radius:50px;cursor:pointer;border:none;position:relative;z-index:2;transition:all 0.2s;box-shadow:0 4px 20px rgba(244,185,66,0.4)}
+.hero-cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 30px rgba(244,185,66,0.5)}
+
+/* USER CAPTURE CARD */
+.hero-user-card{background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:24px;max-width:420px;margin:0 auto 24px;text-align:left;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.hero-user-card h3{font-family:'Baloo 2',cursive;font-size:1.1rem;color:white;font-weight:800;margin-bottom:4px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+.hero-user-card p{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:16px;text-align:center}
+.huc-field{margin-bottom:10px}
+.huc-field label{display:block;font-size:0.76rem;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.huc-field input{width:100%;padding:10px 14px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);color:white;font-size:0.9rem;outline:none;transition:border-color 0.2s}
+.huc-field input::placeholder{color:rgba(255,255,255,0.4)}
+.huc-field input:focus{border-color:var(--gold)}
+.huc-submit{width:100%;background:var(--gold);color:var(--navy);border:none;border-radius:12px;padding:12px;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+.huc-submit:hover{opacity:0.92;transform:translateY(-2px)}
+
+/* BANNER SLOTS */
+.banner-slot{background:#e8f0fe;border:2px dashed #90b4f0;border-radius:12px;padding:16px;text-align:center;color:#5c7cba;font-size:0.8rem;font-weight:600;letter-spacing:1px;margin:16px auto;max-width:1000px;transition:transform 0.3s}
+.banner-slot:hover{transform:scale(1.01)}
+.banner-slot img{max-width:100%;max-height:120px;border-radius:8px;display:block;margin:0 auto}
+
+/* SECTION */
+.section{padding:40px 20px;max-width:1100px;margin:0 auto}
+.section-title{font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;color:var(--navy);text-align:center;margin-bottom:6px}
+.section-title span{color:var(--sky)}
+.section-sub{text-align:center;color:var(--sub);font-size:0.9rem;margin-bottom:28px}
+
+/* SWEET / DRESS CODE STRIP */
+.sweet-strip{background:linear-gradient(90deg,var(--navy),#1565c0,var(--navy));padding:16px 24px;text-align:center;color:white;position:relative;overflow:hidden}
+.sweet-strip .dc-title{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--gold);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px}
+.sweet-strip .dc-text{font-size:0.95rem;margin-top:4px}
+.sweet-strip .dc-merch{margin-top:8px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.merch-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:0.82rem;padding:4px 14px;border-radius:20px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;border:none}
+.merch-badge:hover{opacity:0.85;transform:translateY(-2px) scale(1.05)}
+.sweet-talk-line{font-size:0.85rem;color:var(--gold);margin-top:10px;font-weight:600;animation:pulseGlow 2.5s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{opacity:0.75}50%{opacity:1}}
+
+/* RSVP */
+.rsvp-strip{background:var(--navy);padding:14px 20px;text-align:center;color:rgba(255,255,255,0.85);font-size:0.82rem}
+.rsvp-strip strong{color:var(--gold)}
+.rsvp-strip .contacts{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:6px}
+
+/* SUPPORT BAR */
+.support-bar{background:linear-gradient(90deg,#1b2f5e,var(--navy));color:white;text-align:center;padding:10px 16px;font-size:0.8rem;font-weight:600;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.support-bar .sb-call{background:var(--gold);color:var(--navy);padding:4px 14px;border-radius:20px;font-family:'Baloo 2',cursive;font-weight:800;text-decoration:none;transition:transform 0.2s;display:inline-flex;align-items:center;gap:5px}
+.support-bar .sb-call:hover{transform:scale(1.06)}
+
+/* CATEGORIES GRID */
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;perspective:1000px}
+.cat-card{background:var(--card-bg);border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(13,27,62,0.08);border:2px solid transparent;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;position:relative;overflow:hidden;transform-style:preserve-3d}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--sky),var(--blue))}
+.cat-card:hover{border-color:var(--sky);transform:translateY(-6px) rotateX(3deg) rotateY(-2deg) scale(1.02);box-shadow:0 16px 32px rgba(21,101,192,0.22)}
+.cat-icon{font-size:1.8rem;margin-bottom:8px;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,#e8f0fe,#dbeafe);border-radius:12px;transition:transform 0.3s}
+.cat-card:hover .cat-icon{transform:scale(1.2) rotate(-8deg)}
+.cat-icon i{font-size:1.4rem;color:var(--blue)}
+.cat-name{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+.cat-count{font-size:0.78rem;color:var(--sub);display:flex;align-items:center;gap:4px}
+.cat-btn{margin-top:12px;background:var(--navy);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:0.82rem;font-weight:600;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s}
+.cat-btn:hover{background:var(--blue)}
+
+/* PAGINATION */
+.cat-pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:28px}
+.cp-btn{background:var(--navy);color:white;border:none;border-radius:30px;padding:10px 24px;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+.cp-btn:hover:not(:disabled){background:var(--blue);transform:translateY(-2px)}
+.cp-btn:disabled{opacity:0.35;cursor:not-allowed}
+.cp-pages{font-size:0.85rem;color:var(--sub);font-weight:600;background:white;padding:8px 16px;border-radius:30px;box-shadow:0 2px 8px rgba(13,27,62,0.08)}
+
+/* LEADERBOARD */
+.leader-card{background:var(--card-bg);border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(13,27,62,0.08);margin-bottom:12px;transition:transform 0.25s}
+.leader-card:hover{transform:translateY(-4px)}
+.leader-cat{font-family:'Baloo 2',cursive;font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.leader-item{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rank-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+.rank-1{background:#FFD700;color:#333}.rank-2{background:#C0C0C0;color:#333}.rank-3{background:#CD7F32;color:white}.rank-other{background:#e8f0fe;color:var(--navy)}
+.leader-name{font-size:0.88rem;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leader-votes{font-size:0.8rem;color:var(--sub);white-space:nowrap}
+.progress-bar{flex:1;height:6px;background:#e8f0fe;border-radius:3px;overflow:hidden;min-width:40px}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--blue));transition:width 0.6s ease}
+
+/* MERCH */
+.merch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.merch-card{background:linear-gradient(135deg,var(--navy),#1565c0);border-radius:20px;padding:28px 24px;text-align:center;color:white;position:relative;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s}
+.merch-card:hover{transform:translateY(-8px) rotateX(4deg);box-shadow:0 20px 40px rgba(21,101,192,0.35)}
+.merch-icon-wrap{font-size:3rem;margin-bottom:12px;display:flex;align-items:center;justify-content:center;transition:transform 0.3s}
+.merch-card:hover .merch-icon-wrap{transform:scale(1.15) rotate(6deg)}
+.merch-icon-wrap i{font-size:2.5rem;color:var(--gold)}
+.merch-title{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.merch-price{font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:6px}
+.merch-desc{font-size:0.82rem;opacity:0.8;margin-bottom:16px}
+.merch-buy-btn{background:var(--gold);color:var(--navy);border:none;border-radius:30px;padding:10px 28px;font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.merch-buy-btn:hover{opacity:0.9;transform:scale(1.05)}
+
+/* LOGO SHOWCASE */
+.logo-showcase{background:var(--navy);padding:24px 0;overflow:hidden;position:relative}
+.logo-showcase::before,.logo-showcase::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+.logo-showcase::before{left:0;background:linear-gradient(90deg,var(--navy),transparent)}
+.logo-showcase::after{right:0;background:linear-gradient(270deg,var(--navy),transparent)}
+.logo-track{display:flex;gap:40px;animation:scrollLogos 28s linear infinite;width:max-content}
+.logo-showcase:hover .logo-track{animation-play-state:paused}
+.logo-item{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:150px;height:70px;background:rgba(255,255,255,0.06);border-radius:12px;border:1px solid rgba(255,255,255,0.1);font-family:'Baloo 2',cursive;font-weight:700;color:rgba(255,255,255,0.6);font-size:0.85rem;text-align:center;padding:8px;transition:all 0.25s}
+.logo-item:hover{background:rgba(244,185,66,0.12);border-color:var(--gold);color:var(--gold);transform:scale(1.06)}
+@keyframes scrollLogos{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.85);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:white;border-radius:20px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;animation:slideUp 0.3s ease}
+@keyframes slideUp{from{transform:translateY(30px) scale(0.97);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal-header{background:linear-gradient(135deg,var(--navy),var(--blue));padding:24px;color:white;border-radius:20px 20px 0 0;position:relative}
+.modal-header h2{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.modal-header p{font-size:0.82rem;opacity:0.8;margin-top:4px}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s}
+.modal-close:hover{transform:rotate(90deg)}
+.modal-body{padding:20px}
+
+/* NOMINEES */
+.nominees-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:240px;overflow-y:auto}
+.nominee-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;border:2px solid #e8edf5;cursor:pointer;transition:all 0.2s}
+.nominee-item:hover{border-color:var(--sky);background:#f0f6ff;transform:translateX(3px)}
+.nominee-item.selected{border-color:var(--blue);background:#e8f0fe}
+.nominee-name{font-weight:600;color:var(--navy);font-size:0.9rem}
+.select-indicator{width:20px;height:20px;border-radius:50%;border:2px solid #ccd5e0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.nominee-item.selected .select-indicator{background:var(--blue);border-color:var(--blue);color:white;font-size:0.7rem}
+
+/* VOTE QTY */
+.vote-qty-section{background:#f0f6ff;border-radius:12px;padding:16px;margin-bottom:16px}
+.vote-qty-label{font-size:0.85rem;font-weight:600;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.qty-controls{display:flex;align-items:center;gap:12px}
+.qty-btn{background:var(--navy);color:white;border:none;width:36px;height:36px;border-radius:8px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.15s}
+.qty-btn:active{transform:scale(0.9)}
+.qty-input{width:70px;text-align:center;border:2px solid #ccd5e0;border-radius:8px;padding:6px;font-size:1rem;font-weight:700;color:var(--navy)}
+.qty-note{font-size:0.75rem;color:var(--sub);margin-top:6px;display:flex;align-items:center;gap:4px}
+.price-breakdown{background:var(--navy);color:white;border-radius:10px;padding:14px;margin-bottom:16px}
+.price-row{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;opacity:0.8}
+.price-total{display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:var(--gold);border-top:1px solid rgba(255,255,255,0.2);padding-top:8px;margin-top:6px}
+
+/* FORM */
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.form-group input{width:100%;padding:10px 12px;border:2px solid #ccd5e0;border-radius:8px;font-size:0.9rem;color:var(--navy);outline:none;transition:border-color 0.2s}
+.form-group input:focus{border-color:var(--sky)}
+
+/* BUTTONS */
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--sky));color:white;border:none;border-radius:12px;padding:14px;width:100%;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{opacity:0.9;transform:translateY(-2px);box-shadow:0 6px 16px rgba(21,101,192,0.35)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-secondary{background:#e8f0fe;color:var(--navy);border:none;border-radius:12px;padding:12px;width:100%;font-weight:600;font-size:0.9rem;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s}
+.btn-secondary:hover{background:#d9e6fb}
+.merch-cta-btn{background:linear-gradient(135deg,var(--gold),#f7c862)!important;color:var(--navy)!important;font-family:'Baloo 2',cursive;font-weight:700}
+
+/* PENDING PAYMENT BANNER */
+.pending-banner{background:linear-gradient(135deg,#7c3aed,#1565c0);border-radius:16px;padding:14px 20px;margin:10px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 8px rgba(124,58,237,0)}}
+.pending-banner-icon{font-size:1.8rem;flex-shrink:0;color:var(--gold)}
+.pending-banner-text{flex:1;color:white}
+.pending-banner-text strong{display:block;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800}
+.pending-banner-text span{font-size:0.8rem;opacity:0.85}
+.pending-confirm-btn{background:var(--gold);color:var(--navy);border:none;border-radius:10px;padding:10px 14px;font-weight:800;font-size:0.82rem;cursor:pointer;white-space:nowrap;font-family:'Baloo 2',cursive;display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* SUCCESS MODAL */
+.success-modal{text-align:center;padding:28px 20px}
+.success-icon{font-size:4rem;margin-bottom:10px;animation:popIn 0.5s ease;color:var(--green,#16a34a)}
+@keyframes popIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.success-title{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:6px}
+.success-sub{font-size:0.88rem;color:var(--sub);margin-bottom:18px}
+.confetti-row{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+.confetti-row i{font-size:1.6rem;animation:bounce 1s ease infinite}
+.confetti-row i:nth-child(2){animation-delay:0.1s}
+.confetti-row i:nth-child(3){animation-delay:0.2s}
+.confetti-row i:nth-child(4){animation-delay:0.3s}
+.confetti-row i:nth-child(5){animation-delay:0.4s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* PENDING VOTE NOTE */
+.pending-vote-note{background:linear-gradient(135deg,#1e1b4b,#2e1065);border-radius:14px;padding:20px;margin-top:14px;text-align:center;color:white}
+.pending-vote-note .pvn-icon{font-size:2rem;color:var(--gold);margin-bottom:8px}
+.pending-vote-note h3{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:6px}
+.pending-vote-note p{font-size:0.8rem;opacity:0.85;line-height:1.5}
+.pending-vote-note .ref-box{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 12px;margin:10px 0;font-size:0.78rem;font-family:monospace;color:var(--gold);word-break:break-all}
+
+/* REWARDER SECTION */
+.rewarder-section{background:#12102a;border-radius:16px;padding:20px;margin-top:14px;display:flex;align-items:center;gap:16px;border:1px solid rgba(100,80,255,0.2)}
+.rewarder-logo-box{width:56px;height:56px;flex-shrink:0;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.rewarder-logo-box img{width:100%;height:100%;object-fit:contain;border-radius:12px}
+.rewarder-logo-box .rw-placeholder{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.65rem;background:linear-gradient(90deg,#00ffc6,#b060ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;padding:4px}
+.rw-text{flex:1;min-width:0}
+.rw-powered{font-size:0.68rem;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase}
+.rw-wordmark{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;background:linear-gradient(90deg,#00ffc6,#b060ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rw-tagline{font-size:0.7rem;color:rgba(255,255,255,0.45);margin-top:2px}
+.rw-cta-btn{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:white;border:none;border-radius:20px;padding:8px 14px;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform 0.2s;display:flex;align-items:center;gap:5px}
+.rw-cta-btn:hover{transform:scale(1.05)}
+
+/* MERCH UPSELL */
+.merch-upsell{background:linear-gradient(135deg,#0d1b3e,#1565c0);border-radius:14px;padding:18px;margin-top:14px;text-align:center;color:white}
+.merch-upsell h3{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.merch-upsell p{font-size:0.8rem;opacity:0.8;margin-bottom:12px}
+.merch-upsell-btns{display:flex;gap:10px}
+.merch-upsell-btn{flex:1;border:none;border-radius:10px;padding:10px 8px;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.merch-gele{background:var(--gold);color:var(--navy)}
+.merch-cap{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)}
+.merch-upsell-btn:hover{opacity:0.85;transform:scale(1.03)}
+
+/* REWARDER STRIP */
+.rewarder-strip{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;font-size:0.72rem;color:var(--sub);opacity:0.7}
+.rw-mini-word{font-family:'Baloo 2',cursive;font-weight:800;background:linear-gradient(90deg,#7c3aed,#1565c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* MERCH PAGE HERO */
+.merch-page-hero{background:linear-gradient(135deg,var(--navy),#1565c0);border-radius:20px;padding:32px 24px;text-align:center;color:white;margin-bottom:24px;position:relative;overflow:hidden}
+.merch-page-hero h2{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:10px}
+.merch-page-hero p{font-size:0.85rem;opacity:0.85;margin-top:6px}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,0.7);text-align:center;padding:24px 20px;font-size:0.82rem}
+footer strong{color:var(--gold)}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;flex-direction:column;gap:12px;color:var(--sub)}
+.spinner{width:36px;height:36px;border:3px solid #e8f0fe;border-top-color:var(--sky);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;padding:12px 24px;border-radius:30px;font-size:0.88rem;font-weight:500;z-index:999;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.3);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px}
+.toast.show{display:flex;animation:toastIn 0.3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+@media(max-width:768px){
+  .nav-links{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  .nav-links::-webkit-scrollbar{height:3px}
+  nav{flex-wrap:nowrap}
+  .nav-user{flex-shrink:0}
+  .hero{padding:40px 16px 36px}
+  .categories-grid{grid-template-columns:1fr 1fr}
+  .nav-brand{font-size:0.95rem}
+  .pending-banner{flex-wrap:wrap;gap:10px}
+  .pending-confirm-btn{width:100%}
+  .rewarder-section{flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .categories-grid{grid-template-columns:1fr}
+  .nav-logos{display:none}
+  .merch-upsell-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-logos">
+      <div class="nav-logo" id="lasuLogo" title="Lagos State University"><i class="fas fa-graduation-cap" style="color:var(--gold)"></i></div>
+      <div class="nav-logo" id="deptLogo" title="Department"><i class="fas fa-book-open" style="color:var(--gold)"></i></div>
+    </div>
+    <div class="nav-brand"><i class="fas fa-trophy" style="color:var(--gold);margin-right:4px"></i> SILVER SCROLLS '26</div>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-btn active" data-page="home" onclick="goPage('home')"><i class="fas fa-home"></i> Home</button>
+    <button class="nav-btn" data-page="vote" onclick="goPage('vote')"><i class="fas fa-vote-yea"></i> Vote</button>
+    <button class="nav-btn" data-page="leaderboard" onclick="goPage('leaderboard')"><i class="fas fa-chart-bar"></i> Leaders</button>
+    <button class="nav-btn" data-page="merch" onclick="goPage('merch')"><i class="fas fa-shopping-bag"></i> Merch</button>
+    <button class="nav-btn" data-page="info" onclick="goPage('info')"><i class="fas fa-calendar-alt"></i> Event Info</button>
+    <div class="nav-user" id="navUser" style="display:none">
+      <span class="nav-user-name" id="navUserName"></span>
+      <button class="nav-edit-btn" onclick="openProfileModal()"><i class="fas fa-pen"></i> Edit</button>
+    </div>
+  </div>
+</nav>
+
+<!-- PENDING VOTE BANNER -->
+<div class="pending-banner" id="pendingBanner" style="display:none" onclick="showPendingConfirm('vote')">
+  <i class="fas fa-clock pending-banner-icon"></i>
+  <div class="pending-banner-text">
+    <strong>Pending Vote Payment Found</strong>
+    <span>Did you complete your bank transfer? Tap to check status.</span>
+  </div>
+  <button class="pending-confirm-btn" onclick="event.stopPropagation();showPendingConfirm('vote')"><i class="fas fa-check"></i> I Have Paid</button>
+</div>
+
+<!-- PENDING MERCH BANNER -->
+<div class="pending-banner" id="pendingMerchBanner" style="display:none;background:linear-gradient(135deg,#b45309,#1565c0)" onclick="showPendingConfirm('merch')">
+  <i class="fas fa-box pending-banner-icon"></i>
+  <div class="pending-banner-text">
+    <strong>Pending Merch Order Found</strong>
+    <span>Complete your payment to confirm your Gele / Cap order.</span>
+  </div>
+  <button class="pending-confirm-btn" onclick="event.stopPropagation();showPendingConfirm('merch')"><i class="fas fa-check"></i> I Have Paid</button>
+</div>
+
+<!-- PAGE: HOME -->
+<div class="page-view active" id="page-home">
+  <div class="page-header-nav" data-page-nav="home"></div>
+  <div class="hero">
+    <div class="hero-confetti" id="heroConfetti"></div>
+    <div class="hero-badge"><i class="fas fa-star"></i> 25 Years of History &amp; Excellence</div>
+    <h1>SILVER<br/><span>SCROLLS</span></h1>
+    <div class="hero-sub">SSOHIS — Lagos State University</div>
+    <div class="hero-edition">"The Owambe Edition" <i class="fas fa-glass-cheers" style="color:var(--gold)"></i></div>
+    <div class="hero-info">
+      <div class="hero-pill"><i class="fas fa-calendar"></i> <span id="heroDate">3rd July, 2026</span></div>
+      <div class="hero-pill"><i class="fas fa-clock"></i> <span id="heroTime">12 Noon</span></div>
+      <div class="hero-pill"><i class="fas fa-map-marker-alt"></i> <span id="heroVenue">Venue: To Be Announced</span></div>
+    </div>
+    <div class="hero-user-card" id="userCaptureCard">
+      <h3><i class="fas fa-hand-wave" style="color:var(--gold)"></i> Who's voting?</h3>
+      <p>Enter your details once — we'll remember you for payments</p>
+      <div class="huc-field">
+        <label><i class="fas fa-user"></i> Your Name</label>
+        <input type="text" id="hucName" placeholder="e.g. Amara Johnson" autocomplete="name"/>
+      </div>
+      <div class="huc-field">
+        <label><i class="fas fa-envelope"></i> Email Address</label>
+        <input type="email" id="hucEmail" placeholder="e.g. amara@gmail.com" autocomplete="email"/>
+      </div>
+      <button class="huc-submit" onclick="saveUserProfile()"><i class="fas fa-arrow-right"></i> Continue to Vote</button>
+    </div>
+    <div id="heroCta" style="display:none">
+      <button class="hero-cta" onclick="goPage('vote')"><i class="fas fa-vote-yea"></i> Cast Your Vote Now</button>
+    </div>
+  </div>
+
+  <div class="sweet-strip">
+    <div class="dc-title"><i class="fas fa-tshirt"></i> Dress Code</div>
+    <div class="dc-text" id="dressCodeText">A Touch of <strong>White or Blue</strong> — Owambe Edition</div>
+    <div class="dc-merch">
+      <button class="merch-badge" onclick="openMerchModal('gele')"><i class="fas fa-hat-wizard"></i> Get Your Gele — ₦5,000</button>
+      <button class="merch-badge" onclick="openMerchModal('cap')"><i class="fas fa-hat-cowboy"></i> Get Your Cap — ₦3,000</button>
+    </div>
+    <div class="sweet-talk-line"><i class="fas fa-star"></i> Come dressed to slay, vote to make history — 3rd July, 2026!</div>
+  </div>
+
+  <div class="support-bar">
+    <i class="fas fa-phone"></i> Need help with voting or payment? Call/WhatsApp support:
+    <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a>
+  </div>
+
+  <div style="max-width:1000px;margin:20px auto;padding:0 20px">
+    <div class="banner-slot" id="top-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><i class="fas fa-trophy" style="color:var(--gold)"></i> Award <span>Categories</span></div>
+    <div class="section-sub">46 categories · Tap below to browse and vote for your favourites</div>
+    <div style="text-align:center">
+      <button class="hero-cta" style="background:var(--navy);color:var(--gold)" onclick="goPage('vote')"><i class="fas fa-th-large"></i> Browse All Categories</button>
+    </div>
+  </div>
+
+  <div class="logo-showcase">
+    <div class="logo-track" id="logoTrack"></div>
+  </div>
+
+  <div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — run your own awards &amp; voting events</div>
+
+  <div class="rsvp-strip">
+    <strong><i class="fas fa-envelope"></i> R.S.V.P / Table Reservation:</strong>
+    <div class="contacts">
+      <span>Bami — <strong>09128346163</strong></span>
+      <span>Ayomide — <strong>08123975974</strong></span>
+      <span>Wayvee — <strong>08082190930</strong></span>
+      <span>Toluwani — <strong>07040575798</strong></span>
+    </div>
+  </div>
+
+  <footer>
+    <strong>SSOHIS Silver Scrolls '26</strong> — Lagos State University<br/>
+    Students Society for the Study of History and International Studies<br/>
+    <span style="margin-top:6px;display:block;opacity:0.4;font-size:0.75rem">Powered by Rewarder</span>
+  </footer>
+</div>
+
+<!-- PAGE: VOTE -->
+<div class="page-view" id="page-vote">
+  <div class="page-header-nav" data-page-nav="vote"></div>
+  <div class="merch-page-hero" style="margin:20px;border-radius:20px">
+    <h2><i class="fas fa-trophy"></i> Award Categories</h2>
+    <p>46 categories · Select a category to vote for your favourite nominee · ₦70 per vote</p>
+  </div>
+  <div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+    <div class="banner-slot" id="vote-top-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+  </div>
+  <div class="section" style="padding-top:0">
+    <div class="categories-grid" id="categoriesGrid">
+      <div class="loading"><div class="spinner"></div><span>Loading categories...</span></div>
+    </div>
+    <div class="cat-pagination" id="catPagination"></div>
+  </div>
+  <div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+    <div class="banner-slot" id="vote-mid-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+  </div>
+  <div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — secure voting &amp; payments</div>
+  <div class="support-bar">
+    <i class="fas fa-phone"></i> Trouble voting? Call/WhatsApp: <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a>
+  </div>
+</div>
+
+<!-- PAGE: LEADERBOARD -->
+<div class="page-view" id="page-leaderboard">
+  <div class="page-header-nav" data-page-nav="leaderboard"></div>
+  <div style="background:var(--navy);padding:32px 20px 8px;text-align:center">
+    <div class="section-title" style="color:white;margin-bottom:6px"><i class="fas fa-chart-bar" style="color:var(--gold)"></i> Live <span>Leaderboard</span></div>
+    <div class="section-sub" style="color:rgba(255,255,255,0.6)">Real-time vote counts across all categories — refreshing live <i class="fas fa-bolt" style="color:var(--gold)"></i></div>
+  </div>
+  <div style="max-width:1000px;margin:0 auto;padding:0 20px 8px">
+    <div class="banner-slot" id="lb-top-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+  </div>
+  <div style="background:var(--navy);padding:8px 20px 40px">
+    <div id="leaderboardGrid" style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+      <div class="loading" style="color:rgba(255,255,255,0.5)"><div class="spinner"></div><span>Loading...</span></div>
+    </div>
+  </div>
+  <div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — live results</div>
+</div>
+
+<!-- PAGE: MERCH -->
+<div class="page-view" id="page-merch">
+  <div class="page-header-nav" data-page-nav="merch"></div>
+  <div class="section">
+    <div class="merch-page-hero">
+      <h2><i class="fas fa-shopping-bag"></i> Party Merch</h2>
+      <p>Look the part at the Owambe! Dress code: A Touch of White or Blue</p>
+    </div>
+    <div class="banner-slot" id="merch-top-banner" style="margin-bottom:24px"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+    <div class="merch-grid">
+      <div class="merch-card">
+        <div class="merch-icon-wrap"><i class="fas fa-hat-wizard"></i></div>
+        <div class="merch-title">Gele</div>
+        <div class="merch-price">₦5,000</div>
+        <div class="merch-desc">Stunning gele styled for the Owambe Edition.</div>
+        <button class="merch-buy-btn" onclick="openMerchModal('gele')"><i class="fas fa-shopping-cart"></i> Order Gele Now</button>
+      </div>
+      <div class="merch-card">
+        <div class="merch-icon-wrap"><i class="fas fa-hat-cowboy"></i></div>
+        <div class="merch-title">Cap</div>
+        <div class="merch-price">₦3,000</div>
+        <div class="merch-desc">Exclusive Silver Scrolls '26 cap. Rep the anniversary in style.</div>
+        <button class="merch-buy-btn" onclick="openMerchModal('cap')"><i class="fas fa-shopping-cart"></i> Order Cap Now</button>
+      </div>
+    </div>
+    <div class="banner-slot" id="merch-bottom-banner" style="margin-top:24px"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+  </div>
+  <div class="logo-showcase"><div class="logo-track" id="logoTrack2"></div></div>
+  <div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — merch &amp; vote, one platform</div>
+  <div class="support-bar"><i class="fas fa-phone"></i> Order issues? <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a></div>
+</div>
+
+<!-- PAGE: EVENT INFO -->
+<div class="page-view" id="page-info">
+  <div class="page-header-nav" data-page-nav="info"></div>
+  <div class="hero" style="padding:40px 20px">
+    <div class="hero-badge"><i class="fas fa-calendar-star"></i> Save The Date</div>
+    <h1 style="font-size:clamp(2rem,6vw,3.2rem)">EVENT <span>INFO</span></h1>
+    <div class="hero-sub">Everything you need to know about Silver Scrolls '26</div>
+  </div>
+  <div class="section">
+    <div class="categories-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+      <div class="cat-card" style="text-align:center;cursor:default"><div class="cat-icon" style="margin:0 auto 8px"><i class="fas fa-calendar-alt"></i></div><div class="cat-name">Date</div><div class="cat-count" id="infoDate">3rd July, 2026</div></div>
+      <div class="cat-card" style="text-align:center;cursor:default"><div class="cat-icon" style="margin:0 auto 8px"><i class="fas fa-clock"></i></div><div class="cat-name">Time</div><div class="cat-count" id="infoTime">12 Noon</div></div>
+      <div class="cat-card" style="text-align:center;cursor:default"><div class="cat-icon" style="margin:0 auto 8px"><i class="fas fa-map-marker-alt"></i></div><div class="cat-name">Venue</div><div class="cat-count" id="infoVenue">To Be Announced</div></div>
+      <div class="cat-card" style="text-align:center;cursor:default"><div class="cat-icon" style="margin:0 auto 8px"><i class="fas fa-tshirt"></i></div><div class="cat-name">Dress Code</div><div class="cat-count" id="infoDress">A Touch of White or Blue</div></div>
+    </div>
+    <div class="sweet-strip" style="border-radius:16px;margin-top:24px">
+      <div class="dc-title"><i class="fas fa-bell"></i> Friendly Reminder</div>
+      <div class="dc-text">Mark your calendar! Silver Scrolls '26 is happening <strong id="infoReminderDate">3rd July, 2026</strong> — don't say nobody told you!</div>
+      <div class="sweet-talk-line"><i class="fas fa-star"></i> Come early, dress sharp, bring your A-game. See you on the red carpet!</div>
+    </div>
+    <div class="rsvp-strip" style="border-radius:16px;margin-top:24px">
+      <strong><i class="fas fa-envelope"></i> R.S.V.P / Table Reservation:</strong>
+      <div class="contacts">
+        <span>Bami — <strong>09128346163</strong></span>
+        <span>Ayomide — <strong>08123975974</strong></span>
+        <span>Wayvee — <strong>08082190930</strong></span>
+        <span>Toluwani — <strong>07040575798</strong></span>
+      </div>
+    </div>
+  </div>
+  <div class="support-bar"><i class="fas fa-phone"></i> General enquiries: <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a></div>
+  <div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span></div>
+</div>
+
+<!-- MODALS -->
+
+<!-- VOTING MODAL -->
+<div class="modal-overlay" id="voteModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-vote-yea"></i> <span id="modalCatName">Category</span></h2>
+      <p id="modalCatSub"></p>
+      <button class="modal-close" onclick="safeCloseVoteModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-body">
+      <div class="success-modal">
+        <div class="confetti-row">
+          <i class="fas fa-star" style="color:var(--gold)"></i>
+          <i class="fas fa-trophy" style="color:var(--gold)"></i>
+          <i class="fas fa-medal" style="color:var(--gold)"></i>
+          <i class="fas fa-crown" style="color:var(--gold)"></i>
+          <i class="fas fa-star" style="color:var(--gold)"></i>
+        </div>
+        <div class="success-icon"><i class="fas fa-check-circle" style="color:#16a34a;font-size:3.5rem"></i></div>
+        <div class="success-title" id="successTitle">Vote Successful!</div>
+        <div class="success-sub" id="successSub">Your votes have been recorded.</div>
+
+        <div class="merch-upsell">
+          <h3><i class="fas fa-tshirt"></i> Dress the Part!</h3>
+          <p>Don't forget the dress code — A Touch of White or Blue. Order your party merch!</p>
+          <div class="merch-upsell-btns">
+            <button class="merch-upsell-btn merch-gele" onclick="closeModal('successModal');openMerchModal('gele')"><i class="fas fa-hat-wizard"></i> Gele — ₦5,000</button>
+            <button class="merch-upsell-btn merch-cap" onclick="closeModal('successModal');openMerchModal('cap')"><i class="fas fa-hat-cowboy"></i> Cap — ₦3,000</button>
+          </div>
+        </div>
+
+        <div class="rewarder-section">
+          <div class="rewarder-logo-box">
+            <!-- Replace with your actual Rewarder logo URL -->
+            <div class="rw-placeholder">RW</div>
+          </div>
+          <div class="rw-text">
+            <div class="rw-powered">Powered by</div>
+            <div class="rw-wordmark">REWARDER</div>
+            <div class="rw-tagline">Run your own awards &amp; voting events</div>
+          </div>
+          <button class="rw-cta-btn" onclick="window.open('https://rewarderhub.com','_blank')"><i class="fas fa-external-link-alt"></i> Try Free</button>
+        </div>
+
+        <button class="btn-secondary" onclick="closeModal('successModal')" style="margin-top:16px"><i class="fas fa-times"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PENDING CONFIRM MODAL -->
+<div class="modal-overlay" id="pendingModal">
+  <div class="modal">
+    <div class="modal-header" style="background:linear-gradient(135deg,#5b21b6,#1565c0)">
+      <h2><i class="fas fa-clock"></i> Confirm Your Payment</h2>
+      <p id="pendingModalSub">Bank transfer / USSD verification</p>
+      <button class="modal-close" onclick="closeModal('pendingModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="pendingModalBody"></div>
+  </div>
+</div>
+
+<!-- MERCH MODAL -->
+<div class="modal-overlay" id="merchModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-shopping-bag"></i> <span id="merchModalTitle">Order Merch</span></h2>
+      <p>Complete your party look for Silver Scrolls '26</p>
+      <button class="modal-close" onclick="closeModal('merchModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="merchModalBody"></div>
+  </div>
+</div>
+
+<!-- PROFILE EDIT MODAL -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-user-edit"></i> Edit Your Details</h2>
+      <p>These are pre-filled into your payments</p>
+      <button class="modal-close" onclick="closeModal('profileModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label><i class="fas fa-user"></i> Your Name</label><input type="text" id="editName" autocomplete="name"/></div>
+      <div class="form-group"><label><i class="fas fa-envelope"></i> Email Address</label><input type="email" id="editEmail" autocomplete="email"/></div>
+      <button class="btn-primary" onclick="updateProfile()"><i class="fas fa-save"></i> Save Changes</button>
+      <button class="btn-secondary" onclick="closeModal('profileModal')"><i class="fas fa-times"></i> Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey:"AIzaSyDW8V2SjNITrA4LcdmeILh944mTbOKnM0c",
+  authDomain:"rewarderhub.firebaseapp.com",
+  projectId:"rewarderhub",
+  storageBucket:"rewarderhub.appspot.com",
+  messagingSenderId:"85965945106",
+  appId:"1:85965945106:web:fa0a57d8968926e1041bcb"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const FLW_PUB_KEY = "FLWPUBK-2a3845212c24d426fb9b4bcc4155ecd7-X";
+const VOTE_BASE=50,VOTE_FEE=20,VOTE_PRICE=70,MIN_VOTES=10;
+const GELE_PRICE=5000,CAP_PRICE=3000;
+const LS_USER='ssohis26_user',LS_PENDING='ssohis26_pending',LS_PENDING_MERCH='ssohis26_pending_merch';
+const CATS_PER_PAGE=8;
+
+const SPONSOR_LOGOS=[
+  {name:"Sponsor One",icon:"fa-building"},
+  {name:"Sponsor Two",icon:"fa-store"},
+  {name:"Sponsor Three",icon:"fa-utensils"},
+  {name:"Sponsor Four",icon:"fa-mobile-alt"},
+  {name:"Sponsor Five",icon:"fa-tshirt"},
+  {name:"Sponsor Six",icon:"fa-music"},
+  {name:"Sponsor Seven",icon:"fa-car"},
+  {name:"Sponsor Eight",icon:"fa-gem"}
+];
+
+const CATEGORIES=[
+  {id:"finalist_male",name:"Finalist of the Year (Male)",icon:"fa-graduation-cap",nominees:["Josh","Abims","Jasper","Prince","Joel","Yaasar Sanni","King Myde","Kelvin","Beebah","Rc"]},
+  {id:"finalist_female",name:"Finalist of the Year (Female)",icon:"fa-graduation-cap",nominees:["Mayowa","Tems","Wuraola","Abims","Oreoluwa Ibeyemi","Onaboye Oluwabukola","Tope","Okoye Onyinye","Moyo","Ibrahim Omolade Nazaah","Harabella","Nifemi","Jehral","Chinasa","Haliyah Adeola","Esther Nwosu","Aisha","Afolakemi Awotunya","Omotoyosi"]},
+  {id:"fresher_male",name:"Fresher of the Year (Male)",icon:"fa-star",nominees:["Theo","Oluwatunmise","Lil Daana","Tobi","Mayahna","Tunmishe Ilariogun","Samdan","Mayanah","Duke","Toby","Mcceleb","Tobi Ogunmefun","Mayor","Loyal","Elijah","David"]},
+  {id:"fresher_female",name:"Fresher of the Year (Female)",icon:"fa-star",nominees:["Princess Tee","Kenz","Joan","Mayowa","Fiyin Esther","Leader Janet","Moyin","Thatgalbuki","Shindara Lawal","Nini","Abims","Claires Hairssence","Rejoice","Tolani","Mhidey4Short","Mayowa.","Ruqoyah","Rachel","Major","Mayowa Ogunmefun"]},
+  {id:"executive",name:"Executive of the Year",icon:"fa-crown",nominees:["Bami","Jasper","Way Vee","Boi Bliss","Marvelous","Olalekan","Toluwanimi","Mujeeb","Emmanuel","Oluwa Gold"]},
+  {id:"parliamentarian",name:"Parliamentarian of the Year",icon:"fa-landmark",nominees:["Omotoyosi","Nifemi","Afolakemi","Benjamin","Lia","Esther","Tabitha"]},
+  {id:"most_beautiful",name:"Most Beautiful Student",icon:"fa-gem",nominees:["Kossi Stella","Mayor","Pretty Precious","Mayowa","Precious","Oreo","Mercy","Naomi","Tomilola","Adeola","Deborah Korede","Omezie Precious","Sewa","Anjola Rowlands","Princess Tee","Omolade Nazaah","Thatgalbuki","Zainab Odetokun","Boluwatife Ogunbiyi","Akande Aliyah","Elegbe Annabel","Abims","Abimbola","Adeshewa","Kolawole Roqeebah","Esther Nwosu","Nimi"]},
+  {id:"most_handsome",name:"Most Handsome Student",icon:"fa-male",nominees:["Hamzat","Maguire","Deo","Toby","Mide","Oluwatunmise","Ogunsina Olamide","John","Paul","Oshin","Khummy","Kamal Okikola","Muyiwa"]},
+  {id:"expensive_fresher_male",name:"Most Expensive Fresher (Male)",icon:"fa-dollar-sign",nominees:["Mcceleb","Ari","Mayanah","Johnpaul","Beebah","David","Tunmishe Ilariogun","Tomiwa","That'S Dada","Oluwatunmise"]},
+  {id:"expensive_fresher_female",name:"Most Expensive Fresher (Female)",icon:"fa-dollar-sign",nominees:["Mayor","Princess Tee","Fiyin Esther","Precious","Tiana","Mayowa","Mhidey4Short","Adeola","Harrison Zion","Abims","Claires Hairssence"]},
+  {id:"expensive_staylite_male",name:"Most Expensive Staylite (Male)",icon:"fa-money-bill-wave",nominees:["Maguire","Bami","Oladimeji Towobola","Acelord","Ayomide","Pedro","Mayor","Omoluabi","Edward","Toby Benz","Wayvee","David","Tact","Lequex","Ogunsina Olamide"]},
+  {id:"expensive_staylite_female",name:"Most Expensive Staylite (Female)",icon:"fa-money-bill-wave",nominees:["Adeshewa","Abims","Naomi Elufiede","Adeola","Sylvia","Olajumoke Oluwalayomi","Elegbe Annabel","Aliyah","Wuraola","Mayowa","Deborah Korede","Tola","Mayor","Nelly","Esther Nwosu","Adesewa","Claires Hairssence"]},
+  {id:"most_luxurious",name:"Most Luxurious",icon:"fa-glass-martini-alt",nominees:["Tact","Acelord","Hendrix","Lequex","Jerry K","Toby Benz","Pedro","Zamani","Nifemi Shelle"]},
+  {id:"creative_male",name:"Creative of the Year (Male)",icon:"fa-palette",nominees:["Damip Concept","Way Vee","Yocee","Ore","Oluwatunmise","Quadri","Gerald Tialobi","Sanni Yaasar","Danny Boy","Oj","Daranjr","Cbbs","Mayor","Nefemisway","Mardon","James"]},
+  {id:"creative_female",name:"Creative of the Year (Female)",icon:"fa-palette",nominees:["Thatgalbuki","Abimbola","Katherine Ajulo","Elegbe Annabel","Harrison Zion","Emmanuel Mercy","Janet","Leader Janet","Mayowa","Mayor","Esther Nwosu","Teniola Silver","Big Reedah","Dj Perry"]},
+  {id:"best_dressed_fresher_male",name:"Best Dressed Fresher (Male)",icon:"fa-tshirt",nominees:["Theo","Tomiwa","Mcceleb","David","Mayor","Noble","Tunmishe Ilariogun","Mayanah","Ogunsina Olamide"]},
+  {id:"best_dressed_fresher_female",name:"Best Dressed Fresher (Female)",icon:"fa-female",nominees:["Niffy Luxury","Mayor","Princess Tee","Fiyin Esther","Abims","Bukola","Precious","Mayowa","Dammy"]},
+  {id:"best_dressed_staylite_male",name:"Best Dressed Staylite (Male)",icon:"fa-male",nominees:["Mide","Bami","Nathaniel David","Kamaldeen Kayode","Posi","Mardon","Acelord","Ogunsina Olamide","Tr6Kt","Maguire"]},
+  {id:"best_dressed_staylite_female",name:"Best Dressed Staylite (Female)",icon:"fa-female",nominees:["Elegbe Annabelle","Ojigbani Precious","Sewa","Aliyah","Sylvia","Zainab Odetokun","Adeola","Olajumoke Virtous","Oyinkansola","Wuraola","Adeshewa","Mayowa","Mayor","Abigael"]},
+  {id:"scholar_male",name:"Scholar of the Year (Male)",icon:"fa-book",nominees:["Alabi Emmanuel","Stixx","Deo","Ems","Joel Asamideri","Jones Joel Olamide","Ogunsina Olamide","Daranjr","Fahd","Eniola Success","Azubike"]},
+  {id:"scholar_female",name:"Scholar of the Year (Female)",icon:"fa-book",nominees:["Nwosu Esther","Tabitha","Oreo","Ireoluwa","Naomi Elufiede","Emmanuel Mercy","Akande Aliyah","Elegbe Annabel","Princess Tee","Tammy","Adeola","Precious Rotimi","Scholar Moral","Sarah"]},
+  {id:"sportsperson_male",name:"Sportsperson of the Year (Male)",icon:"fa-futbol",nominees:["Olalekan","Emmanuel Chinemerem","Mujeeb","Elufowoju Jnr","Dollfin","Hundeyin David","Nifemi","Emma","Mayor","Temi","Divine","Mide","Roman David","Abiodun","Qudus"]},
+  {id:"sportsperson_female",name:"Sportsperson of the Year (Female)",icon:"fa-running",nominees:["Moyin","Kayo","Derin","Mayor","Mayowa","Rejoice","Yetunde","Lydia Ogabi","Lucky Miracle","Abims"]},
+  {id:"popular_fresher_male",name:"Most Popular Fresher (Male)",icon:"fa-fire",nominees:["Mayanah","Theo","Kenz","Mc celeb","Daana","Mcceleb","Lil Daana","Morgan","Tunmishe Ilariogun"]},
+  {id:"popular_fresher_female",name:"Most Popular Fresher (Female)",icon:"fa-fire",nominees:["Princess Tee","Leader Janet","Kenz","Joan","Thatgalbuki","Emmanuel Mercy","Akande Aliyah","Ruqoyah","Abimbola","Bola Janet","Mhidey4Short","Mayowa","Claires Hairssence"]},
+  {id:"popular_staylite_male",name:"Most Popular Staylite (Male)",icon:"fa-users",nominees:["Bami","Hamzat","Josh","King Myde","Abib","BelieverofLasu","Elufowoju Jnr","Fahd","That'S Dada","Jeffery","Nathaniel David"]},
+  {id:"popular_staylite_female",name:"Most Popular Staylite (Female)",icon:"fa-users",nominees:["Tomilola","Awotunya Afolakemi","Emmanuel Mercy","Kanyin","Mide","Aneefah","Abims","Nwosu Esther","Toluwanimi","Adelowo Sofia","Kayo","Lawal Moyosore","Aliyah","Wuraola","Mayor","Faith Eniolanimi"]},
+  {id:"reserved_fresher_male",name:"Most Reserved Fresher (Male)",icon:"fa-user-secret",nominees:["Tomiwa","Ope","John Similoluwa","Mayor","Tunmishe Ilariogun"]},
+  {id:"reserved_fresher_female",name:"Most Reserved Fresher (Female)",icon:"fa-user-secret",nominees:["Mayor","Eniolanimi","Ruqoyah","Omolade","Precious Rotimi","Princess Tee","Lisa Oma","Abims","Claires Hairssence"]},
+  {id:"reserved_staylite_male",name:"Most Reserved Staylite (Male)",icon:"fa-user-ninja",nominees:["Hamzat","Abib","Jasper","Dj Perry","Omolade","Mayor","Seun (Ink District)","Ogunsina Olamide","Yocee","Lekan Muller","Oladimeji Towobola","Maguire"]},
+  {id:"reserved_staylite_female",name:"Most Reserved Staylite (Female)",icon:"fa-user-ninja",nominees:["Omolade","Marvelous","Emmanuel Mercy","Chidera","Sewa","Similoluwa John","Naomi Elufiede","Mercy Emmanuel","Abims","Victoria","Abisola Mayungbe","Tofunmi","Mercy","Aisha","Eshemokhai Marvelous","John Similoluwa"]},
+  {id:"academia",name:"Academia of the Year",icon:"fa-university",nominees:["Nwosu Esther","Stixx","Alabi Emmanuel","Quadri","Tammy","Ems","Fahad Abdulazeez","Ogunsina Olamide"]},
+  {id:"best_friendship_duo",name:"Best Friendship Duo",icon:"fa-handshake",nominees:["Daniel And Racheal","Oreo And Deo","Nancy And Precious","Negro And Racheal","Juhoon Oppa And Martin Senpai.","Bolaji Sauban And Faisol","Kate And Teekay","Me And Mine","Bola, Maryam, Sister Dammy","Abigael And Halemah"]},
+  {id:"clique",name:"Clique of the Year",icon:"fa-users-cog",nominees:["Musk","The Girls","Junior'S Clique","The Big 4","No One Is Better Than The Originals","S.T.T (Sarah,Mayowa And Joshua)","Abimbola, Rejoice, Wura, Adeola","The Boys","7 Strong Mind One Motion","Bois Dem","Young And Motive Inclined"]},
+  {id:"entrepreneur",name:"Entrepreneur of the Year",icon:"fa-rocket",nominees:["Bukkylash Aesthetics","Eats By Ann","Mee Nar Glam","Crunchella","Ann","Ay Chops","Bams Fragrance","Ogunsina Olamide","Happi Artistry","Chow naw","Leo Gadgets and Autos","Stitches By Josephine","Yeesha","Foot By Dave","Chops bistro","Claires Hairssence","Sugar Cove"]},
+  {id:"content_creator",name:"Content Creator of the Year",icon:"fa-mobile-alt",nominees:["Thatgalbuki","Teniola Silver","Victoria","Precious","Yocee","Ojibani Precious","Legal Dalu","Danny Boy","Lngshot","Ore","Danny Young","Teniola Bamidele John","Katherine Ajulo","Morgan"]},
+  {id:"socialite_male",name:"Socialite of the Year (Male)",icon:"fa-theater-masks",nominees:["Hamzat","Way Vee","Bami","King Myde","Temi","Mayanah","Riyah","Yocee","James"]},
+  {id:"socialite_female",name:"Socialite of the Year (Female)",icon:"fa-theater-masks",nominees:["Mayor","Dorcas","Aliyah","Ogunsina Olamide","Thatgalbuki","Bukola","Nini","Ria","Myde4short","Abims"]},
+  {id:"political_icon",name:"Political Icon of the Year",icon:"fa-landmark",nominees:["Bami","Jasper","Nifemi","Boi Bliss","Marvelous","Quadri","Big Josh","Omotoyosi","Toluwani"]},
+  {id:"hoc",name:"HOC of the Year",icon:"fa-microphone",nominees:["Mcceleb","Toluwanimi","Bami","Ore"]},
+  {id:"humanitarian",name:"Humanitarian of the Year",icon:"fa-heart",nominees:["Comrade Josh","Boi Bliss","Bami","Adegboye Abimbola","Esther Nwosu","Ogunsina Olamide","Junior","Mayor"]},
+  {id:"model",name:"Model of the Year",icon:"fa-star",nominees:["Mercy","Tomiwa","Hundeyin David","Adeola","Abims","Bukola","Inu","Ruby","Eunice","Ogunsina Olamide","Oyinkansola","Teniola Silver","Mercy Okojie","Mayor","Tife"]},
+  {id:"brand",name:"Brand of the Year",icon:"fa-tag",nominees:["Claires Hairssence","Eats By Ann","Bams Fragrance","Kroma Painting","Stitches By Josephine","Chow naw","Ay Chops","Abike Olowosibi","Chef Presh Cakes And Food","Happi Artistry","De Royale Hub","Mee Nar Glam","Foodies Deck","Chops Bistro"]},
+  {id:"artiste",name:"Artiste of the Year",icon:"fa-music",nominees:["Daranjr","Kenz","Rhythm Bhoi","Nefeme Sway","Lazer","Riyah","Big Reedah","Xstecy","Blarkio","Watzdot"]},
+  {id:"friend_dept",name:"Friend of the Department",icon:"fa-smile",nominees:["Biggie","Mublex","Softboy Adeola","Abigael","Shakiru","Shaz"]},
+  {id:"alumnus",name:"Alumnus of the Year",icon:"fa-award",nominees:["Comr. Zeenah","Comr. Olaezekiel","Mr Seun SUG","DMF","Justice","Jhayne Zoey","Scholar Coker","Scholar Hex","Temitope Martins"]}
+];
+
+const PAGE_LIST=[
+  {id:'home',label:'Home',icon:'fa-home'},
+  {id:'vote',label:'Vote',icon:'fa-vote-yea'},
+  {id:'leaderboard',label:'Leaders',icon:'fa-chart-bar'},
+  {id:'merch',label:'Merch',icon:'fa-shopping-bag'},
+  {id:'info',label:'Event Info',icon:'fa-calendar-alt'}
+];
+
+let userProfile=null,currentCat=null,selectedNominee=null,voteQty=MIN_VOTES,liveVotes={},paymentOpen=false,catPage=1;
+
+function goPage(name){
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const btn=document.querySelector(`.nav-btn[data-page="${name}"]`);
+  if(btn) btn.classList.add('active');
+  renderPageHeaderNavs(name);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPageHeaderNavs(activePage){
+  document.querySelectorAll('.page-header-nav').forEach(container=>{
+    container.innerHTML=PAGE_LIST.map(p=>{
+      const isActive=p.id===activePage;
+      const isMerch=p.id==='merch';
+      const cls=['phn-btn'];
+      if(isActive) cls.push('active');
+      if(isMerch&&!isActive) cls.push('merch-cta');
+      return `<button class="${cls.join(' ')}" onclick="goPage('${p.id}')"><i class="fas ${p.icon}"></i> ${p.label}</button>`;
+    }).join('');
+  });
+}
+
+// USER PROFILE
+function loadUserProfile(){
+  try{ userProfile=JSON.parse(localStorage.getItem(LS_USER)); }catch(e){ userProfile=null; }
+  if(userProfile&&userProfile.name&&userProfile.email){
+    document.getElementById('userCaptureCard').style.display='none';
+    document.getElementById('heroCta').style.display='block';
+    document.getElementById('navUser').style.display='flex';
+    document.getElementById('navUserName').textContent=userProfile.name.split(' ')[0];
+  }
+}
+
+function saveUserProfile(){
+  const name=document.getElementById('hucName').value.trim();
+  const email=document.getElementById('hucEmail').value.trim();
+  if(!name){ showToast('Please enter your name'); return; }
+  if(!email||!email.includes('@')){ showToast('Please enter a valid email'); return; }
+  userProfile={name,email};
+  localStorage.setItem(LS_USER,JSON.stringify(userProfile));
+  document.getElementById('userCaptureCard').style.display='none';
+  document.getElementById('heroCta').style.display='block';
+  document.getElementById('navUser').style.display='flex';
+  document.getElementById('navUserName').textContent=name.split(' ')[0];
+  showToast('Welcome, '+name.split(' ')[0]+'!');
+  setTimeout(()=>{ goPage('vote'); },500);
+}
+
+function openProfileModal(){
+  document.getElementById('editName').value=userProfile?.name||'';
+  document.getElementById('editEmail').value=userProfile?.email||'';
+  document.getElementById('profileModal').classList.add('active');
+}
+
+function updateProfile(){
+  const name=document.getElementById('editName').value.trim();
+  const email=document.getElementById('editEmail').value.trim();
+  if(!name||!email||!email.includes('@')){ showToast('Please fill valid details'); return; }
+  userProfile={name,email};
+  localStorage.setItem(LS_USER,JSON.stringify(userProfile));
+  document.getElementById('navUserName').textContent=name.split(' ')[0];
+  closeModal('profileModal');
+  showToast('Details updated');
+}
+
+// PENDING
+function savePending(type,data){
+  const key=type==='vote'?LS_PENDING:LS_PENDING_MERCH;
+  localStorage.setItem(key,JSON.stringify({...data,savedAt:Date.now()}));
+}
+
+function loadPending(type){
+  const key=type==='vote'?LS_PENDING:LS_PENDING_MERCH;
+  try{
+    const p=JSON.parse(localStorage.getItem(key));
+    if(p&&(Date.now()-p.savedAt)<86400000) return p;
+    localStorage.removeItem(key);
+  }catch(e){}
+  return null;
+}
+
+function clearPending(type){
+  const key=type==='vote'?LS_PENDING:LS_PENDING_MERCH;
+  localStorage.removeItem(key);
+  document.getElementById(type==='vote'?'pendingBanner':'pendingMerchBanner').style.display='none';
+}
+
+function checkPendingOnLoad(){
+  if(loadPending('vote')) document.getElementById('pendingBanner').style.display='flex';
+  if(loadPending('merch')) document.getElementById('pendingMerchBanner').style.display='flex';
+}
+
+function showPendingConfirm(type){
+  const p=loadPending(type);
+  if(!p){ document.getElementById(type==='vote'?'pendingBanner':'pendingMerchBanner').style.display='none'; return; }
+  const mins=Math.round((Date.now()-p.savedAt)/60000);
+  document.getElementById('pendingModalSub').textContent=type==='vote'?'Vote payment verification':'Merch order payment verification';
+
+  if(type==='vote'){
+    document.getElementById('pendingModalBody').innerHTML=`
+      <div style="background:#f0f6ff;border-radius:12px;padding:16px;margin-bottom:16px">
+        <div style="font-size:0.78rem;color:var(--sub);margin-bottom:8px"><i class="fas fa-info-circle"></i> Pending vote details:</div>
+        <div style="font-weight:700;color:var(--navy)">${p.categoryName}</div>
+        <div style="color:var(--blue);font-size:0.88rem;margin-top:4px"><i class="fas fa-user"></i> ${p.votes} votes for <strong>${p.nominee}</strong></div>
+        <div style="color:var(--sub);font-size:0.78rem;margin-top:6px"><i class="fas fa-money-bill"></i> ₦${p.amount.toLocaleString()} · Ref: ${p.txRef.slice(-12)} · ${mins} min${mins!==1?'s':''} ago</div>
+      </div>
+      <div class="pending-vote-note">
+        <div class="pvn-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>What happens next?</h3>
+        <p>If your bank transfer or USSD payment was <strong>successful</strong>, our team will verify it and your votes will be credited within <strong>30 minutes</strong>. No action needed from you.</p>
+        <div class="ref-box"><i class="fas fa-receipt"></i> Your reference: ${p.txRef}</div>
+        <p style="font-size:0.75rem;margin-top:8px;opacity:0.7">Save this reference. If your votes aren't credited in 30 mins, contact our support with this reference number.</p>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px">
+        <button class="btn-primary" style="flex:1" onclick="closeModal('pendingModal')"><i class="fas fa-check"></i> Understood, I'll Wait</button>
+        <button class="btn-secondary" style="flex:1;margin-top:0" onclick="cancelPending('vote')"><i class="fas fa-times"></i> Cancel</button>
+      </div>
+      <a href="tel:+2349128346163" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;color:var(--blue);font-size:0.82rem;font-weight:600;text-decoration:none"><i class="fas fa-phone"></i> Call Support: 0912 834 6163</a>
+    `;
+  } else {
+    document.getElementById('pendingModalBody').innerHTML=`
+      <div style="background:#fff7ed;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #fed7aa">
+        <div style="font-size:0.78rem;color:#92400e;margin-bottom:8px"><i class="fas fa-box"></i> Pending merch order:</div>
+        <div style="font-weight:700;color:var(--navy)">${p.item==='gele'?'Gele':'Cap'} — ₦${p.amount.toLocaleString()}</div>
+        <div style="color:var(--sub);font-size:0.78rem;margin-top:6px"><i class="fas fa-user"></i> ${p.name} · Ref: ${p.txRef.slice(-12)} · ${mins} min${mins!==1?'s':''} ago</div>
+      </div>
+      <div class="pending-vote-note" style="background:linear-gradient(135deg,#451a03,#78350f)">
+        <div class="pvn-icon"><i class="fas fa-box-open"></i></div>
+        <h3>Your Order is Being Processed</h3>
+        <p>If your payment went through, your merch order will be confirmed and we'll reach out via <strong>${p.phone||'your phone number'}</strong> within <strong>2 hours</strong>.</p>
+        <div class="ref-box"><i class="fas fa-receipt"></i> Order ref: ${p.txRef}</div>
+        <p style="font-size:0.75rem;margin-top:8px;opacity:0.7">Keep this reference. Contact support if you don't hear from us within 2 hours.</p>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px">
+        <button class="btn-primary" style="flex:1" onclick="closeModal('pendingModal')"><i class="fas fa-check"></i> Got It</button>
+        <button class="btn-secondary" style="flex:1;margin-top:0" onclick="cancelPending('merch')"><i class="fas fa-times"></i> Cancel Order</button>
+      </div>
+      <a href="tel:+2349128346163" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;color:var(--blue);font-size:0.82rem;font-weight:600;text-decoration:none"><i class="fas fa-phone"></i> Call Support: 0912 834 6163</a>
+    `;
+  }
+  document.getElementById('pendingModal').classList.add('active');
+}
+
+function cancelPending(type){
+  if(confirm('Are you sure your payment did not go through? This will remove the pending record.')){
+    clearPending(type);
+    closeModal('pendingModal');
+    showToast('Pending record cleared.');
+  }
+}
+
+// BANNERS
+async function loadBanners(){
+  try{
+    const doc=await db.collection('settings').doc('banners').get();
+    if(doc.exists){
+      const d=doc.data();
+      const slotMap={top:['top-banner','vote-top-banner'],mid:['vote-mid-banner','lb-top-banner'],bottom:['merch-top-banner','merch-bottom-banner']};
+      Object.keys(slotMap).forEach(slot=>{
+        if(d[slot]?.url){
+          slotMap[slot].forEach(elId=>{
+            const el=document.getElementById(elId);
+            if(el) el.innerHTML=`<img src="${d[slot].url}" alt="Ad"/>`;
+          });
+        }
+      });
+    }
+  }catch(e){}
+}
+
+// LOGO SHOWCASE
+function renderLogoShowcase(){
+  const items=[...SPONSOR_LOGOS,...SPONSOR_LOGOS].map(s=>
+    `<div class="logo-item"><i class="fas ${s.icon}" style="display:block;font-size:1.4rem;margin-bottom:4px"></i>${s.name}</div>`
+  ).join('');
+  const t1=document.getElementById('logoTrack');
+  const t2=document.getElementById('logoTrack2');
+  if(t1) t1.innerHTML=items;
+  if(t2) t2.innerHTML=items;
+}
+
+// CONFETTI
+function spawnConfetti(){
+  const container=document.getElementById('heroConfetti');
+  if(!container) return;
+  const icons=['fa-star','fa-trophy','fa-medal','fa-crown','fa-award'];
+  for(let i=0;i<14;i++){
+    const el=document.createElement('i');
+    el.className=`fas ${icons[Math.floor(Math.random()*icons.length)]} confetti-piece`;
+    el.style.left=Math.random()*100+'%';
+    el.style.animationDuration=(6+Math.random()*8)+'s';
+    el.style.animationDelay=(Math.random()*8)+'s';
+    el.style.fontSize=(0.8+Math.random()*0.8)+'rem';
+    el.style.color=`hsl(${Math.random()*60+30},100%,${60+Math.random()*20}%)`;
+    container.appendChild(el);
+  }
+}
+
+// LIVE VOTES
+function loadLiveVotes(){
+  db.collection('votes').onSnapshot(snap=>{
+    liveVotes={};
+    snap.forEach(doc=>{
+      const d=doc.data();
+      const key=`${d.categoryId}::${d.nominee}`;
+      liveVotes[key]=(liveVotes[key]||0)+(d.votes||0);
+    });
+    renderCategories();
+    renderLeaderboard();
+  });
+}
+
+// CATEGORIES
+function renderCategories(){
+  const totalPages=Math.ceil(CATEGORIES.length/CATS_PER_PAGE);
+  if(catPage>totalPages) catPage=totalPages;
+  if(catPage<1) catPage=1;
+  const start=(catPage-1)*CATS_PER_PAGE;
+  const pageItems=CATEGORIES.slice(start,start+CATS_PER_PAGE);
+  document.getElementById('categoriesGrid').innerHTML=pageItems.map(cat=>`
+    <div class="cat-card" onclick="openVoteModal('${cat.id}')">
+      <div class="cat-icon"><i class="fas ${cat.icon}"></i></div>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-count"><i class="fas fa-users"></i> ${cat.nominees.length} nominees</div>
+      <button class="cat-btn"><i class="fas fa-vote-yea"></i> Vote Now</button>
+    </div>`).join('');
+  renderCatPagination(totalPages);
+}
+
+function renderCatPagination(totalPages){
+  const el=document.getElementById('catPagination');
+  if(!el) return;
+  el.innerHTML=`
+    <button class="cp-btn" ${catPage<=1?'disabled':''} onclick="changeCatPage(-1)"><i class="fas fa-chevron-left"></i> Prev</button>
+    <div class="cp-pages">Page ${catPage} of ${totalPages}</div>
+    <button class="cp-btn" ${catPage>=totalPages?'disabled':''} onclick="changeCatPage(1)">Next <i class="fas fa-chevron-right"></i></button>
+  `;
+}
+
+function changeCatPage(delta){
+  catPage+=delta;
+  renderCategories();
+  document.querySelector('#page-vote .section')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// LEADERBOARD
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboardGrid');
+  if(!el) return;
+  el.innerHTML=CATEGORIES.map(cat=>{
+    const ranked=cat.nominees.map(n=>({name:n,votes:liveVotes[`${cat.id}::${n}`]||0})).sort((a,b)=>b.votes-a.votes).slice(0,5);
+    const max=ranked[0]?.votes||1;
+    const items=ranked.map((n,i)=>{
+      const cls=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+      const pct=max>0?Math.round((n.votes/max)*100):0;
+      return `<div class="leader-item">
+        <div class="rank-badge ${cls}">${i+1}</div>
+        <div class="leader-name">${n.name}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="leader-votes">${n.votes}</div>
+      </div>`;
+    }).join('');
+    return `<div class="leader-card">
+      <div class="leader-cat"><i class="fas ${cat.icon}" style="color:var(--gold)"></i> ${cat.name}</div>
+      ${items||'<div style="color:#aaa;font-size:0.82rem"><i class="fas fa-hourglass-start"></i> No votes yet</div>'}
+    </div>`;
+  }).join('');
+}
+
+// VOTE MODAL
+function openVoteModal(catId){
+  if(!userProfile){ showToast('Please enter your name & email first'); goPage('home'); window.scrollTo({top:0,behavior:'smooth'}); return; }
+  currentCat=CATEGORIES.find(c=>c.id===catId);
+  selectedNominee=null;
+  voteQty=MIN_VOTES;
+  document.getElementById('modalCatName').textContent=currentCat.name;
+  document.getElementById('modalCatSub').textContent=`${currentCat.nominees.length} nominees · min ${MIN_VOTES} votes at ₦${VOTE_PRICE}/vote`;
+  renderModalBody();
+  document.getElementById('voteModal').classList.add('active');
+}
+
+function renderModalBody(){
+  // Nominees list — no vote counts shown
+  const noms=currentCat.nominees.map(n=>{
+    const sel=selectedNominee===n?'selected':'';
+    const safe=n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="nominee-item ${sel}" onclick="selectNominee('${safe}')">
+      <div class="nominee-name">${n}</div>
+      <div class="select-indicator">${sel?'<i class="fas fa-check" style="font-size:0.65rem"></i>':''}</div>
+    </div>`;
+  }).join('');
+
+  const total=voteQty*VOTE_PRICE;
+  document.getElementById('modalBody').innerHTML=`
+    <p style="font-size:0.82rem;color:var(--sub);margin-bottom:10px">
+      <i class="fas fa-user"></i> Voting as: <strong style="color:var(--navy)">${userProfile.name}</strong>
+      <span style="font-size:0.75rem;color:var(--sky);cursor:pointer;margin-left:6px" onclick="openProfileModal()">change</span>
+    </p>
+    <div class="nominees-list">${noms}</div>
+    ${selectedNominee?`
+    <div class="vote-qty-section">
+      <div class="vote-qty-label"><i class="fas fa-sliders-h"></i> How many votes? (min ${MIN_VOTES})</div>
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="changeQty(-10)"><i class="fas fa-minus"></i></button>
+        <input class="qty-input" type="number" id="qtyInput" value="${voteQty}" min="${MIN_VOTES}" onchange="setQty(this.value)"/>
+        <button class="qty-btn" onclick="changeQty(10)"><i class="fas fa-plus"></i></button>
+      </div>
+      <div class="qty-note"><i class="fas fa-info-circle"></i> ₦${VOTE_PRICE}/vote = ₦${VOTE_BASE} base + ₦${VOTE_FEE} fee</div>
+    </div>
+    <div class="price-breakdown">
+      <div class="price-row"><span><i class="fas fa-user"></i> Nominee</span><span>${selectedNominee}</span></div>
+      <div class="price-row"><span><i class="fas fa-vote-yea"></i> Votes</span><span>${voteQty}</span></div>
+      <div class="price-row"><span><i class="fas fa-tag"></i> Rate</span><span>₦${VOTE_PRICE}/vote</span></div>
+      <div class="price-total"><span><i class="fas fa-receipt"></i> Total</span><span>₦${total.toLocaleString()}</span></div>
+    </div>
+    <button class="btn-primary" onclick="initiateVotePayment()"><i class="fas fa-credit-card"></i> Pay ₦${total.toLocaleString()} &amp; Vote</button>
+    <button class="btn-secondary merch-cta-btn" onclick="closeModal('voteModal');goPage('merch')"><i class="fas fa-shopping-bag"></i> Get Our Merch — Gele &amp; Caps</button>
+    `:`<p style="text-align:center;color:var(--sub);font-size:0.85rem;padding:8px 0"><i class="fas fa-hand-pointer"></i> Select a nominee above to continue</p>`}
+    <button class="btn-secondary" onclick="safeCloseVoteModal()"><i class="fas fa-times"></i> Cancel</button>
+  `;
+}
+
+function selectNominee(name){ selectedNominee=name; renderModalBody(); }
+function changeQty(d){ voteQty=Math.max(MIN_VOTES,voteQty+d); renderModalBody(); }
+function setQty(v){ voteQty=Math.max(MIN_VOTES,parseInt(v)||MIN_VOTES); renderModalBody(); }
+
+function safeCloseVoteModal(){
+  if(!paymentOpen){ closeModal('voteModal'); }
+  else{ showToast('Payment in progress — please wait'); }
+}
+
+// PAYMENT
+function initiateVotePayment(){
+  if(!userProfile){ showToast('Please save your details first'); return; }
+  const total=voteQty*VOTE_PRICE;
+  const txRef=`SSOHIS-VOTE-${Date.now()}-${Math.random().toString(36).substr(2,6).toUpperCase()}`;
+  savePending('vote',{txRef,amount:total,votes:voteQty,nominee:selectedNominee,categoryId:currentCat.id,categoryName:currentCat.name,voterName:userProfile.name,voterEmail:userProfile.email});
+  paymentOpen=true;
+  FlutterwaveCheckout({
+    public_key:FLW_PUB_KEY,tx_ref:txRef,amount:total,currency:"NGN",
+    payment_options:"card,ussd,banktransfer,mobilemoney",
+    customer:{email:userProfile.email,name:userProfile.name},
+    meta:{type:'vote',categoryId:currentCat.id,categoryName:currentCat.name,nominee:selectedNominee,votes:voteQty},
+    customizations:{title:"SSOHIS Silver Scrolls '26",description:`${voteQty} vote(s) for ${selectedNominee}`,logo:""},
+    callback:async(data)=>{
+      paymentOpen=false;
+      if(data.status==="successful"||data.status==="completed"){
+        await recordVote(txRef,total,data.transaction_id);
+      } else {
+        closeModal('voteModal');
+        document.getElementById('pendingBanner').style.display='flex';
+        showToast('Payment not confirmed. Tap the banner to check status.');
+      }
+    },
+    onclose:()=>{
+      paymentOpen=false;
+      const p=loadPending('vote');
+      if(p&&p.txRef===txRef){
+        document.getElementById('pendingBanner').style.display='flex';
+        closeModal('voteModal');
+      }
+    }
+  });
+}
+
+async function recordVote(txRef,amount,flwTxId){
+  try{
+    await db.collection('votes').add({
+      txRef,flwTxId,voterName:userProfile.name,voterEmail:userProfile.email,
+      categoryId:currentCat.id,categoryName:currentCat.name,
+      nominee:selectedNominee,votes:voteQty,amount,
+      voteFee:voteQty*VOTE_FEE,baseRevenue:voteQty*VOTE_BASE,
+      type:'vote',timestamp:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    clearPending('vote');
+    closeModal('voteModal');
+    document.getElementById('successTitle').textContent=`${voteQty} votes for ${selectedNominee}!`;
+    document.getElementById('successSub').textContent=`Your vote in "${currentCat.name}" is recorded. May the best win!`;
+    document.getElementById('successModal').classList.add('active');
+  }catch(e){
+    showToast('Vote recorded! Ref: '+txRef);
+    clearPending('vote');
+  }
+}
+
+// MERCH MODAL
+function openMerchModal(type){
+  const isGele=type==='gele';
+  const price=isGele?GELE_PRICE:CAP_PRICE;
+  const user=userProfile||{};
+  document.getElementById('merchModalTitle').textContent=isGele?'Order Your Gele':'Order Your Cap';
+  document.getElementById('merchModalBody').innerHTML=`
+    <div style="text-align:center;padding:8px 0 16px">
+      <div style="font-size:3.5rem;color:var(--gold)"><i class="fas ${isGele?'fa-hat-wizard':'fa-hat-cowboy'}"></i></div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy);margin:6px 0">${isGele?'Gele':'Cap'}</div>
+      <div style="font-size:1.6rem;font-weight:700;color:var(--blue)">₦${price.toLocaleString()}</div>
+      <p style="font-size:0.8rem;color:var(--sub);margin:6px 0 14px">Dress code: <strong>A Touch of White or Blue</strong></p>
+    </div>
+    <div class="form-group"><label><i class="fas fa-user"></i> Full Name</label><input type="text" id="merchName" value="${user.name||''}" placeholder="Your full name"/></div>
+    <div class="form-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="merchEmail" value="${user.email||''}" placeholder="your@email.com"/></div>
+    <div class="form-group"><label><i class="fas fa-phone"></i> Phone Number</label><input type="tel" id="merchPhone" placeholder="08012345678"/></div>
+    <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> Delivery / Collection Note</label><input type="text" id="merchAddress" placeholder="e.g. Pick up at event / 12 Somewhere Street"/></div>
+    <button class="btn-primary" onclick="initiateMerchPayment('${type}',${price})"><i class="fas fa-credit-card"></i> Pay ₦${price.toLocaleString()} Now</button>
+    <button class="btn-secondary merch-cta-btn" onclick="closeModal('merchModal');goPage('vote')"><i class="fas fa-vote-yea"></i> Go Vote Now</button>
+    <button class="btn-secondary" onclick="closeModal('merchModal')"><i class="fas fa-times"></i> Cancel</button>
+  `;
+  document.getElementById('merchModal').classList.add('active');
+}
+
+function initiateMerchPayment(type,price){
+  const name=document.getElementById('merchName').value.trim();
+  const email=document.getElementById('merchEmail').value.trim();
+  const phone=document.getElementById('merchPhone').value.trim();
+  const address=document.getElementById('merchAddress').value.trim();
+  if(!name||!email||!phone){ showToast('Please fill in name, email & phone'); return; }
+  const txRef=`SSOHIS-MERCH-${Date.now()}-${Math.random().toString(36).substr(2,6).toUpperCase()}`;
+  // Save merch pending
+  savePending('merch',{txRef,amount:price,item:type,name,email,phone,address});
+  FlutterwaveCheckout({
+    public_key:FLW_PUB_KEY,tx_ref:txRef,amount:price,currency:"NGN",
+    payment_options:"card,ussd,banktransfer,mobilemoney",
+    customer:{email,phone_number:phone,name},
+    customizations:{title:"SSOHIS Silver Scrolls '26",description:`${type==='gele'?'Gele':'Cap'} Order`,logo:""},
+    callback:async(data)=>{
+      if(data.status==="successful"||data.status==="completed"){
+        await db.collection('merch_orders').add({
+          txRef,flwTxId:data.transaction_id,name,email,phone,address,item:type,price,status:'paid',
+          timestamp:firebase.firestore.FieldValue.serverTimestamp()
+        });
+        clearPending('merch');
+        closeModal('merchModal');
+        showToast(`${type==='gele'?'Gele':'Cap'} order placed! We'll contact you at ${phone}`);
+      } else {
+        closeModal('merchModal');
+        document.getElementById('pendingMerchBanner').style.display='flex';
+        showToast('Payment not confirmed. Tap the orange bar to check your order status.');
+      }
+    },
+    onclose:()=>{
+      const p=loadPending('merch');
+      if(p&&p.txRef===txRef){
+        document.getElementById('pendingMerchBanner').style.display='flex';
+        closeModal('merchModal');
+        showToast('If you paid via bank transfer, tap the orange bar above');
+      }
+    }
+  });
+}
+
+// EVENT SETTINGS
+async function loadEventSettings(){
+  try{
+    const doc=await db.collection('settings').doc('config').get();
+    if(!doc.exists) return;
+    const d=doc.data();
+    if(d.event_date){ ['heroDate','infoDate','infoReminderDate'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=d.event_date; }); }
+    if(d.event_time){ ['heroTime','infoTime'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=d.event_time; }); }
+    if(d.event_venue){ const hv=document.getElementById('heroVenue'); if(hv) hv.textContent='Venue: '+d.event_venue; const iv=document.getElementById('infoVenue'); if(iv) iv.textContent=d.event_venue; }
+    if(d.dress_code){ const dc=document.getElementById('dressCodeText'); if(dc) dc.innerHTML=`<strong>${d.dress_code}</strong> — Owambe Edition`; const id=document.getElementById('infoDress'); if(id) id.textContent=d.dress_code; }
+    if(d.gele_price){ document.querySelectorAll('.merch-badge').forEach((b,i)=>{ if(i===0) b.innerHTML=`<i class="fas fa-hat-wizard"></i> Get Your Gele — ₦${d.gele_price.toLocaleString()}`; else b.innerHTML=`<i class="fas fa-hat-cowboy"></i> Get Your Cap — ₦${d.cap_price?.toLocaleString()||'3,000'}`; }); }
+  }catch(e){}
+}
+
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+
+function showToast(msg,dur=3500){
+  const t=document.getElementById('toast');
+  t.innerHTML=`<i class="fas fa-info-circle"></i> ${msg}`;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+window.addEventListener('beforeunload',e=>{ if(paymentOpen){ e.preventDefault(); e.returnValue=''; } });
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadUserProfile();
+  checkPendingOnLoad();
+  renderCategories();
+  loadLiveVotes();
+  loadBanners();
+  renderLogoShowcase();
+  spawnConfetti();
+  loadEventSettings();
+  renderPageHeaderNavs('home');
+});
+
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{
+    if(e.target!==o) return;
+    if(o.id==='voteModal'){ safeCloseVoteModal(); return; }
+    o.classList.remove('active');
+  });
+});
+</script>
+</body>
+  </html>
