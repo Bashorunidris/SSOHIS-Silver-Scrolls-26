@@ -12,10 +12,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0d1b3e;--blue:#1565c0;--sky:#2196f3;--gold:#f4b942;
-  --green:#16a34a;--red:#dc2626;--purple:#7c3aed;
-  --white:#ffffff;--bg:#f0f4f8;--card:#ffffff;--text:#0d1b3e;
-  --sub:#64748b;--border:#e2e8f0;--sidebar-w:248px;
+--navy:#0d1b3e;--blue:#1565c0;--sky:#2196f3;--gold:#f4b942;
+--green:#16a34a;--red:#dc2626;--purple:#7c3aed;
+--white:#ffffff;--bg:#f0f4f8;--card:#ffffff;--text:#0d1b3e;
+--sub:#64748b;--border:#e2e8f0;--sidebar-w:248px;
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy),#1565c0)}
@@ -52,7 +52,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .main{margin-left:var(--sidebar-w);padding:24px;min-height:100vh}
 .page{display:none}
 .page.active{display:block}
-.page-header{margin-bottom:24px}
+.page-header{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .page-title{font-family:'Baloo 2',cursive;font-size:1.55rem;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:10px}
 .page-title .title-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
 .ti-blue{background:#dbeafe;color:var(--blue)}
@@ -171,13 +171,15 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 .chart-period-btns{display:flex;gap:4px;margin-bottom:12px}
 .cpb{background:#f0f4f8;border:1px solid var(--border);color:var(--sub);border-radius:6px;padding:4px 10px;font-size:0.74rem;font-weight:600;cursor:pointer;transition:all 0.15s}
 .cpb.active{background:var(--blue);color:white;border-color:var(--blue)}
+.close-page-btn{background:var(--card);border:1px solid var(--border);color:var(--sub);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;margin-left:auto;font-size:0.9rem}
+.close-page-btn:hover{background:#fee2e2;color:var(--red);border-color:#fca5a5}
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%);transition:transform 0.3s}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .metric-grid{grid-template-columns:1fr 1fr}
-  .analytics-grid{grid-template-columns:1fr}
-  .hamburger{display:flex}
+.sidebar{transform:translateX(-100%);transition:transform 0.3s}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0}
+.metric-grid{grid-template-columns:1fr 1fr}
+.analytics-grid{grid-template-columns:1fr}
+.hamburger{display:flex}
 }
 .hamburger{display:none;position:fixed;top:12px;left:12px;z-index:100;background:var(--navy);border:none;color:white;width:40px;height:40px;border-radius:8px;font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center}
 </style>
@@ -186,319 +188,327 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 
 <!-- LOGIN -->
 <div id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-badge"><i class="fas fa-shield-alt"></i> ADMIN ACCESS</div>
-      <h1><i class="fas fa-trophy" style="color:var(--gold)"></i> Silver Scrolls '26</h1>
-      <p>SSOHIS Awards Dashboard</p>
-    </div>
-    <div class="login-error" id="loginError"></div>
-    <div class="lf-group">
-      <label><i class="fas fa-envelope"></i> Email Address</label>
-      <input type="email" id="loginEmail" placeholder="ssohis@26.com" autocomplete="email"/>
-    </div>
-    <div class="lf-group">
-      <label><i class="fas fa-lock"></i> Password</label>
-      <input type="password" id="loginPassword" placeholder="••••••••"/>
-    </div>
-    <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Sign In to Dashboard</button>
-  </div>
+<div class="login-box">
+<div class="login-logo">
+<div class="login-badge"><i class="fas fa-shield-alt"></i> ADMIN ACCESS</div>
+<h1><i class="fas fa-trophy" style="color:var(--gold)"></i> Silver Scrolls '26</h1>
+<p>SSOHIS Awards Dashboard</p>
+</div>
+<div class="login-error" id="loginError"></div>
+<div class="lf-group">
+<label><i class="fas fa-envelope"></i> Email Address</label>
+<input type="email" id="loginEmail" placeholder="ssohis@26.com" autocomplete="email"/>
+</div>
+<div class="lf-group">
+<label><i class="fas fa-lock"></i> Password</label>
+<input type="password" id="loginPassword" placeholder="••••••••"/>
+</div>
+<button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Sign In to Dashboard</button>
+</div>
 </div>
 
 <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
 <!-- DASHBOARD -->
 <div id="dashScreen">
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <h2><i class="fas fa-trophy"></i> Silver Scrolls</h2>
-      <p>SSOHIS Admin · '26</p>
-    </div>
-    <div class="sidebar-nav">
-      <div class="nav-section-label">Main</div>
-      <div class="nav-item active" onclick="showPage('overview',this)"><span class="ni"><i class="fas fa-chart-pie"></i></span> Overview</div>
-      <div class="nav-item" onclick="showPage('transactions',this)"><span class="ni"><i class="fas fa-receipt"></i></span> Transactions</div>
-      <div class="nav-item" onclick="showPage('pending',this)"><span class="ni"><i class="fas fa-clock"></i></span> Pending Payments <span id="sidebarPendingCount" style="background:var(--red);color:white;font-size:0.65rem;padding:2px 6px;border-radius:10px;margin-left:auto;display:none">0</span></div>
-      <div class="nav-section-label">Analytics</div>
-      <div class="nav-item" onclick="showPage('analytics',this)"><span class="ni"><i class="fas fa-chart-line"></i></span> Revenue Charts</div>
-      <div class="nav-item" onclick="showPage('categories',this)"><span class="ni"><i class="fas fa-trophy"></i></span> Category Analytics</div>
-      <div class="nav-section-label">Manage</div>
-      <div class="nav-item" onclick="showPage('nominees',this)"><span class="ni"><i class="fas fa-user-edit"></i></span> Manage Nominees</div>
-      <div class="nav-item" onclick="showPage('merch',this)"><span class="ni"><i class="fas fa-shopping-bag"></i></span> Merch Orders</div>
-      <div class="nav-item" onclick="showPage('banners',this)"><span class="ni"><i class="fas fa-ad"></i></span> Banner Ads</div>
-      <div class="nav-item" onclick="showPage('settings',this)"><span class="ni"><i class="fas fa-cog"></i></span> Settings</div>
-    </div>
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="sidebar-avatar"><i class="fas fa-user-shield"></i></div>
-        <div class="sidebar-user-info">
-          <div class="sidebar-user-name">SSOHIS Admin</div>
-          <div class="sidebar-user-role">Super Administrator</div>
-        </div>
-      </div>
-      <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
-    </div>
-  </div>
+<div class="sidebar" id="sidebar">
+<div class="sidebar-brand">
+<h2><i class="fas fa-trophy"></i> Silver Scrolls</h2>
+<p>SSOHIS Admin · '26</p>
+</div>
+<div class="sidebar-nav">
+<div class="nav-section-label">Main</div>
+<div class="nav-item active" onclick="showPage('overview',this)"><span class="ni"><i class="fas fa-chart-pie"></i></span> Overview</div>
+<div class="nav-item" onclick="showPage('transactions',this)"><span class="ni"><i class="fas fa-receipt"></i></span> Transactions</div>
+<div class="nav-item" onclick="showPage('pending',this)"><span class="ni"><i class="fas fa-clock"></i></span> Pending Payments <span id="sidebarPendingCount" style="background:var(--red);color:white;font-size:0.65rem;padding:2px 6px;border-radius:10px;margin-left:auto;display:none">0</span></div>
+<div class="nav-section-label">Analytics</div>
+<div class="nav-item" onclick="showPage('analytics',this)"><span class="ni"><i class="fas fa-chart-line"></i></span> Revenue Charts</div>
+<div class="nav-item" onclick="showPage('categories',this)"><span class="ni"><i class="fas fa-trophy"></i></span> Category Analytics</div>
+<div class="nav-section-label">Manage</div>
+<div class="nav-item" onclick="showPage('nominees',this)"><span class="ni"><i class="fas fa-user-edit"></i></span> Manage Nominees</div>
+<div class="nav-item" onclick="showPage('merch',this)"><span class="ni"><i class="fas fa-shopping-bag"></i></span> Merch Orders</div>
+<div class="nav-item" onclick="showPage('banners',this)"><span class="ni"><i class="fas fa-ad"></i></span> Banner Ads</div>
+<div class="nav-item" onclick="showPage('settings',this)"><span class="ni"><i class="fas fa-cog"></i></span> Settings</div>
+</div>
+<div class="sidebar-footer">
+<div class="sidebar-user">
+<div class="sidebar-avatar"><i class="fas fa-user-shield"></i></div>
+<div class="sidebar-user-info">
+<div class="sidebar-user-name">SSOHIS Admin</div>
+<div class="sidebar-user-role">Super Administrator</div>
+</div>
+</div>
+<button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+</div>
+</div>
 
-  <div class="main">
+<div class="main">
 
-    <!-- OVERVIEW -->
-    <div class="page active" id="page-overview">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-chart-pie"></i></div> Overview</div>
-        <div class="page-sub"><div class="live-dot"></div><span id="overviewSub">Connecting to live data...</span></div>
-      </div>
-      <div class="metric-grid" id="metricsGrid"><div class="loading"><div class="spinner"></div>Loading metrics...</div></div>
-      <div id="pendingAlertOverview" style="display:none" class="pending-alert">
-        <div class="pa-icon"><i class="fas fa-exclamation-triangle"></i></div>
-        <div class="pa-text">
-          <div class="pa-title">Pending Payments Require Action</div>
-          <div class="pa-sub" id="pendingAlertText"></div>
-        </div>
-        <button class="pa-btn" onclick="showPage('pending',document.querySelectorAll('.nav-item')[2])"><i class="fas fa-arrow-right"></i> Review Now</button>
-      </div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-header">
-          <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--blue)"></i> Revenue Breakdown</div>
-          <button class="card-action" onclick="showPage('analytics',document.querySelectorAll('.nav-item')[3])"><i class="fas fa-expand-alt"></i> Full Charts</button>
-        </div>
-        <div id="revSplitSection"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-header">
-          <div class="card-title"><i class="fas fa-receipt" style="color:var(--blue)"></i> Recent Transactions</div>
-          <button class="card-action" onclick="showPage('transactions',document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-right"></i> View All</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Time</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
-            <tbody id="recentTxTable"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><i class="fas fa-medal" style="color:var(--gold)"></i> Current Leaders Per Category</div>
-          <button class="card-action" onclick="showPage('categories',document.querySelectorAll('.nav-item')[4])"><i class="fas fa-arrow-right"></i> Full Analytics</button>
-        </div>
-        <div id="topNominees" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
+<!-- OVERVIEW -->
+<div class="page active" id="page-overview">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-chart-pie"></i></div> Overview</div>
+<div class="page-sub"><div class="live-dot"></div><span id="overviewSub">Connecting to live data...</span></div>
+</div>
+<div class="metric-grid" id="metricsGrid"><div class="loading"><div class="spinner"></div>Loading metrics...</div></div>
+<div id="pendingAlertOverview" style="display:none" class="pending-alert">
+<div class="pa-icon"><i class="fas fa-exclamation-triangle"></i></div>
+<div class="pa-text">
+<div class="pa-title">Pending Payments Require Action</div>
+<div class="pa-sub" id="pendingAlertText"></div>
+</div>
+<button class="pa-btn" onclick="showPage('pending',document.querySelectorAll('.nav-item')[2])"><i class="fas fa-arrow-right"></i> Review Now</button>
+</div>
+<div class="card" style="margin-bottom:16px">
+<div class="card-header">
+<div class="card-title"><i class="fas fa-chart-bar" style="color:var(--blue)"></i> Revenue Breakdown</div>
+<button class="card-action" onclick="showPage('analytics',document.querySelectorAll('.nav-item')[3])"><i class="fas fa-expand-alt"></i> Full Charts</button>
+</div>
+<div id="revSplitSection"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+<div class="card" style="margin-bottom:16px">
+<div class="card-header">
+<div class="card-title"><i class="fas fa-receipt" style="color:var(--blue)"></i> Recent Transactions</div>
+<button class="card-action" onclick="showPage('transactions',document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-right"></i> View All</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Time</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
+<tbody id="recentTxTable"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<div class="card-title"><i class="fas fa-medal" style="color:var(--gold)"></i> Current Leaders Per Category</div>
+<button class="card-action" onclick="showPage('categories',document.querySelectorAll('.nav-item')[4])"><i class="fas fa-arrow-right"></i> Full Analytics</button>
+</div>
+<div id="topNominees" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+</div>
 
-    <!-- TRANSACTIONS -->
-    <div class="page" id="page-transactions">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-receipt"></i></div> Transactions</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Full payment log</div>
-      </div>
-      <div class="table-controls">
-        <div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="txSearch" placeholder="Search name, email, nominee, ref..." oninput="filterTxTable()"/></div>
-        <select class="filter-select" id="txTypeFilter" onchange="filterTxTable()">
-          <option value="">All Types</option>
-          <option value="vote">Votes Only</option>
-          <option value="merch">Merch Only</option>
-        </select>
-        <select class="filter-select" id="txCatFilter" onchange="filterTxTable()">
-          <option value="">All Categories</option>
-        </select>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-size:0.81rem;color:var(--sub)" id="txCount"></div>
-        <button class="btn-save" onclick="exportCSV()" style="padding:7px 16px"><i class="fas fa-download"></i> Export CSV</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Date/Time</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Category</th><th>Nominee/Item</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
-          <tbody id="txTableBody"></tbody>
-        </table>
-      </div>
-      <div class="pagination" id="txPagination"></div>
-    </div>
+<!-- TRANSACTIONS -->
+<div class="page" id="page-transactions">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-receipt"></i></div> Transactions</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Full payment log</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="table-controls">
+<div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="txSearch" placeholder="Search name, email, nominee, ref..." oninput="filterTxTable()"/></div>
+<select class="filter-select" id="txTypeFilter" onchange="filterTxTable()">
+<option value="">All Types</option>
+<option value="vote">Votes Only</option>
+<option value="merch">Merch Only</option>
+</select>
+<select class="filter-select" id="txCatFilter" onchange="filterTxTable()">
+<option value="">All Categories</option>
+</select>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div style="font-size:0.81rem;color:var(--sub)" id="txCount"></div>
+<button class="btn-save" onclick="exportCSV()" style="padding:7px 16px"><i class="fas fa-download"></i> Export CSV</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Date/Time</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Category</th><th>Nominee/Item</th><th>Votes</th><th>Amount</th><th>Ref</th></tr></thead>
+<tbody id="txTableBody"></tbody>
+</table>
+</div>
+<div class="pagination" id="txPagination"></div>
+</div>
 
-    <!-- PENDING -->
-    <div class="page" id="page-pending">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-red"><i class="fas fa-clock"></i></div> Pending Payments</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Verify bank transfers then approve or reject</div>
-      </div>
-      <div class="card" style="margin-bottom:14px;background:#fffbeb;border-color:#f59e0b">
-        <div style="display:flex;align-items:flex-start;gap:12px">
-          <div style="font-size:1.5rem;color:#92400e"><i class="fas fa-info-circle"></i></div>
-          <div style="font-size:0.8rem;color:#92400e;line-height:1.6">When a voter selects "Bank Transfer" or "USSD" and closes the Flutterwave window, their vote isn't automatically confirmed. They appear here. <strong>Verify the reference in your bank app</strong>, then approve to credit their votes — or reject if payment was not received.</div>
-        </div>
-      </div>
-      <div class="pending-section">
-        <div class="pending-header"><i class="fas fa-vote-yea" style="color:var(--red)"></i> Pending Vote Payments <span class="pending-count-pill" id="pendingVoteCountPill">0</span></div>
-        <div id="pendingVotesList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
-      </div>
-      <div class="pending-section" style="margin-top:28px">
-        <div class="pending-header"><i class="fas fa-shopping-bag" style="color:#d97706"></i> Pending Merch Payments <span class="pending-count-pill" style="background:#d97706" id="pendingMerchCountPill">0</span></div>
-        <div id="pendingMerchList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
-      </div>
-    </div>
+<!-- PENDING -->
+<div class="page" id="page-pending">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-red"><i class="fas fa-clock"></i></div> Pending Payments</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Verify bank transfers then approve or reject</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="card" style="margin-bottom:14px;background:#fffbeb;border-color:#f59e0b">
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="font-size:1.5rem;color:#92400e"><i class="fas fa-info-circle"></i></div>
+<div style="font-size:0.8rem;color:#92400e;line-height:1.6">When a voter selects "Bank Transfer" or "USSD" and closes the Flutterwave window, their vote isn't automatically confirmed. They appear here. <strong>Verify the reference in your bank app</strong>, then approve to credit their votes — or reject if payment was not received.</div>
+</div>
+</div>
+<div class="pending-section">
+<div class="pending-header"><i class="fas fa-vote-yea" style="color:var(--red)"></i> Pending Vote Payments <span class="pending-count-pill" id="pendingVoteCountPill">0</span></div>
+<div id="pendingVotesList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+</div>
+<div class="pending-section" style="margin-top:28px">
+<div class="pending-header"><i class="fas fa-shopping-bag" style="color:#d97706"></i> Pending Merch Payments <span class="pending-count-pill" style="background:#d97706" id="pendingMerchCountPill">0</span></div>
+<div id="pendingMerchList"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+</div>
+</div>
 
-    <!-- ANALYTICS -->
-    <div class="page" id="page-analytics">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-chart-line"></i></div> Revenue Charts</div>
-        <div class="page-sub"><div class="live-dot"></div> Live revenue analytics</div>
-      </div>
-      <div class="metric-grid" id="analyticsMetrics" style="margin-bottom:20px"></div>
-      <div class="analytics-grid">
-        <div class="chart-card">
-          <div class="chart-title"><i class="fas fa-chart-line" style="color:var(--blue)"></i> Revenue Over Time</div>
-          <div class="chart-period-btns">
-            <button class="cpb active" onclick="setRevChartPeriod('hourly',this)">Hourly</button>
-            <button class="cpb" onclick="setRevChartPeriod('daily',this)">Daily</button>
-          </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="revTimeChart"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title"><i class="fas fa-chart-pie" style="color:var(--gold)"></i> Revenue Sources</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="revSourceChart"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title"><i class="fas fa-chart-bar" style="color:var(--green)"></i> Top Voted Categories</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="catVoteChart"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title"><i class="fas fa-shopping-bag" style="color:var(--purple)"></i> Merch Orders by Item</div>
-          <div class="chart-wrap" style="height:220px"><canvas id="merchChart"></canvas></div>
-        </div>
-      </div>
-    </div>
+<!-- ANALYTICS -->
+<div class="page" id="page-analytics">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-chart-line"></i></div> Revenue Charts</div>
+<div class="page-sub"><div class="live-dot"></div> Live revenue analytics</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="metric-grid" id="analyticsMetrics" style="margin-bottom:20px"></div>
+<div class="analytics-grid">
+<div class="chart-card">
+<div class="chart-title"><i class="fas fa-chart-line" style="color:var(--blue)"></i> Revenue Over Time</div>
+<div class="chart-period-btns">
+<button class="cpb active" onclick="setRevChartPeriod('hourly',this)">Hourly</button>
+<button class="cpb" onclick="setRevChartPeriod('daily',this)">Daily</button>
+</div>
+<div class="chart-wrap" style="height:220px"><canvas id="revTimeChart"></canvas></div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><i class="fas fa-chart-pie" style="color:var(--gold)"></i> Revenue Sources</div>
+<div class="chart-wrap" style="height:220px"><canvas id="revSourceChart"></canvas></div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><i class="fas fa-chart-bar" style="color:var(--green)"></i> Top Voted Categories</div>
+<div class="chart-wrap" style="height:220px"><canvas id="catVoteChart"></canvas></div>
+</div>
+<div class="chart-card">
+<div class="chart-title"><i class="fas fa-shopping-bag" style="color:var(--purple)"></i> Merch Orders by Item</div>
+<div class="chart-wrap" style="height:220px"><canvas id="merchChart"></canvas></div>
+</div>
+</div>
+</div>
 
-    <!-- CATEGORY ANALYTICS -->
-    <div class="page" id="page-categories">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-gold"><i class="fas fa-trophy"></i></div> Category Analytics</div>
-        <div class="page-sub"><div class="live-dot"></div> Live vote breakdown per category</div>
-      </div>
-      <div class="table-controls">
-        <div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="catSearch" placeholder="Search categories..." oninput="filterCatAnalytics()"/></div>
-      </div>
-      <div class="cat-analytics-grid" id="catAnalyticsGrid"><div class="loading"><div class="spinner"></div>Loading...</div></div>
-    </div>
+<!-- CATEGORY ANALYTICS -->
+<div class="page" id="page-categories">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-gold"><i class="fas fa-trophy"></i></div> Category Analytics</div>
+<div class="page-sub"><div class="live-dot"></div> Live vote breakdown per category</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="table-controls">
+<div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="catSearch" placeholder="Search categories..." oninput="filterCatAnalytics()"/></div>
+</div>
+<div class="cat-analytics-grid" id="catAnalyticsGrid"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+</div>
 
-    <!-- NOMINEE MANAGEMENT -->
-    <div class="page" id="page-nominees">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-user-edit"></i></div> Manage Nominees</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Add or remove nominees per category</div>
-      </div>
-      <div class="card">
-        <div class="sf-group">
-          <label>Select Category</label>
-          <select class="nm-cat-select" id="nmCatSelect" onchange="renderNomineeManager()"></select>
-        </div>
-        <div id="nomineeManagerList"></div>
-        <div class="add-nominee-row">
-          <input type="text" id="newNomineeName" placeholder="Add new nominee name..."/>
-          <button class="btn-add" onclick="addNominee()"><i class="fas fa-plus"></i> Add</button>
-        </div>
-      </div>
-    </div>
+<!-- NOMINEE MANAGEMENT -->
+<div class="page" id="page-nominees">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-user-edit"></i></div> Manage Nominees</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Add or remove nominees per category</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="card">
+<div class="sf-group">
+<label>Select Category</label>
+<select class="nm-cat-select" id="nmCatSelect" onchange="renderNomineeManager()"></select>
+</div>
+<div id="nomineeManagerList"></div>
+<div class="add-nominee-row">
+<input type="text" id="newNomineeName" placeholder="Add new nominee name..."/>
+<button class="btn-add" onclick="addNominee()"><i class="fas fa-plus"></i> Add</button>
+</div>
+</div>
+</div>
 
-    <!-- MERCH ORDERS -->
-    <div class="page" id="page-merch">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-gold"><i class="fas fa-shopping-bag"></i></div> Merch Orders</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Gele and Cap orders</div>
-      </div>
-      <div class="table-controls">
-        <div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="merchSearch" placeholder="Search by name, phone..." oninput="filterMerchTable()"/></div>
-        <select class="filter-select" id="merchItemFilter" onchange="filterMerchTable()">
-          <option value="">All Items</option>
-          <option value="gele">Gele Only</option>
-          <option value="cap">Cap Only</option>
-        </select>
-        <select class="filter-select" id="merchStatusFilter" onchange="filterMerchTable()">
-          <option value="">All Status</option>
-          <option value="paid">Paid</option>
-          <option value="fulfilled">Fulfilled</option>
-        </select>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-size:0.81rem;color:var(--sub)" id="merchCount"></div>
-        <button class="btn-save" onclick="exportMerchCSV()" style="padding:7px 16px"><i class="fas fa-download"></i> Export CSV</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Item</th><th>Amount</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
-          <tbody id="merchTableBody"></tbody>
-        </table>
-      </div>
-    </div>
+<!-- MERCH ORDERS -->
+<div class="page" id="page-merch">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-gold"><i class="fas fa-shopping-bag"></i></div> Merch Orders</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Gele and Cap orders</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="table-controls">
+<div class="search-wrap"><i class="fas fa-search"></i><input class="search-input" type="text" id="merchSearch" placeholder="Search by name, phone..." oninput="filterMerchTable()"/></div>
+<select class="filter-select" id="merchItemFilter" onchange="filterMerchTable()">
+<option value="">All Items</option>
+<option value="gele">Gele Only</option>
+<option value="cap">Cap Only</option>
+</select>
+<select class="filter-select" id="merchStatusFilter" onchange="filterMerchTable()">
+<option value="">All Status</option>
+<option value="paid">Paid</option>
+<option value="fulfilled">Fulfilled</option>
+</select>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div style="font-size:0.81rem;color:var(--sub)" id="merchCount"></div>
+<button class="btn-save" onclick="exportMerchCSV()" style="padding:7px 16px"><i class="fas fa-download"></i> Export CSV</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Item</th><th>Amount</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="merchTableBody"></tbody>
+</table>
+</div>
+</div>
 
-    <!-- BANNER ADS -->
-    <div class="page" id="page-banners">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-ad"></i></div> Banner Ads</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Manage banners shown on the voting site</div>
-      </div>
-      <div class="settings-grid">
-        <div class="settings-card">
-          <h3><i class="fas fa-arrow-up"></i> Top Banner</h3>
-          <div id="topBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
-          <input class="banner-url-input" type="text" id="topBannerUrl" placeholder="Paste image URL here..."/>
-          <div class="banner-btns"><button class="btn-save" onclick="saveBanner('top')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('top')"><i class="fas fa-trash"></i> Clear</button></div>
-        </div>
-        <div class="settings-card">
-          <h3><i class="fas fa-arrows-alt-v"></i> Mid Banner</h3>
-          <div id="midBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
-          <input class="banner-url-input" type="text" id="midBannerUrl" placeholder="Paste image URL here..."/>
-          <div class="banner-btns"><button class="btn-save" onclick="saveBanner('mid')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('mid')"><i class="fas fa-trash"></i> Clear</button></div>
-        </div>
-        <div class="settings-card">
-          <h3><i class="fas fa-arrow-down"></i> Bottom Banner</h3>
-          <div id="bottomBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
-          <input class="banner-url-input" type="text" id="bottomBannerUrl" placeholder="Paste image URL here..."/>
-          <div class="banner-btns"><button class="btn-save" onclick="saveBanner('bottom')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('bottom')"><i class="fas fa-trash"></i> Clear</button></div>
-        </div>
-      </div>
-    </div>
+<!-- BANNER ADS -->
+<div class="page" id="page-banners">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-purple"><i class="fas fa-ad"></i></div> Banner Ads</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Manage banners shown on the voting site</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="settings-grid">
+<div class="settings-card">
+<h3><i class="fas fa-arrow-up"></i> Top Banner</h3>
+<div id="topBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
+<input class="banner-url-input" type="text" id="topBannerUrl" placeholder="Paste image URL here..."/>
+<div class="banner-btns"><button class="btn-save" onclick="saveBanner('top')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('top')"><i class="fas fa-trash"></i> Clear</button></div>
+</div>
+<div class="settings-card">
+<h3><i class="fas fa-arrows-alt-v"></i> Mid Banner</h3>
+<div id="midBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
+<input class="banner-url-input" type="text" id="midBannerUrl" placeholder="Paste image URL here..."/>
+<div class="banner-btns"><button class="btn-save" onclick="saveBanner('mid')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('mid')"><i class="fas fa-trash"></i> Clear</button></div>
+</div>
+<div class="settings-card">
+<h3><i class="fas fa-arrow-down"></i> Bottom Banner</h3>
+<div id="bottomBannerPreview" class="banner-slot-admin"><i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i></div>
+<input class="banner-url-input" type="text" id="bottomBannerUrl" placeholder="Paste image URL here..."/>
+<div class="banner-btns"><button class="btn-save" onclick="saveBanner('bottom')"><i class="fas fa-save"></i> Save</button><button class="btn-danger" onclick="clearBanner('bottom')"><i class="fas fa-trash"></i> Clear</button></div>
+</div>
+</div>
+</div>
 
-    <!-- SETTINGS -->
-    <div class="page" id="page-settings">
-      <div class="page-header">
-        <div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-cog"></i></div> Settings</div>
-        <div class="page-sub"><i class="fas fa-info-circle"></i> Configure prices and event details</div>
-      </div>
-      <div class="settings-grid">
-        <div class="settings-card">
-          <h3><i class="fas fa-vote-yea"></i> Voting Prices</h3>
-          <div class="sf-group"><label>Base Vote Price (&#8358;)</label><input type="number" id="s_vote_base" placeholder="50"/></div>
-          <div class="sf-group"><label>Processing Fee Per Vote (&#8358;)</label><input type="number" id="s_vote_fee" placeholder="20"/></div>
-          <div class="sf-group"><label>Minimum Votes Per Purchase</label><input type="number" id="s_min_votes" placeholder="10"/></div>
-          <button class="btn-save" onclick="saveSettings('voting')"><i class="fas fa-save"></i> Save Voting Settings</button>
-        </div>
-        <div class="settings-card">
-          <h3><i class="fas fa-shopping-bag"></i> Merch Prices</h3>
-          <div class="sf-group"><label>Gele Price (&#8358;)</label><input type="number" id="s_gele_price" placeholder="5000"/></div>
-          <div class="sf-group"><label>Cap Price (&#8358;)</label><input type="number" id="s_cap_price" placeholder="3000"/></div>
-          <button class="btn-save" onclick="saveSettings('merch')"><i class="fas fa-save"></i> Save Merch Settings</button>
-        </div>
-        <div class="settings-card">
-          <h3><i class="fas fa-calendar-alt"></i> Event Info</h3>
-          <div class="sf-group"><label>Event Date</label><input type="text" id="s_event_date" placeholder="3rd July, 2026"/></div>
-          <div class="sf-group"><label>Event Time</label><input type="text" id="s_event_time" placeholder="12 Noon"/></div>
-          <div class="sf-group"><label>Venue</label><input type="text" id="s_event_venue" placeholder="To Be Announced"/></div>
-          <div class="sf-group"><label>Dress Code</label><input type="text" id="s_dress_code" placeholder="A Touch of White or Blue"/></div>
-          <button class="btn-save" onclick="saveSettings('event')"><i class="fas fa-save"></i> Save Event Settings</button>
-        </div>
-        <div class="settings-card">
-          <h3><i class="fas fa-exclamation-triangle" style="color:var(--red)"></i> Danger Zone</h3>
-          <p style="font-size:0.82rem;color:var(--sub);margin-bottom:14px">These actions are irreversible.</p>
-          <button class="btn-danger" onclick="confirmReset('votes')"><i class="fas fa-trash"></i> Reset All Votes</button>
-          <br/><br/>
-          <button class="btn-danger" onclick="confirmReset('merch')"><i class="fas fa-trash"></i> Clear Merch Orders</button>
-          <br/><br/>
-          <button class="btn-danger" onclick="confirmReset('pending')"><i class="fas fa-broom"></i> Clear Pending Records</button>
-        </div>
-      </div>
-    </div>
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+<div class="page-header">
+<div class="page-title"><div class="title-icon ti-blue"><i class="fas fa-cog"></i></div> Settings</div>
+<div class="page-sub"><i class="fas fa-info-circle"></i> Configure prices and event details</div>
+<button class="close-page-btn" onclick="showPage('overview', document.querySelector('.sidebar-nav .nav-item:nth-child(2)'))"><i class="fas fa-times"></i></button>
+</div>
+<div class="settings-grid">
+<div class="settings-card">
+<h3><i class="fas fa-vote-yea"></i> Voting Prices</h3>
+<div class="sf-group"><label>Base Vote Price (₦)</label><input type="number" id="s_vote_base" placeholder="50"/></div>
+<div class="sf-group"><label>Processing Fee Per Vote (₦)</label><input type="number" id="s_vote_fee" placeholder="20"/></div>
+<div class="sf-group"><label>Minimum Votes Per Purchase</label><input type="number" id="s_min_votes" placeholder="10"/></div>
+<button class="btn-save" onclick="saveSettings('voting')"><i class="fas fa-save"></i> Save Voting Settings</button>
+</div>
+<div class="settings-card">
+<h3><i class="fas fa-shopping-bag"></i> Merch Prices</h3>
+<div class="sf-group"><label>Gele Price (₦)</label><input type="number" id="s_gele_price" placeholder="5000"/></div>
+<div class="sf-group"><label>Cap Price (₦)</label><input type="number" id="s_cap_price" placeholder="3000"/></div>
+<button class="btn-save" onclick="saveSettings('merch')"><i class="fas fa-save"></i> Save Merch Settings</button>
+</div>
+<div class="settings-card">
+<h3><i class="fas fa-calendar-alt"></i> Event Info</h3>
+<div class="sf-group"><label>Event Date</label><input type="text" id="s_event_date" placeholder="3rd July, 2026"/></div>
+<div class="sf-group"><label>Event Time</label><input type="text" id="s_event_time" placeholder="12 Noon"/></div>
+<div class="sf-group"><label>Venue</label><input type="text" id="s_event_venue" placeholder="To Be Announced"/></div>
+<div class="sf-group"><label>Dress Code</label><input type="text" id="s_dress_code" placeholder="A Touch of White or Blue"/></div>
+<button class="btn-save" onclick="saveSettings('event')"><i class="fas fa-save"></i> Save Event Settings</button>
+</div>
+<div class="settings-card">
+<h3><i class="fas fa-exclamation-triangle" style="color:var(--red)"></i> Danger Zone</h3>
+<p style="font-size:0.82rem;color:var(--sub);margin-bottom:14px">These actions are irreversible.</p>
+<button class="btn-danger" onclick="confirmReset('votes')"><i class="fas fa-trash"></i> Reset All Votes</button>
+<br/><br/>
+<button class="btn-danger" onclick="confirmReset('merch')"><i class="fas fa-trash"></i> Clear Merch Orders</button>
+<br/><br/>
+<button class="btn-danger" onclick="confirmReset('pending')"><i class="fas fa-broom"></i> Clear Pending Records</button>
+</div>
+</div>
+</div>
 
-  </div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -507,7 +517,7 @@ tbody td{padding:10px 14px;color:var(--text);vertical-align:middle}
 // =============================================
 // HARDCODED CREDENTIALS — change password here
 // =============================================
-const ADMIN_EMAIL    = "ssohis@26.com";
+const ADMIN_EMAIL = "ssohis@26.com";
 const ADMIN_PASSWORD = "Ssohis26";
 
 // =============================================
@@ -521,26 +531,26 @@ const db=firebase.firestore();
 // LOGIN
 // =============================================
 function doLogin(){
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass  = document.getElementById('loginPassword').value;
-  const err   = document.getElementById('loginError');
-  err.style.display = 'none';
-  if(email !== ADMIN_EMAIL.toLowerCase() || pass !== ADMIN_PASSWORD){
-    err.textContent = 'Invalid email or password.';
-    err.style.display = 'block';
-    return;
-  }
-  sessionStorage.setItem('adminLoggedIn','true');
-  showDashboard();
+const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+const pass = document.getElementById('loginPassword').value;
+const err = document.getElementById('loginError');
+err.style.display = 'none';
+if(email !== ADMIN_EMAIL.toLowerCase() || pass !== ADMIN_PASSWORD){
+err.textContent = 'Invalid email or password.';
+err.style.display = 'block';
+return;
+}
+sessionStorage.setItem('adminLoggedIn','true');
+showDashboard();
 }
 function doLogout(){
-  sessionStorage.removeItem('adminLoggedIn');
-  location.reload();
+sessionStorage.removeItem('adminLoggedIn');
+location.reload();
 }
 function showDashboard(){
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('dashScreen').style.display='block';
-  initDashboard();
+document.getElementById('loginScreen').style.display='none';
+document.getElementById('dashScreen').style.display='block';
+initDashboard();
 }
 // Stay logged in on refresh
 if(sessionStorage.getItem('adminLoggedIn')==='true') showDashboard();
@@ -550,101 +560,101 @@ document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key
 // CATEGORIES
 // =============================================
 const CATEGORIES=[
-  {id:"finalist_male",name:"Finalist of the Year (Male)",icon:"fa-graduation-cap"},
-  {id:"finalist_female",name:"Finalist of the Year (Female)",icon:"fa-graduation-cap"},
-  {id:"fresher_male",name:"Fresher of the Year (Male)",icon:"fa-star"},
-  {id:"fresher_female",name:"Fresher of the Year (Female)",icon:"fa-star"},
-  {id:"executive",name:"Executive of the Year",icon:"fa-crown"},
-  {id:"parliamentarian",name:"Parliamentarian of the Year",icon:"fa-landmark"},
-  {id:"most_beautiful",name:"Most Beautiful Student",icon:"fa-gem"},
-  {id:"most_handsome",name:"Most Handsome Student",icon:"fa-male"},
-  {id:"expensive_fresher_male",name:"Most Expensive Fresher (Male)",icon:"fa-dollar-sign"},
-  {id:"expensive_fresher_female",name:"Most Expensive Fresher (Female)",icon:"fa-dollar-sign"},
-  {id:"expensive_staylite_male",name:"Most Expensive Staylite (Male)",icon:"fa-money-bill-wave"},
-  {id:"expensive_staylite_female",name:"Most Expensive Staylite (Female)",icon:"fa-money-bill-wave"},
-  {id:"most_luxurious",name:"Most Luxurious",icon:"fa-glass-martini-alt"},
-  {id:"creative_male",name:"Creative of the Year (Male)",icon:"fa-palette"},
-  {id:"creative_female",name:"Creative of the Year (Female)",icon:"fa-palette"},
-  {id:"best_dressed_fresher_male",name:"Best Dressed Fresher (Male)",icon:"fa-tshirt"},
-  {id:"best_dressed_fresher_female",name:"Best Dressed Fresher (Female)",icon:"fa-female"},
-  {id:"best_dressed_staylite_male",name:"Best Dressed Staylite (Male)",icon:"fa-male"},
-  {id:"best_dressed_staylite_female",name:"Best Dressed Staylite (Female)",icon:"fa-female"},
-  {id:"scholar_male",name:"Scholar of the Year (Male)",icon:"fa-book"},
-  {id:"scholar_female",name:"Scholar of the Year (Female)",icon:"fa-book"},
-  {id:"sportsperson_male",name:"Sportsperson of the Year (Male)",icon:"fa-futbol"},
-  {id:"sportsperson_female",name:"Sportsperson of the Year (Female)",icon:"fa-running"},
-  {id:"popular_fresher_male",name:"Most Popular Fresher (Male)",icon:"fa-fire"},
-  {id:"popular_fresher_female",name:"Most Popular Fresher (Female)",icon:"fa-fire"},
-  {id:"popular_staylite_male",name:"Most Popular Staylite (Male)",icon:"fa-users"},
-  {id:"popular_staylite_female",name:"Most Popular Staylite (Female)",icon:"fa-users"},
-  {id:"reserved_fresher_male",name:"Most Reserved Fresher (Male)",icon:"fa-user-secret"},
-  {id:"reserved_fresher_female",name:"Most Reserved Fresher (Female)",icon:"fa-user-secret"},
-  {id:"reserved_staylite_male",name:"Most Reserved Staylite (Male)",icon:"fa-user-ninja"},
-  {id:"reserved_staylite_female",name:"Most Reserved Staylite (Female)",icon:"fa-user-ninja"},
-  {id:"academia",name:"Academia of the Year",icon:"fa-university"},
-  {id:"best_friendship_duo",name:"Best Friendship Duo",icon:"fa-handshake"},
-  {id:"clique",name:"Clique of the Year",icon:"fa-users-cog"},
-  {id:"entrepreneur",name:"Entrepreneur of the Year",icon:"fa-rocket"},
-  {id:"content_creator",name:"Content Creator of the Year",icon:"fa-mobile-alt"},
-  {id:"socialite_male",name:"Socialite of the Year (Male)",icon:"fa-theater-masks"},
-  {id:"socialite_female",name:"Socialite of the Year (Female)",icon:"fa-theater-masks"},
-  {id:"political_icon",name:"Political Icon of the Year",icon:"fa-landmark"},
-  {id:"hoc",name:"HOC of the Year",icon:"fa-microphone"},
-  {id:"humanitarian",name:"Humanitarian of the Year",icon:"fa-heart"},
-  {id:"model",name:"Model of the Year",icon:"fa-star"},
-  {id:"brand",name:"Brand of the Year",icon:"fa-tag"},
-  {id:"artiste",name:"Artiste of the Year",icon:"fa-music"},
-  {id:"friend_dept",name:"Friend of the Department",icon:"fa-smile"},
-  {id:"alumnus",name:"Alumnus of the Year",icon:"fa-award"}
+{id:"finalist_male",name:"Finalist of the Year (Male)",icon:"fa-graduation-cap"},
+{id:"finalist_female",name:"Finalist of the Year (Female)",icon:"fa-graduation-cap"},
+{id:"fresher_male",name:"Fresher of the Year (Male)",icon:"fa-star"},
+{id:"fresher_female",name:"Fresher of the Year (Female)",icon:"fa-star"},
+{id:"executive",name:"Executive of the Year",icon:"fa-crown"},
+{id:"parliamentarian",name:"Parliamentarian of the Year",icon:"fa-landmark"},
+{id:"most_beautiful",name:"Most Beautiful Student",icon:"fa-gem"},
+{id:"most_handsome",name:"Most Handsome Student",icon:"fa-male"},
+{id:"expensive_fresher_male",name:"Most Expensive Fresher (Male)",icon:"fa-dollar-sign"},
+{id:"expensive_fresher_female",name:"Most Expensive Fresher (Female)",icon:"fa-dollar-sign"},
+{id:"expensive_staylite_male",name:"Most Expensive Staylite (Male)",icon:"fa-money-bill-wave"},
+{id:"expensive_staylite_female",name:"Most Expensive Staylite (Female)",icon:"fa-money-bill-wave"},
+{id:"most_luxurious",name:"Most Luxurious",icon:"fa-glass-martini-alt"},
+{id:"creative_male",name:"Creative of the Year (Male)",icon:"fa-palette"},
+{id:"creative_female",name:"Creative of the Year (Female)",icon:"fa-palette"},
+{id:"best_dressed_fresher_male",name:"Best Dressed Fresher (Male)",icon:"fa-tshirt"},
+{id:"best_dressed_fresher_female",name:"Best Dressed Fresher (Female)",icon:"fa-female"},
+{id:"best_dressed_staylite_male",name:"Best Dressed Staylite (Male)",icon:"fa-male"},
+{id:"best_dressed_staylite_female",name:"Best Dressed Staylite (Female)",icon:"fa-female"},
+{id:"scholar_male",name:"Scholar of the Year (Male)",icon:"fa-book"},
+{id:"scholar_female",name:"Scholar of the Year (Female)",icon:"fa-book"},
+{id:"sportsperson_male",name:"Sportsperson of the Year (Male)",icon:"fa-futbol"},
+{id:"sportsperson_female",name:"Sportsperson of the Year (Female)",icon:"fa-running"},
+{id:"popular_fresher_male",name:"Most Popular Fresher (Male)",icon:"fa-fire"},
+{id:"popular_fresher_female",name:"Most Popular Fresher (Female)",icon:"fa-fire"},
+{id:"popular_staylite_male",name:"Most Popular Staylite (Male)",icon:"fa-users"},
+{id:"popular_staylite_female",name:"Most Popular Staylite (Female)",icon:"fa-users"},
+{id:"reserved_fresher_male",name:"Most Reserved Fresher (Male)",icon:"fa-user-secret"},
+{id:"reserved_fresher_female",name:"Most Reserved Fresher (Female)",icon:"fa-user-secret"},
+{id:"reserved_staylite_male",name:"Most Reserved Staylite (Male)",icon:"fa-user-ninja"},
+{id:"reserved_staylite_female",name:"Most Reserved Staylite (Female)",icon:"fa-user-ninja"},
+{id:"academia",name:"Academia of the Year",icon:"fa-university"},
+{id:"best_friendship_duo",name:"Best Friendship Duo",icon:"fa-handshake"},
+{id:"clique",name:"Clique of the Year",icon:"fa-users-cog"},
+{id:"entrepreneur",name:"Entrepreneur of the Year",icon:"fa-rocket"},
+{id:"content_creator",name:"Content Creator of the Year",icon:"fa-mobile-alt"},
+{id:"socialite_male",name:"Socialite of the Year (Male)",icon:"fa-theater-masks"},
+{id:"socialite_female",name:"Socialite of the Year (Female)",icon:"fa-theater-masks"},
+{id:"political_icon",name:"Political Icon of the Year",icon:"fa-landmark"},
+{id:"hoc",name:"HOC of the Year",icon:"fa-microphone"},
+{id:"humanitarian",name:"Humanitarian of the Year",icon:"fa-heart"},
+{id:"model",name:"Model of the Year",icon:"fa-star"},
+{id:"brand",name:"Brand of the Year",icon:"fa-tag"},
+{id:"artiste",name:"Artiste of the Year",icon:"fa-music"},
+{id:"friend_dept",name:"Friend of the Department",icon:"fa-smile"},
+{id:"alumnus",name:"Alumnus of the Year",icon:"fa-award"}
 ];
 
 const DEFAULT_NOMINEES={
-  "finalist_male":["Josh","Abims","Jasper","Prince","Joel","Yaasar Sanni","King Myde","Kelvin","Beebah","Rc"],
-  "finalist_female":["Mayowa","Tems","Wuraola","Abims","Oreoluwa Ibeyemi","Onaboye Oluwabukola","Tope","Okoye Onyinye","Moyo","Ibrahim Omolade Nazaah","Harabella","Nifemi","Jehral","Chinasa","Haliyah Adeola","Esther Nwosu","Aisha","Afolakemi Awotunya","Omotoyosi"],
-  "fresher_male":["Theo","Oluwatunmise","Lil Daana","Tobi","Mayahna","Tunmishe Ilariogun","Samdan","Mayanah","Duke","Toby","Mcceleb","Tobi Ogunmefun","Mayor","Loyal","Elijah","David"],
-  "fresher_female":["Princess Tee","Kenz","Joan","Mayowa","Fiyin Esther","Leader Janet","Moyin","Thatgalbuki","Shindara Lawal","Nini","Abims","Claires Hairssence","Rejoice","Tolani","Mhidey4Short","Mayowa.","Ruqoyah","Rachel","Major","Mayowa Ogunmefun"],
-  "executive":["Bami","Jasper","Way Vee","Boi Bliss","Marvelous","Olalekan","Toluwanimi","Mujeeb","Emmanuel","Oluwa Gold"],
-  "parliamentarian":["Omotoyosi","Nifemi","Afolakemi","Benjamin","Lia","Esther","Tabitha"],
-  "most_beautiful":["Kossi Stella","Mayor","Pretty Precious","Mayowa","Precious","Oreo","Mercy","Naomi","Tomilola","Adeola","Deborah Korede","Omezie Precious","Sewa","Anjola Rowlands","Princess Tee","Omolade Nazaah","Thatgalbuki","Zainab Odetokun","Boluwatife Ogunbiyi","Akande Aliyah","Elegbe Annabel","Abims","Abimbola","Adeshewa","Kolawole Roqeebah","Esther Nwosu","Nimi"],
-  "most_handsome":["Hamzat","Maguire","Deo","Toby","Mide","Oluwatunmise","Ogunsina Olamide","John","Paul","Oshin","Khummy","Kamal Okikola"],
-  "expensive_fresher_male":["Mcceleb","Ari","Mayanah","Johnpaul","Beebah","David","Tunmishe Ilariogun","Tomiwa","That'S Dada","Oluwatunmise"],
-  "expensive_fresher_female":["Mayor","Princess Tee","Fiyin Esther","Precious","Tiana","Mayowa","Mhidey4Short","Adeola","Harrison Zion","Abims","Claires Hairssence"],
-  "expensive_staylite_male":["Maguire","Bami","Oladimeji Towobola","Acelord","Ayomide","Pedro","Mayor","Omoluabi","Edward","Toby Benz","Wayvee","David","Tact","Lequex","Ogunsina Olamide"],
-  "expensive_staylite_female":["Adeshewa","Abims","Naomi Elufiede","Adeola","Sylvia","Olajumoke Oluwalayomi","Elegbe Annabel","Aliyah","Wuraola","Mayowa","Deborah Korede","Tola","Mayor","Nelly","Esther Nwosu","Adesewa","Claires Hairssence"],
-  "most_luxurious":["Tact","Acelord","Hendrix","Lequex","Jerry K","Toby Benz","Pedro","Zamani","Nifemi Shelle"],
-  "creative_male":["Damip Concept","Way Vee","Yocee","Ore","Oluwatunmise","Quadri","Gerald Tialobi","Sanni Yaasar","Danny Boy","Oj","Daranjr","Cbbs","Mayor","Nefemisway","Mardon","James"],
-  "creative_female":["Thatgalbuki","Abimbola","Katherine Ajulo","Elegbe Annabel","Harrison Zion","Emmanuel Mercy","Janet","Leader Janet","Mayowa","Mayor","Esther Nwosu","Teniola Silver","Big Reedah","Dj Perry"],
-  "best_dressed_fresher_male":["Theo","Tomiwa","Mcceleb","David","Mayor","Noble","Tunmishe Ilariogun","Mayanah","Ogunsina Olamide"],
-  "best_dressed_fresher_female":["Niffy Luxury","Mayor","Princess Tee","Fiyin Esther","Abims","Bukola","Precious","Mayowa","Dammy"],
-  "best_dressed_staylite_male":["Mide","Bami","Nathaniel David","Kamaldeen Kayode","Posi","Mardon","Acelord","Ogunsina Olamide","Tr6Kt","Maguire"],
-  "best_dressed_staylite_female":["Elegbe Annabelle","Ojigbani Precious","Sewa","Aliyah","Sylvia","Zainab Odetokun","Adeola","Olajumoke Virtous","Oyinkansola","Wuraola","Adeshewa","Mayowa","Mayor","Abigael"],
-  "scholar_male":["Alabi Emmanuel","Stixx","Deo","Ems","Joel Asamideri","Jones Joel Olamide","Ogunsina Olamide","Daranjr","Fahd","Eniola Success","Azubike"],
-  "scholar_female":["Nwosu Esther","Tabitha","Oreo","Ireoluwa","Naomi Elufiede","Emmanuel Mercy","Akande Aliyah","Elegbe Annabel","Princess Tee","Tammy","Adeola","Precious Rotimi","Scholar Moral","Sarah"],
-  "sportsperson_male":["Olalekan","Emmanuel Chinemerem","Mujeeb","Elufowoju Jnr","Dollfin","Hundeyin David","Nifemi","Emma","Mayor","Temi","Divine","Mide","Roman David","Abiodun","Qudus"],
-  "sportsperson_female":["Moyin","Kayo","Derin","Mayor","Mayowa","Rejoice","Yetunde","Lydia Ogabi","Lucky Miracle","Abims"],
-  "popular_fresher_male":["Mayanah","Theo","Kenz","Mc celeb","Daana","Mcceleb","Lil Daana","Morgan","Tunmishe Ilariogun"],
-  "popular_fresher_female":["Princess Tee","Leader Janet","Kenz","Joan","Thatgalbuki","Emmanuel Mercy","Akande Aliyah","Ruqoyah","Abimbola","Bola Janet","Mhidey4Short","Mayowa","Claires Hairssence"],
-  "popular_staylite_male":["Bami","Hamzat","Josh","King Myde","Abib","BelieverofLasu","Elufowoju Jnr","Fahd","That'S Dada","Jeffery","Nathaniel David"],
-  "popular_staylite_female":["Tomilola","Awotunya Afolakemi","Emmanuel Mercy","Kanyin","Mide","Aneefah","Abims","Nwosu Esther","Toluwanimi","Adelowo Sofia","Kayo","Lawal Moyosore","Aliyah","Wuraola","Mayor","Faith Eniolanimi"],
-  "reserved_fresher_male":["Tomiwa","Ope","John Similoluwa","Mayor","Tunmishe Ilariogun"],
-  "reserved_fresher_female":["Mayor","Eniolanimi","Ruqoyah","Omolade","Precious Rotimi","Princess Tee","Lisa Oma","Abims","Claires Hairssence"],
-  "reserved_staylite_male":["Hamzat","Abib","Jasper","Dj Perry","Omolade","Mayor","Seun (Ink District)","Ogunsina Olamide","Yocee","Lekan Muller","Oladimeji Towobola","Maguire"],
-  "reserved_staylite_female":["Omolade","Marvelous","Emmanuel Mercy","Chidera","Sewa","Similoluwa John","Naomi Elufiede","Mercy Emmanuel","Abims","Victoria","Abisola Mayungbe","Tofunmi","Mercy","Aisha","Eshemokhai Marvelous","John Similoluwa"],
-  "academia":["Nwosu Esther","Stixx","Alabi Emmanuel","Quadri","Tammy","Ems","Fahad Abdulazeez","Ogunsina Olamide"],
-  "best_friendship_duo":["Daniel And Racheal","Oreo And Deo","Nancy And Precious","Negro And Racheal","Juhoon Oppa And Martin Senpai.","Bolaji Sauban And Faisol","Kate And Teekay","Me And Mine","Bola, Maryam, Sister Dammy","Abigael And Halemah"],
-  "clique":["The Girls","Junior'S Clique","The Big 4","No One Is Better Than The Originals","S.T.T (Sarah,Mayowa And Joshua)","Abimbola, Rejoice, Wura, Adeola","The Boys","7 Strong Mind One Motion","Bois Dem","Young And Motive Inclined"],
-  "entrepreneur":["Bukkylash Aesthetics","Eats By Ann","Mee Nar Glam","Crunchella","Ann","Ay Chops","Bams Fragrance","Ogunsina Olamide","Happi Artistry","Chow naw","Leo Gadgets and Autos","Stitches By Josephine","Yeesha","Foot By Dave","Chops bistro","Claires Hairssence","Sugar Cove"],
-  "content_creator":["Thatgalbuki","Teniola Silver","Victoria","Precious","Yocee","Ojibani Precious","Legal Dalu","Danny Boy","Lngshot","Ore","Danny Young","Teniola Bamidele John","Katherine Ajulo","Morgan"],
-  "socialite_male":["Hamzat","Way Vee","Bami","King Myde","Temi","Mayanah","Riyah","Yocee","James"],
-  "socialite_female":["Mayor","Dorcas","Aliyah","Ogunsina Olamide","Thatgalbuki","Bukola","Nini","Ria","Myde4short","Abims"],
-  "political_icon":["Bami","Jasper","Nifemi","Boi Bliss","Marvelous","Quadri","Big Josh","Omotoyosi","Toluwani"],
-  "hoc":["Mcceleb","Toluwanimi","Bami","Ore"],
-  "humanitarian":["Comrade Josh","Boi Bliss","Bami","Adegboye Abimbola","Esther Nwosu","Ogunsina Olamide","Junior","Mayor"],
-  "model":["Mercy","Tomiwa","Hundeyin David","Adeola","Abims","Bukola","Inu","Ruby","Eunice","Ogunsina Olamide","Oyinkansola","Teniola Silver","Mercy Okojie","Mayor","Tife"],
-  "brand":["Claires Hairssence","Eats By Ann","Bams Fragrance","Kroma Painting","Stitches By Josephine","Chow naw","Ay Chops","Abike Olowosibi","Chef Presh Cakes And Food","Happi Artistry","De Royale Hub","Mee Nar Glam","Foodies Deck","Chops Bistro"],
-  "artiste":["Daranjr","Kenz","Rhythm Bhoi","Nefeme Sway","Lazer","Riyah","Big Reedah","Xstecy","Blarkio","Watzdot"],
-  "friend_dept":["Mublex","Softboy Adeola","Abigael","Shakiru","Shaz"],
-  "alumnus":["Comr. Zeenah","Comr. Olaezekiel","Mr Seun SUG","DMF","Justice","Jhayne Zoey","Scholar Coker","Scholar Hex","Temitope Martins"]
+"finalist_male":["Josh","Abims","Jasper","Prince","Joel","Yaasar Sanni","King Myde","Kelvin","Beebah","Rc"],
+"finalist_female":["Mayowa","Tems","Wuraola","Abims","Oreoluwa Ibeyemi","Onaboye Oluwabukola","Tope","Okoye Onyinye","Moyo","Ibrahim Omolade Nazaah","Harabella","Nifemi","Jehral","Chinasa","Haliyah Adeola","Esther Nwosu","Aisha","Afolakemi Awotunya","Omotoyosi"],
+"fresher_male":["Theo","Oluwatunmise","Lil Daana","Tobi","Mayahna","Tunmishe Ilariogun","Samdan","Mayanah","Duke","Toby","Mcceleb","Tobi Ogunmefun","Mayor","Loyal","Elijah","David"],
+"fresher_female":["Princess Tee","Kenz","Joan","Mayowa","Fiyin Esther","Leader Janet","Moyin","Thatgalbuki","Shindara Lawal","Nini","Abims","Claires Hairssence","Rejoice","Tolani","Mhidey4Short","Mayowa.","Ruqoyah","Rachel","Major","Mayowa Ogunmefun"],
+"executive":["Bami","Jasper","Way Vee","Boi Bliss","Marvelous","Olalekan","Toluwanimi","Mujeeb","Emmanuel","Oluwa Gold"],
+"parliamentarian":["Omotoyosi","Nifemi","Afolakemi","Benjamin","Lia","Esther","Tabitha"],
+"most_beautiful":["Kossi Stella","Mayor","Pretty Precious","Mayowa","Precious","Oreo","Mercy","Naomi","Tomilola","Adeola","Deborah Korede","Omezie Precious","Sewa","Anjola Rowlands","Princess Tee","Omolade Nazaah","Thatgalbuki","Zainab Odetokun","Boluwatife Ogunbiyi","Akande Aliyah","Elegbe Annabel","Abims","Abimbola","Adeshewa","Kolawole Roqeebah","Esther Nwosu","Nimi"],
+"most_handsome":["Hamzat","Maguire","Deo","Toby","Mide","Oluwatunmise","Ogunsina Olamide","John","Paul","Oshin","Khummy","Kamal Okikola"],
+"expensive_fresher_male":["Mcceleb","Ari","Mayanah","Johnpaul","Beebah","David","Tunmishe Ilariogun","Tomiwa","That'S Dada","Oluwatunmise"],
+"expensive_fresher_female":["Mayor","Princess Tee","Fiyin Esther","Precious","Tiana","Mayowa","Mhidey4Short","Adeola","Harrison Zion","Abims","Claires Hairssence"],
+"expensive_staylite_male":["Maguire","Bami","Oladimeji Towobola","Acelord","Ayomide","Pedro","Mayor","Omoluabi","Edward","Toby Benz","Wayvee","David","Tact","Lequex","Ogunsina Olamide"],
+"expensive_staylite_female":["Adeshewa","Abims","Naomi Elufiede","Adeola","Sylvia","Olajumoke Oluwalayomi","Elegbe Annabel","Aliyah","Wuraola","Mayowa","Deborah Korede","Tola","Mayor","Nelly","Esther Nwosu","Adesewa","Claires Hairssence"],
+"most_luxurious":["Tact","Acelord","Hendrix","Lequex","Jerry K","Toby Benz","Pedro","Zamani","Nifemi Shelle"],
+"creative_male":["Damip Concept","Way Vee","Yocee","Ore","Oluwatunmise","Quadri","Gerald Tialobi","Sanni Yaasar","Danny Boy","Oj","Daranjr","Cbbs","Mayor","Nefemisway","Mardon","James"],
+"creative_female":["Thatgalbuki","Abimbola","Katherine Ajulo","Elegbe Annabel","Harrison Zion","Emmanuel Mercy","Janet","Leader Janet","Mayowa","Mayor","Esther Nwosu","Teniola Silver","Big Reedah","Dj Perry"],
+"best_dressed_fresher_male":["Theo","Tomiwa","Mcceleb","David","Mayor","Noble","Tunmishe Ilariogun","Mayanah","Ogunsina Olamide"],
+"best_dressed_fresher_female":["Niffy Luxury","Mayor","Princess Tee","Fiyin Esther","Abims","Bukola","Precious","Mayowa","Dammy"],
+"best_dressed_staylite_male":["Mide","Bami","Nathaniel David","Kamaldeen Kayode","Posi","Mardon","Acelord","Ogunsina Olamide","Tr6Kt","Maguire"],
+"best_dressed_staylite_female":["Elegbe Annabelle","Ojigbani Precious","Sewa","Aliyah","Sylvia","Zainab Odetokun","Adeola","Olajumoke Virtous","Oyinkansola","Wuraola","Adeshewa","Mayowa","Mayor","Abigael"],
+"scholar_male":["Alabi Emmanuel","Stixx","Deo","Ems","Joel Asamideri","Jones Joel Olamide","Ogunsina Olamide","Daranjr","Fahd","Eniola Success","Azubike"],
+"scholar_female":["Nwosu Esther","Tabitha","Oreo","Ireoluwa","Naomi Elufiede","Emmanuel Mercy","Akande Aliyah","Elegbe Annabel","Princess Tee","Tammy","Adeola","Precious Rotimi","Scholar Moral","Sarah"],
+"sportsperson_male":["Olalekan","Emmanuel Chinemerem","Mujeeb","Elufowoju Jnr","Dollfin","Hundeyin David","Nifemi","Emma","Mayor","Temi","Divine","Mide","Roman David","Abiodun","Qudus"],
+"sportsperson_female":["Moyin","Kayo","Derin","Mayor","Mayowa","Rejoice","Yetunde","Lydia Ogabi","Lucky Miracle","Abims"],
+"popular_fresher_male":["Mayanah","Theo","Kenz","Mc celeb","Daana","Mcceleb","Lil Daana","Morgan","Tunmishe Ilariogun"],
+"popular_fresher_female":["Princess Tee","Leader Janet","Kenz","Joan","Thatgalbuki","Emmanuel Mercy","Akande Aliyah","Ruqoyah","Abimbola","Bola Janet","Mhidey4Short","Mayowa","Claires Hairssence"],
+"popular_staylite_male":["Bami","Hamzat","Josh","King Myde","Abib","BelieverofLasu","Elufowoju Jnr","Fahd","That'S Dada","Jeffery","Nathaniel David"],
+"popular_staylite_female":["Tomilola","Awotunya Afolakemi","Emmanuel Mercy","Kanyin","Mide","Aneefah","Abims","Nwosu Esther","Toluwanimi","Adelowo Sofia","Kayo","Lawal Moyosore","Aliyah","Wuraola","Mayor","Faith Eniolanimi"],
+"reserved_fresher_male":["Tomiwa","Ope","John Similoluwa","Mayor","Tunmishe Ilariogun"],
+"reserved_fresher_female":["Mayor","Eniolanimi","Ruqoyah","Omolade","Precious Rotimi","Princess Tee","Lisa Oma","Abims","Claires Hairssence"],
+"reserved_staylite_male":["Hamzat","Abib","Jasper","Dj Perry","Omolade","Mayor","Seun (Ink District)","Ogunsina Olamide","Yocee","Lekan Muller","Oladimeji Towobola","Maguire"],
+"reserved_staylite_female":["Omolade","Marvelous","Emmanuel Mercy","Chidera","Sewa","Similoluwa John","Naomi Elufiede","Mercy Emmanuel","Abims","Victoria","Abisola Mayungbe","Tofunmi","Mercy","Aisha","Eshemokhai Marvelous","John Similoluwa"],
+"academia":["Nwosu Esther","Stixx","Alabi Emmanuel","Quadri","Tammy","Ems","Fahad Abdulazeez","Ogunsina Olamide"],
+"best_friendship_duo":["Daniel And Racheal","Oreo And Deo","Nancy And Precious","Negro And Racheal","Juhoon Oppa And Martin Senpai.","Bolaji Sauban And Faisol","Kate And Teekay","Me And Mine","Bola, Maryam, Sister Dammy","Abigael And Halemah"],
+"clique":["The Girls","Junior'S Clique","The Big 4","No One Is Better Than The Originals","S.T.T (Sarah,Mayowa And Joshua)","Abimbola, Rejoice, Wura, Adeola","The Boys","7 Strong Mind One Motion","Bois Dem","Young And Motive Inclined"],
+"entrepreneur":["Bukkylash Aesthetics","Eats By Ann","Mee Nar Glam","Crunchella","Ann","Ay Chops","Bams Fragrance","Ogunsina Olamide","Happi Artistry","Chow naw","Leo Gadgets and Autos","Stitches By Josephine","Yeesha","Foot By Dave","Chops bistro","Claires Hairssence","Sugar Cove"],
+"content_creator":["Thatgalbuki","Teniola Silver","Victoria","Precious","Yocee","Ojibani Precious","Legal Dalu","Danny Boy","Lngshot","Ore","Danny Young","Teniola Bamidele John","Katherine Ajulo","Morgan"],
+"socialite_male":["Hamzat","Way Vee","Bami","King Myde","Temi","Mayanah","Riyah","Yocee","James"],
+"socialite_female":["Mayor","Dorcas","Aliyah","Ogunsina Olamide","Thatgalbuki","Bukola","Nini","Ria","Myde4short","Abims"],
+"political_icon":["Bami","Jasper","Nifemi","Boi Bliss","Marvelous","Quadri","Big Josh","Omotoyosi","Toluwani"],
+"hoc":["Mcceleb","Toluwanimi","Bami","Ore"],
+"humanitarian":["Comrade Josh","Boi Bliss","Bami","Adegboye Abimbola","Esther Nwosu","Ogunsina Olamide","Junior","Mayor"],
+"model":["Mercy","Tomiwa","Hundeyin David","Adeola","Abims","Bukola","Inu","Ruby","Eunice","Ogunsina Olamide","Oyinkansola","Teniola Silver","Mercy Okojie","Mayor","Tife"],
+"brand":["Claires Hairssence","Eats By Ann","Bams Fragrance","Kroma Painting","Stitches By Josephine","Chow naw","Ay Chops","Abike Olowosibi","Chef Presh Cakes And Food","Happi Artistry","De Royale Hub","Mee Nar Glam","Foodies Deck","Chops Bistro"],
+"artiste":["Daranjr","Kenz","Rhythm Bhoi","Nefeme Sway","Lazer","Riyah","Big Reedah","Xstecy","Blarkio","Watzdot"],
+"friend_dept":["Mublex","Softboy Adeola","Abigael","Shakiru","Shaz"],
+"alumnus":["Comr. Zeenah","Comr. Olaezekiel","Mr Seun SUG","DMF","Justice","Jhayne Zoey","Scholar Coker","Scholar Hex","Temitope Martins"]
 };
 
 // =============================================
@@ -661,22 +671,22 @@ let chartInstances={};
 // INIT
 // =============================================
 function initDashboard(){
-  loadNomineesFromDB();
-  loadAllData();
-  loadPendingPayments();
-  loadSettings();
-  loadBannersAdmin();
-  populateCatFilter();
-  populateNomCatSelect();
+loadNomineesFromDB();
+loadAllData();
+loadPendingPayments();
+loadSettings();
+loadBannersAdmin();
+populateCatFilter();
+populateNomCatSelect();
 }
 
 function showPage(name,navEl){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  if(navEl) navEl.classList.add('active');
-  if(window.innerWidth<=768) document.getElementById('sidebar').classList.remove('open');
-  if(name==='analytics') setTimeout(renderCharts,100);
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+document.getElementById('page-'+name).classList.add('active');
+if(navEl) navEl.classList.add('active');
+if(window.innerWidth<=768) document.getElementById('sidebar').classList.remove('open');
+if(name==='analytics') setTimeout(renderCharts,100);
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
 
@@ -684,181 +694,129 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 // DATA
 // =============================================
 function loadAllData(){
-  db.collection('votes').orderBy('timestamp','desc').onSnapshot(snap=>{
-    allVotes=[];liveVoteCounts={};
-    snap.forEach(doc=>{const d={id:doc.id,...doc.data()};allVotes.push(d);const key=`${d.categoryId}::${d.nominee}`;liveVoteCounts[key]=(liveVoteCounts[key]||0)+(d.votes||0);});
-    updateOverview();renderRecentTx();renderTopNominees();renderTxTable();renderCatAnalytics();renderCharts();
-  });
-  db.collection('merch_orders').orderBy('timestamp','desc').onSnapshot(snap=>{
-    allMerch=[];
-    snap.forEach(doc=>allMerch.push({id:doc.id,...doc.data()}));
-    updateOverview();renderMerchTable();renderCharts();
-  });
+db.collection('votes').orderBy('timestamp','desc').onSnapshot(snap=>{
+allVotes=[];liveVoteCounts={};
+snap.forEach(doc=>{const d={id:doc.id,...doc.data()};allVotes.push(d);const key=`${d.categoryId}::${d.nominee}`;liveVoteCounts[key]=(liveVoteCounts[key]||0)+(d.votes||0);});
+updateOverview();renderRecentTx();renderTopNominees();renderTxTable();renderCatAnalytics();renderCharts();
+});
+db.collection('merch_orders').orderBy('timestamp','desc').onSnapshot(snap=>{
+allMerch=[];
+snap.forEach(doc=>allMerch.push({id:doc.id,...doc.data()}));
+updateOverview();renderMerchTable();renderCharts();
+});
 }
 
 function loadPendingPayments(){
-  db.collection('pending_payments').orderBy('savedAt','desc').onSnapshot(snap=>{
-    allPendingVotes=[];allPendingMerch=[];
-    snap.forEach(doc=>{const d={id:doc.id,...doc.data()};if(d.type==='merch') allPendingMerch.push(d);else allPendingVotes.push(d);});
-    updatePendingBadges();renderPendingVotes();renderPendingMerch();updateOverviewPendingAlert();
-  });
+db.collection('pending_payments').orderBy('savedAt','desc').onSnapshot(snap=>{
+allPendingVotes=[];allPendingMerch=[];
+snap.forEach(doc=>{const d={id:doc.id,...doc.data()};if(d.type==='merch') allPendingMerch.push(d);else allPendingVotes.push(d);});
+updatePendingBadges();renderPendingVotes();renderPendingMerch();updateOverviewPendingAlert();
+});
 }
 
 function updatePendingBadges(){
-  const total=allPendingVotes.length+allPendingMerch.length;
-  const pill=document.getElementById('sidebarPendingCount');
-  if(pill){pill.textContent=total;pill.style.display=total>0?'inline-block':'none';}
-  document.getElementById('pendingVoteCountPill').textContent=allPendingVotes.length;
-  document.getElementById('pendingMerchCountPill').textContent=allPendingMerch.length;
+const total=allPendingVotes.length+allPendingMerch.length;
+const pill=document.getElementById('sidebarPendingCount');
+if(pill){pill.textContent=total;pill.style.display=total>0?'inline-block':'none';}
+document.getElementById('pendingVoteCountPill').textContent=allPendingVotes.length;
+document.getElementById('pendingMerchCountPill').textContent=allPendingMerch.length;
 }
 
 function updateOverviewPendingAlert(){
-  const total=allPendingVotes.length+allPendingMerch.length;
-  const el=document.getElementById('pendingAlertOverview');
-  if(!el) return;
-  if(total>0){
-    el.style.display='flex';
-    document.getElementById('pendingAlertText').textContent=`${allPendingVotes.length} pending vote payment${allPendingVotes.length!==1?'s':''} and ${allPendingMerch.length} pending merch order${allPendingMerch.length!==1?'s':''} need verification.`;
-  } else el.style.display='none';
+const total=allPendingVotes.length+allPendingMerch.length;
+const el=document.getElementById('pendingAlertOverview');
+if(!el) return;
+if(total>0){
+el.style.display='flex';
+document.getElementById('pendingAlertText').textContent=`${allPendingVotes.length} pending vote payment${allPendingVotes.length!==1?'s':''} and ${allPendingMerch.length} pending merch order${allPendingMerch.length!==1?'s':''} need verification.`;
+} else el.style.display='none';
 }
 
 // =============================================
 // PENDING RENDERS
 // =============================================
 function renderPendingVotes(){
-  const el=document.getElementById('pendingVotesList');
-  if(!el) return;
-  if(allPendingVotes.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending vote payments</div></div>';return;}
-  el.innerHTML=`<div class="pending-table-wrap"><table><thead><tr><th>Received</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Tx Ref</th><th>Action</th></tr></thead><tbody>
-  ${allPendingVotes.map(p=>`<tr class="pending-item-row">
-    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
-    <td><strong>${p.voterName||p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.voterEmail||p.email||''}</span></td>
-    <td style="font-size:0.78rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.categoryName||'-'}</td>
-    <td><strong>${p.nominee||'-'}</strong></td>
-    <td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${p.votes||0}</span></td>
-    <td><strong>&#8358;${(p.amount||0).toLocaleString()}</strong></td>
-    <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
-    <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingVote('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td>
-  </tr>`).join('')}</tbody></table></div>`;
+const el=document.getElementById('pendingVotesList');
+if(!el) return;
+if(allPendingVotes.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending vote payments</div></div>';return;}
+el.innerHTML=`<div class="pending-table-wrap"><table><thead><tr><th>Received</th><th>Voter</th><th>Category</th><th>Nominee</th><th>Votes</th><th>Amount</th><th>Tx Ref</th><th>Action</th></tr></thead><tbody> ${allPendingVotes.map(p=>`<tr class="pending-item-row"> <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td><td><strong>${p.voterName||p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.voterEmail||p.email||''}</span></td><td style="font-size:0.78rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.categoryName||'-'}</td><td>${p.nominee||'-'}</td><td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${p.votes||0}</span></td> <td><strong>₦${(p.amount||0).toLocaleString()}</strong></td><td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td> <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingVote('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td> </tr>`).join('')}</tbody></table></div>`;
 }
 
 function renderPendingMerch(){
-  const el=document.getElementById('pendingMerchList');
-  if(!el) return;
-  if(allPendingMerch.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending merch orders</div></div>';return;}
-  el.innerHTML=`<div class="pending-table-wrap" style="border-color:#fed7aa"><table><thead><tr>
-    <th style="background:#78350f">Received</th><th style="background:#78350f">Customer</th><th style="background:#78350f">Item</th><th style="background:#78350f">Amount</th><th style="background:#78350f">Phone</th><th style="background:#78350f">Tx Ref</th><th style="background:#78350f">Action</th>
-  </tr></thead><tbody>
-  ${allPendingMerch.map(p=>`<tr class="pending-item-row" style="background:#fff7ed">
-    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td>
-    <td><strong>${p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.email||''}</span></td>
-    <td><span class="badge badge-gold"><i class="fas ${p.item==='gele'?'fa-hat-wizard':'fa-hat-cowboy'}"></i> ${p.item==='gele'?'Gele':'Cap'}</span></td>
-    <td><strong>&#8358;${(p.amount||0).toLocaleString()}</strong></td>
-    <td>${p.phone||'-'}</td>
-    <td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td>
-    <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingMerch('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td>
-  </tr>`).join('')}</tbody></table></div>`;
+const el=document.getElementById('pendingMerchList');
+if(!el) return;
+if(allPendingMerch.length===0){el.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;color:#15803d"><i class="fas fa-check-circle" style="font-size:1.3rem"></i><div style="margin-top:6px;font-weight:600">All clear — no pending merch orders</div></div>';return;}
+el.innerHTML=`<div class="pending-table-wrap" style="border-color:#fed7aa"><table><thead><tr> <th style="background:#78350f">Received</th><th style="background:#78350f">Customer</th><th style="background:#78350f">Item</th><th style="background:#78350f">Amount</th><th style="background:#78350f">Phone</th><th style="background:#78350f">Tx Ref</th><th style="background:#78350f">Action</th> </tr></thead><tbody>${allPendingMerch.map(p=>`<tr class="pending-item-row" style="background:#fff7ed"> <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(p.savedAt)}</td><td><strong>${p.name||'-'}</strong><br/><span style="font-size:0.73rem;color:var(--sub)">${p.email||''}</span></td><td><span class="badge badge-gold"><i class="fas ${p.item==='gele'?'fa-hat-wizard':'fa-hat-cowboy'}"></i> ${p.item==='gele'?'Gele':'Cap'}</span></td><td><strong>₦${(p.amount||0).toLocaleString()}</strong></td> <td>${p.phone||'-'}</td><td style="font-size:0.72rem;color:var(--sub);font-family:monospace">${(p.txRef||'').slice(-14)}</td> <td style="white-space:nowrap"><button class="btn-approve" onclick="approvePendingMerch('${p.id}')"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" onclick="rejectPending('${p.id}')"><i class="fas fa-times"></i> Reject</button></td> </tr>`).join('')}</tbody></table></div>`;
 }
 
 async function approvePendingVote(docId){
-  const p=allPendingVotes.find(x=>x.id===docId);if(!p) return;
-  if(!confirm(`Approve ${p.votes} votes for "${p.nominee}"?\nRef: ${p.txRef}\nAmount: \u20a6${(p.amount||0).toLocaleString()}`)) return;
-  try{
-    await db.collection('votes').add({txRef:p.txRef,voterName:p.voterName||p.name,voterEmail:p.voterEmail||p.email,categoryId:p.categoryId,categoryName:p.categoryName,nominee:p.nominee,votes:p.votes,amount:p.amount,voteFee:(p.votes||0)*20,baseRevenue:(p.votes||0)*50,type:'vote',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
-    await db.collection('pending_payments').doc(docId).delete();
-    showToast('<i class="fas fa-check-circle"></i> Vote approved & credited!');
-  }catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
+const p=allPendingVotes.find(x=>x.id===docId);if(!p) return;
+if(!confirm(`Approve ${p.votes} votes for "${p.nominee}"?\nRef: ${p.txRef}\nAmount: ₦${(p.amount||0).toLocaleString()}`)) return;
+try{
+await db.collection('votes').add({txRef:p.txRef,voterName:p.voterName||p.name,voterEmail:p.voterEmail||p.email,categoryId:p.categoryId,categoryName:p.categoryName,nominee:p.nominee,votes:p.votes,amount:p.amount,voteFee:(p.votes||0)*20,baseRevenue:(p.votes||0)*50,type:'vote',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+await db.collection('pending_payments').doc(docId).delete();
+showToast('<i class="fas fa-check-circle"></i> Vote approved & credited!');
+}catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
 }
 
 async function approvePendingMerch(docId){
-  const p=allPendingMerch.find(x=>x.id===docId);if(!p) return;
-  if(!confirm(`Approve ${p.item} order for ${p.name}?\nRef: ${p.txRef}\nAmount: \u20a6${(p.amount||0).toLocaleString()}`)) return;
-  try{
-    await db.collection('merch_orders').add({txRef:p.txRef,name:p.name,email:p.email,phone:p.phone,address:p.address||'',item:p.item,price:p.amount,status:'paid',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
-    await db.collection('pending_payments').doc(docId).delete();
-    showToast('<i class="fas fa-check-circle"></i> Merch order approved!');
-  }catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
+const p=allPendingMerch.find(x=>x.id===docId);if(!p) return;
+if(!confirm(`Approve ${p.item} order for ${p.name}?\nRef: ${p.txRef}\nAmount: ₦${(p.amount||0).toLocaleString()}`)) return;
+try{
+await db.collection('merch_orders').add({txRef:p.txRef,name:p.name,email:p.email,phone:p.phone,address:p.address||'',item:p.item,price:p.amount,status:'paid',approvedByAdmin:true,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+await db.collection('pending_payments').doc(docId).delete();
+showToast('<i class="fas fa-check-circle"></i> Merch order approved!');
+}catch(e){showToast('<i class="fas fa-exclamation-circle"></i> Error: '+e.message);}
 }
 
 async function rejectPending(docId){
-  if(!confirm('Reject and remove this pending payment? Cannot be undone.')) return;
-  await db.collection('pending_payments').doc(docId).delete();
-  showToast('<i class="fas fa-trash"></i> Pending payment rejected.');
+if(!confirm('Reject and remove this pending payment? Cannot be undone.')) return;
+await db.collection('pending_payments').doc(docId).delete();
+showToast('<i class="fas fa-trash"></i> Pending payment rejected.');
 }
 
 // =============================================
 // OVERVIEW
 // =============================================
 function updateOverview(){
-  const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
-  const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
-  const geleOrders=allMerch.filter(m=>m.item==='gele').length;
-  const capOrders=allMerch.filter(m=>m.item==='cap').length;
-  const merchRevenue=allMerch.reduce((s,m)=>s+(m.price||0),0);
-  const totalRevenue=voteRevenue+merchRevenue;
-  const totalTx=allVotes.length+allMerch.length;
-  document.getElementById('overviewSub').textContent=`Last updated: ${new Date().toLocaleTimeString()} · ${totalTx} total transactions`;
-  document.getElementById('metricsGrid').innerHTML=`
-    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes Cast</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">&#8358;${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
-    <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-receipt"></i></div></div><div class="metric-value">${totalTx}</div><div class="metric-label">Total Transactions</div></div>
-    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-chart-line"></i></div></div><div class="metric-value">&#8358;${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">&#8358;${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
-    <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-hat-wizard"></i></div></div><div class="metric-value">${geleOrders}</div><div class="metric-label">Gele Orders</div></div>
-    <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-hat-cowboy"></i></div></div><div class="metric-value">${capOrders}</div><div class="metric-label">Cap Orders</div></div>
-    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-trophy"></i></div></div><div class="metric-value">${CATEGORIES.length}</div><div class="metric-label">Active Categories</div></div>
-  `;
-  const vPct=totalRevenue>0?Math.round((voteRevenue/totalRevenue)*100):0;
-  const mPct=100-vPct;
-  document.getElementById('revSplitSection').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div style="background:#f0f6ff;border-radius:10px;padding:14px;border-left:3px solid var(--blue)">
-        <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-vote-yea"></i> Vote Revenue</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">&#8358;${voteRevenue.toLocaleString()}</div>
-        <div style="font-size:0.75rem;color:var(--blue);margin-top:2px">${vPct}% of total</div>
-      </div>
-      <div style="background:#fefce8;border-radius:10px;padding:14px;border-left:3px solid #f59e0b">
-        <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-shopping-bag"></i> Merch Revenue</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">&#8358;${merchRevenue.toLocaleString()}</div>
-        <div style="font-size:0.75rem;color:#d97706;margin-top:2px">${mPct}% of total</div>
-      </div>
-    </div>
-    <div style="background:#f8fafc;border-radius:8px;padding:12px">
-      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;font-weight:600">Revenue Split</div>
-      <div style="display:flex;height:10px;border-radius:5px;overflow:hidden;margin-bottom:8px">
-        <div style="width:${vPct}%;background:linear-gradient(90deg,var(--blue),var(--sky));transition:width 0.5s"></div>
-        <div style="flex:1;background:linear-gradient(90deg,#f59e0b,var(--gold))"></div>
-      </div>
-      <div style="display:flex;gap:16px">
-        <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></div> Votes ${vPct}%</div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></div> Merch ${mPct}%</div>
-      </div>
-    </div>`;
+const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
+const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
+const geleOrders=allMerch.filter(m=>m.item==='gele').length;
+const capOrders=allMerch.filter(m=>m.item==='cap').length;
+const merchRevenue=allMerch.reduce((s,m)=>s+(m.price||0),0);
+const totalRevenue=voteRevenue+merchRevenue;
+const totalTx=allVotes.length+allMerch.length;
+document.getElementById('overviewSub').textContent=`Last updated: ${new Date().toLocaleTimeString()} · ${totalTx} total transactions`;
+document.getElementById('metricsGrid').innerHTML=`<div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes Cast</div></div>
+<div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">₦${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div> <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-receipt"></i></div></div><div class="metric-value">${totalTx}</div><div class="metric-label">Total Transactions</div></div>
+<div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-chart-line"></i></div></div><div class="metric-value">₦${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div> <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">₦${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
+<div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-hat-wizard"></i></div></div><div class="metric-value">${geleOrders}</div><div class="metric-label">Gele Orders</div></div> <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-hat-cowboy"></i></div></div><div class="metric-value">${capOrders}</div><div class="metric-label">Cap Orders</div></div>
+<div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-trophy"></i></div></div><div class="metric-value">${CATEGORIES.length}</div><div class="metric-label">Active Categories</div></div>`;
+const vPct=totalRevenue>0?Math.round((voteRevenue/totalRevenue)*100):0;
+const mPct=100-vPct;
+document.getElementById('revSplitSection').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px"> <div style="background:#f0f6ff;border-radius:10px;padding:14px;border-left:3px solid var(--blue)"> <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-vote-yea"></i> Vote Revenue</div> <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">₦${voteRevenue.toLocaleString()}</div>
+<div style="font-size:0.75rem;color:var(--blue);margin-top:2px">${vPct}% of total</div> </div> <div style="background:#fefce8;border-radius:10px;padding:14px;border-left:3px solid #f59e0b"> <div style="font-size:0.75rem;color:var(--sub);font-weight:600;margin-bottom:4px"><i class="fas fa-shopping-bag"></i> Merch Revenue</div> <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:var(--navy)">₦${merchRevenue.toLocaleString()}</div>
+<div style="font-size:0.75rem;color:#d97706;margin-top:2px">${mPct}% of total</div> </div> </div> <div style="background:#f8fafc;border-radius:8px;padding:12px"> <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;font-weight:600">Revenue Split</div> <div style="display:flex;height:10px;border-radius:5px;overflow:hidden;margin-bottom:8px"> <div style="width:${vPct}%;background:linear-gradient(90deg,var(--blue),var(--sky));transition:width 0.5s"></div>
+<div style="flex:1;background:linear-gradient(90deg,#f59e0b,var(--gold))"></div>
+</div>
+<div style="display:flex;gap:16px">
+<div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></div> Votes ${vPct}%</div> <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--sub)"><div style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></div> Merch ${mPct}%</div>
+</div>
+</div>`;
 }
 
 function renderRecentTx(){
-  const rows=allVotes.slice(0,10).map(v=>`<tr>
-    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td>
-    <td>${v.voterName||'-'}</td>
-    <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.78rem">${v.categoryName||'-'}</td>
-    <td>${v.nominee||'-'}</td>
-    <td><span class="badge badge-blue"><i class="fas fa-vote-yea"></i> ${v.votes||0}</span></td>
-    <td><strong>&#8358;${(v.amount||0).toLocaleString()}</strong></td>
-    <td style="font-size:0.71rem;color:var(--sub);font-family:monospace">${(v.txRef||'').slice(-10)}</td>
-  </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)">No transactions yet</td></tr>';
-  document.getElementById('recentTxTable').innerHTML=rows;
+const rows=allVotes.slice(0,10).map(v=>`<tr> <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td><td>${v.voterName||v.name||'-'}</td><td>${v.categoryName||'-'}</td><td>${v.nominee||'-'}</td><td><span class="badge badge-blue">${v.votes||0}</span></td><td><strong>₦${(v.amount||0).toLocaleString()}</strong></td><td>${(v.txRef||'').slice(-10)}</td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--sub)">No transactions yet</td></tr>';
+document.getElementById('recentTxTable').innerHTML=rows;
 }
 
 function renderTopNominees(){
-  document.getElementById('topNominees').innerHTML=CATEGORIES.map(cat=>{
-    let best={name:'No votes yet',votes:0};
-    Object.keys(liveVoteCounts).filter(k=>k.startsWith(cat.id+'::')).forEach(k=>{const n=k.split('::')[1];const v=liveVoteCounts[k];if(v>best.votes)best={name:n,votes:v};});
-    return `<div style="background:#f8fafc;border-radius:10px;padding:12px;border:1px solid var(--border)">
-      <div style="font-size:0.72rem;color:var(--sub);margin-bottom:3px"><i class="fas ${cat.icon}" style="color:var(--blue)"></i> ${cat.name}</div>
-      <div style="font-weight:700;color:var(--navy);font-size:0.88rem">${best.name}</div>
-      <div style="font-size:0.74rem;color:var(--blue);margin-top:2px"><i class="fas fa-vote-yea"></i> ${best.votes} votes</div>
-    </div>`;
-  }).join('');
+document.getElementById('topNominees').innerHTML=CATEGORIES.map(cat=>{
+let best={name:'No votes yet',votes:0};
+Object.keys(liveVoteCounts).filter(k=>k.startsWith(cat.id+'::')).forEach(k=>{const n=k.split('::')[1];const v=liveVoteCounts[k];if(v>best.votes)best={name:n,votes:v};});
+return `<div style="background:#f8fafc;border-radius:10px;padding:12px;border:1px solid var(--border)"> <div style="font-size:0.72rem;color:var(--sub);margin-bottom:3px"><i class="fas ${cat.icon}" style="color:var(--blue)"></i> ${cat.name}</div> <div style="font-weight:700;color:var(--navy);font-size:0.88rem">${best.name}</div>
+<div style="font-size:0.74rem;color:var(--blue);margin-top:2px"><i class="fas fa-vote-yea"></i> ${best.votes} votes</div> </div>`;
+}).join('');
 }
 
 // =============================================
@@ -868,117 +826,101 @@ function setRevChartPeriod(period,btn){revChartPeriod=period;document.querySelec
 function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}}
 
 function renderCharts(){
-  if(!document.getElementById('page-analytics').classList.contains('active')) return;
-  const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
-  const geleOrders=allMerch.filter(m=>m.item==='gele').length;
-  const capOrders=allMerch.filter(m=>m.item==='cap').length;
-  const merchRevenue=allMerch.reduce((s,m)=>s+(m.price||0),0);
-  const totalRevenue=voteRevenue+merchRevenue;
-  const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
-  document.getElementById('analyticsMetrics').innerHTML=`
-    <div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes</div></div>
-    <div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">&#8358;${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div>
-    <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-chart-bar"></i></div></div><div class="metric-value">&#8358;${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
-    <div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">&#8358;${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>
-  `;
-  destroyChart('revTimeChart');
-  const td=buildTimeData(revChartPeriod);
-  const c1=document.getElementById('revTimeChart');
-  if(c1) chartInstances['revTimeChart']=new Chart(c1,{type:'line',data:{labels:td.labels,datasets:[{label:'Vote Revenue',data:td.voteRevenue,borderColor:'#1565c0',backgroundColor:'rgba(21,101,192,0.1)',fill:true,tension:0.4,pointRadius:3,borderWidth:2},{label:'Merch Revenue',data:td.merchRevenue,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',fill:true,tension:0.4,pointRadius:3,borderDash:[4,4],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},maxRotation:45}},y:{ticks:{callback:v=>'&#8358;'+v.toLocaleString(),font:{size:10}}}}}});
-  destroyChart('revSourceChart');
-  const c2=document.getElementById('revSourceChart');
-  if(c2) chartInstances['revSourceChart']=new Chart(c2,{type:'doughnut',data:{labels:['Vote Revenue','Merch Revenue'],datasets:[{data:[voteRevenue,merchRevenue],backgroundColor:['#1565c0','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
-  destroyChart('catVoteChart');
-  const catData=CATEGORIES.map(c=>({name:c.name.length>22?c.name.slice(0,22)+'...':c.name,votes:Object.keys(liveVoteCounts).filter(k=>k.startsWith(c.id+'::')).reduce((s,k)=>s+liveVoteCounts[k],0)})).sort((a,b)=>b.votes-a.votes).slice(0,10);
-  const c3=document.getElementById('catVoteChart');
-  if(c3) chartInstances['catVoteChart']=new Chart(c3,{type:'bar',data:{labels:catData.map(c=>c.name),datasets:[{label:'Votes',data:catData.map(c=>c.votes),backgroundColor:'rgba(21,101,192,0.75)',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
-  destroyChart('merchChart');
-  const c4=document.getElementById('merchChart');
-  if(c4) chartInstances['merchChart']=new Chart(c4,{type:'doughnut',data:{labels:['Gele ('+geleOrders+')','Cap ('+capOrders+')'],datasets:[{data:[geleOrders,capOrders],backgroundColor:['#f4b942','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12}}}}});
+if(!document.getElementById('page-analytics').classList.contains('active')) return;
+const voteRevenue=allVotes.reduce((s,v)=>s+(v.amount||0),0);
+const geleOrders=allMerch.filter(m=>m.item==='gele').length;
+const capOrders=allMerch.filter(m=>m.item==='cap').length;
+const merchRevenue=allMerch.reduce((s,m)=>s+(m.price||0),0);
+const totalRevenue=voteRevenue+merchRevenue;
+const totalVotes=allVotes.reduce((s,v)=>s+(v.votes||0),0);
+document.getElementById('analyticsMetrics').innerHTML=`<div class="metric-card mc-blue"><div class="metric-top"><div class="metric-icon mi-blue"><i class="fas fa-vote-yea"></i></div></div><div class="metric-value">${totalVotes.toLocaleString()}</div><div class="metric-label">Total Votes</div></div>
+<div class="metric-card mc-gold"><div class="metric-top"><div class="metric-icon mi-gold"><i class="fas fa-money-bill-wave"></i></div></div><div class="metric-value">₦${totalRevenue.toLocaleString()}</div><div class="metric-label">Total Revenue</div></div> <div class="metric-card mc-green"><div class="metric-top"><div class="metric-icon mi-green"><i class="fas fa-chart-bar"></i></div></div><div class="metric-value">₦${voteRevenue.toLocaleString()}</div><div class="metric-label">Vote Revenue</div></div>
+<div class="metric-card mc-purple"><div class="metric-top"><div class="metric-icon mi-purple"><i class="fas fa-shopping-bag"></i></div></div><div class="metric-value">₦${merchRevenue.toLocaleString()}</div><div class="metric-label">Merch Revenue</div></div>`;
+destroyChart('revTimeChart');
+const td=buildTimeData(revChartPeriod);
+const c1=document.getElementById('revTimeChart');
+if(c1) chartInstances['revTimeChart']=new Chart(c1,{type:'line',data:{labels:td.labels,datasets:[{label:'Vote Revenue',data:td.voteRevenue,borderColor:'#1565c0',backgroundColor:'rgba(21,101,192,0.1)',fill:true,tension:0.4,pointRadius:3,borderWidth:2},{label:'Merch Revenue',data:td.merchRevenue,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',fill:true,tension:0.4,pointRadius:3,borderDash:[4,4],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},maxRotation:45}},y:{ticks:{callback:v=>'₦'+v.toLocaleString(),font:{size:10}}}}}});
+destroyChart('revSourceChart');
+const c2=document.getElementById('revSourceChart');
+if(c2) chartInstances['revSourceChart']=new Chart(c2,{type:'doughnut',data:{labels:['Vote Revenue','Merch Revenue'],datasets:[{data:[voteRevenue,merchRevenue],backgroundColor:['#1565c0','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+destroyChart('catVoteChart');
+const catData=CATEGORIES.map(c=>({name:c.name.length>22?c.name.slice(0,22)+'...':c.name,votes:Object.keys(liveVoteCounts).filter(k=>k.startsWith(c.id+'::')).reduce((s,k)=>s+liveVoteCounts[k],0)})).sort((a,b)=>b.votes-a.votes).slice(0,10);
+const c3=document.getElementById('catVoteChart');
+if(c3) chartInstances['catVoteChart']=new Chart(c3,{type:'bar',data:{labels:catData.map(c=>c.name),datasets:[{label:'Votes',data:catData.map(c=>c.votes),backgroundColor:'rgba(21,101,192,0.75)',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:9}}}}}});
+destroyChart('merchChart');
+const c4=document.getElementById('merchChart');
+if(c4) chartInstances['merchChart']=new Chart(c4,{type:'doughnut',data:{labels:['Gele ('+geleOrders+')','Cap ('+capOrders+')'],datasets:[{data:[geleOrders,capOrders],backgroundColor:['#f4b942','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12}}}}});
 }
 
 function buildTimeData(period){
-  const now=new Date(),labels=[],voteRevenue=[],merchRevenue=[];
-  const buckets=period==='hourly'?24:30;
-  for(let i=buckets-1;i>=0;i--){
-    const d=new Date(now);let label;
-    if(period==='hourly'){d.setHours(d.getHours()-i);label=d.getHours()+':00';}
-    else{d.setDate(d.getDate()-i);label=(d.getMonth()+1)+'/'+(d.getDate());}
-    labels.push(label);
-    const start=new Date(d),end=new Date(d);
-    if(period==='hourly'){start.setMinutes(0,0,0);end.setMinutes(59,59,999);}
-    else{start.setHours(0,0,0,0);end.setHours(23,59,59,999);}
-    voteRevenue.push(allVotes.filter(v=>{const t=v.timestamp?.toDate?v.timestamp.toDate():new Date((v.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,v)=>s+(v.amount||0),0));
-    merchRevenue.push(allMerch.filter(m=>{const t=m.timestamp?.toDate?m.timestamp.toDate():new Date((m.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,m)=>s+(m.price||0),0));
-  }
-  return{labels,voteRevenue,merchRevenue};
+const now=new Date(),labels=[],voteRevenue=[],merchRevenue=[];
+const buckets=period==='hourly'?24:30;
+for(let i=buckets-1;i>=0;i--){
+const d=new Date(now);let label;
+if(period==='hourly'){d.setHours(d.getHours()-i);label=d.getHours()+':00';}
+else{d.setDate(d.getDate()-i);label=(d.getMonth()+1)+'/'+(d.getDate());}
+labels.push(label);
+const start=new Date(d),end=new Date(d);
+if(period==='hourly'){start.setMinutes(0,0,0);end.setMinutes(59,59,999);}
+else{start.setHours(0,0,0,0);end.setHours(23,59,59,999);}
+voteRevenue.push(allVotes.filter(v=>{const t=v.timestamp?.toDate?v.timestamp.toDate():new Date((v.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,v)=>s+(v.amount||0),0));
+merchRevenue.push(allMerch.filter(m=>{const t=m.timestamp?.toDate?m.timestamp.toDate():new Date((m.timestamp?.seconds||0)*1000);return t>=start&&t<=end;}).reduce((s,m)=>s+(m.price||0),0));
+}
+return{labels,voteRevenue,merchRevenue};
 }
 
 // =============================================
 // TRANSACTIONS
 // =============================================
 function populateCatFilter(){
-  const sel=document.getElementById('txCatFilter');
-  CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
+const sel=document.getElementById('txCatFilter');
+CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
 }
 function renderTxTable(){
-  filteredTx=filterTxData();
-  const total=filteredTx.length;
-  document.getElementById('txCount').textContent=`Showing ${total} transaction${total!==1?'s':''}`;
-  const start=(txPage-1)*TX_PER_PAGE;
-  const page=filteredTx.slice(start,start+TX_PER_PAGE);
-  document.getElementById('txTableBody').innerHTML=page.map(v=>`<tr>
-    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td>
-    <td>${v.voterName||v.name||'-'}</td>
-    <td style="font-size:0.77rem">${v.voterEmail||v.email||'-'}</td>
-    <td>${v.voterPhone||v.phone||'-'}</td>
-    <td>${v.type==='vote'?'<span class="badge badge-blue"><i class="fas fa-vote-yea"></i> Vote</span>':'<span class="badge badge-gold"><i class="fas fa-shopping-bag"></i> Merch</span>'}</td>
-    <td style="font-size:0.77rem;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v.categoryName||v.item||'-'}</td>
-    <td>${v.nominee||v.item||'-'}</td>
-    <td>${v.votes||1}</td>
-    <td><strong>&#8358;${(v.amount||v.price||0).toLocaleString()}</strong></td>
-    <td style="font-size:0.7rem;color:var(--sub);font-family:monospace">${(v.txRef||'').slice(-12)}</td>
-  </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--sub)">No transactions found</td></tr>';
-  renderPagination(total);
+filteredTx=filterTxData();
+const total=filteredTx.length;
+document.getElementById('txCount').textContent=`Showing ${total} transaction${total!==1?'s':''}`;
+const start=(txPage-1)*TX_PER_PAGE;
+const page=filteredTx.slice(start,start+TX_PER_PAGE);
+document.getElementById('txTableBody').innerHTML=page.map(v=>`<tr> <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(v.timestamp)}</td><td>${v.voterName||v.name||'-'}</td> <td style="font-size:0.77rem">${v.voterEmail||v.email||'-'}</td><td>${v.voterPhone||v.phone||'-'}</td> <td>${v.type==='vote'?'<span class="badge badge-blue"><i class="fas fa-vote-yea"></i> Vote</span>':'<span class="badge badge-gold"><i class="fas fa-shopping-bag"></i> Merch</span>'}</td><td style="font-size:0.77rem;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v.categoryName||v.item||'-'}</td> <td>${v.nominee||v.item||'-'}</td><td>${v.votes||1}</td> <td><strong>₦${(v.amount||v.price||0).toLocaleString()}</strong></td><td style="font-size:0.7rem;color:var(--sub);font-family:monospace">${(v.txRef||'').slice(-12)}</td> </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--sub)">No transactions found</td></tr>';
+renderPagination(total);
 }
 function filterTxData(){
-  const q=(document.getElementById('txSearch').value||'').toLowerCase();
-  const type=document.getElementById('txTypeFilter').value;
-  const cat=document.getElementById('txCatFilter').value;
-  return [...allVotes,...allMerch].sort((a,b)=>(b.timestamp?.seconds||0)-(a.timestamp?.seconds||0)).filter(v=>{
-    if(type&&v.type!==type&&!(type==='merch'&&v.item)) return false;
-    if(cat&&v.categoryId!==cat) return false;
-    if(q){const str=`${v.voterName||v.name||''} ${v.voterEmail||v.email||''} ${v.nominee||''} ${v.categoryName||''} ${v.txRef||''}`.toLowerCase();if(!str.includes(q))return false;}
-    return true;
-  });
+const q=(document.getElementById('txSearch').value||'').toLowerCase();
+const type=document.getElementById('txTypeFilter').value;
+const cat=document.getElementById('txCatFilter').value;
+return [...allVotes,...allMerch].sort((a,b)=>(b.timestamp?.seconds||0)-(a.timestamp?.seconds||0)).filter(v=>{
+if(type&&v.type!==type&&!(type==='merch'&&v.item)) return false;
+if(cat&&v.categoryId!==cat) return false;
+if(q){const str=`${v.voterName||v.name||''} ${v.voterEmail||v.email||''} ${v.nominee||''} ${v.categoryName||''} ${v.txRef||''}`.toLowerCase();if(!str.includes(q))return false;} return true;
+});
 }
 function filterTxTable(){txPage=1;renderTxTable();}
 function renderPagination(total){
-  const pages=Math.ceil(total/TX_PER_PAGE);
-  document.getElementById('txPagination').innerHTML=Array.from({length:pages},(_,i)=>`<button class="page-btn ${i+1===txPage?'active':''}" onclick="goTxPage(${i+1})">${i+1}</button>`).join('');
+const pages=Math.ceil(total/TX_PER_PAGE);
+document.getElementById('txPagination').innerHTML=Array.from({length:pages},(_,i)=>`<button class="page-btn ${i+1===txPage?'active':''}" onclick="goTxPage(${i+1})">${i+1}</button>`).join('');
 }
 function goTxPage(p){txPage=p;renderTxTable();window.scrollTo(0,0);}
 function exportCSV(){
-  const data=filterTxData();
-  downloadCSV([['Date','Name','Email','Phone','Type','Category','Nominee/Item','Votes','Amount','TxRef'],...data.map(v=>[fmtTime(v.timestamp),v.voterName||v.name||'',v.voterEmail||v.email||'',v.voterPhone||v.phone||'',v.type||'merch',v.categoryName||v.item||'',v.nominee||v.item||'',v.votes||1,v.amount||v.price||0,v.txRef||''])],'ssohis_transactions.csv');
+const data=filterTxData();
+downloadCSV([['Date','Name','Email','Phone','Type','Category','Nominee/Item','Votes','Amount','TxRef'],...data.map(v=>[fmtTime(v.timestamp),v.voterName||v.name||'',v.voterEmail||v.email||'',v.voterPhone||v.phone||'',v.type||'merch',v.categoryName||v.item||'',v.nominee||v.item||'',v.votes||1,v.amount||v.price||0,v.txRef||''])],'ssohis_transactions.csv');
 }
 
 // =============================================
 // CATEGORY ANALYTICS
 // =============================================
 function renderCatAnalytics(){
-  const q=(document.getElementById('catSearch')?.value||'').toLowerCase();
-  const cats=CATEGORIES.filter(c=>!q||c.name.toLowerCase().includes(q));
-  document.getElementById('catAnalyticsGrid').innerHTML=cats.map(cat=>{
-    const catNominees=nominees[cat.id]||[];
-    const ranked=catNominees.map(n=>({name:n,votes:liveVoteCounts[`${cat.id}::${n}`]||0})).sort((a,b)=>b.votes-a.votes);
-    const total=ranked.reduce((s,n)=>s+n.votes,0);
-    const max=ranked[0]?.votes||1;
-    return `<div class="cat-analytics-card">
-      <div class="cac-title"><span><i class="fas ${cat.icon}" style="color:var(--blue);margin-right:4px"></i>${cat.name}</span><span style="background:#dbeafe;color:#1d4ed8;font-size:0.68rem;padding:2px 8px;border-radius:10px;font-weight:600">${total} votes</span></div>
-      ${ranked.slice(0,8).map((n,i)=>`<div class="cac-item"><div class="cac-rank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i+1}</div><div class="cac-name">${n.name}</div><div class="cac-bar"><div class="cac-fill" style="width:${max>0?Math.round((n.votes/max)*100):0}%"></div></div><div class="cac-votes">${n.votes}</div></div>`).join('')||'<div style="font-size:0.78rem;color:var(--sub)">No votes yet</div>'}
-    </div>`;
-  }).join('');
+const q=(document.getElementById('catSearch')?.value||'').toLowerCase();
+const cats=CATEGORIES.filter(c=>!q||c.name.toLowerCase().includes(q));
+document.getElementById('catAnalyticsGrid').innerHTML=cats.map(cat=>{
+const catNominees=nominees[cat.id]||[];
+const ranked=catNominees.map(n=>({name:n,votes:liveVoteCounts[`${cat.id}::${n}`]||0})).sort((a,b)=>b.votes-a.votes);
+const total=ranked.reduce((s,n)=>s+n.votes,0);
+const max=ranked[0]?.votes||1;
+return `<div class="cat-analytics-card"> <div class="cac-title"><span><i class="fas ${cat.icon}" style="color:var(--blue);margin-right:4px"></i>${cat.name}</span><span style="background:#dbeafe;color:#1d4ed8;font-size:0.68rem;padding:2px 8px;border-radius:10px;font-weight:600">${total} votes</span></div>
+${ranked.slice(0,8).map((n,i)=>`<div class="cac-item"><div class="cac-rank r${i<3?i+1:'n'}">${i+1}</div><div class="cac-name">${n.name}</div><div class="cac-bar"><div class="cac-fill" style="width:${max>0?Math.round((n.votes/max)*100):0}%"></div></div><div class="cac-votes">${n.votes}</div></div>`).join('')||'<div style="font-size:0.78rem;color:var(--sub)">No votes yet</div>'}
+</div>`;
+}).join('');
 }
 function filterCatAnalytics(){renderCatAnalytics();}
 
@@ -986,38 +928,38 @@ function filterCatAnalytics(){renderCatAnalytics();}
 // NOMINEE MANAGER
 // =============================================
 async function loadNomineesFromDB(){
-  try{
-    const doc=await db.collection('settings').doc('nominees').get();
-    if(doc.exists&&doc.data().data) nominees=doc.data().data;
-    else{nominees={...DEFAULT_NOMINEES};await db.collection('settings').doc('nominees').set({data:nominees});}
-  }catch(e){nominees={...DEFAULT_NOMINEES};}
-  renderCatAnalytics();renderNomineeManager();
+try{
+const doc=await db.collection('settings').doc('nominees').get();
+if(doc.exists&&doc.data().data) nominees=doc.data().data;
+else{nominees={...DEFAULT_NOMINEES};await db.collection('settings').doc('nominees').set({data:nominees});}
+}catch(e){nominees={...DEFAULT_NOMINEES};}
+renderCatAnalytics();renderNomineeManager();
 }
 function populateNomCatSelect(){
-  const sel=document.getElementById('nmCatSelect');
-  CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
+const sel=document.getElementById('nmCatSelect');
+CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
 }
 function renderNomineeManager(){
-  const catId=document.getElementById('nmCatSelect').value;if(!catId) return;
-  const list=nominees[catId]||[];
-  document.getElementById('nomineeManagerList').innerHTML=`<div class="nominee-manage-list">${list.map((n,i)=>`<div class="nominee-manage-item"><div><div class="nm-name"><i class="fas fa-user" style="color:var(--blue);font-size:0.75rem"></i> ${n}</div><div class="nm-votes">${liveVoteCounts[catId+'::'+n]||0} votes</div></div><button class="nm-del" onclick="deleteNominee('${catId}',${i})"><i class="fas fa-times"></i> Remove</button></div>`).join('')||'<div style="color:var(--sub);font-size:0.85rem;padding:10px 0">No nominees yet.</div>'}</div>`;
+const catId=document.getElementById('nmCatSelect').value;if(!catId) return;
+const list=nominees[catId]||[];
+document.getElementById('nomineeManagerList').innerHTML=`<div class="nominee-manage-list">${list.map((n,i)=>`<div class="nominee-manage-item"><div><div class="nm-name"><i class="fas fa-user" style="color:var(--blue);font-size:0.75rem"></i> ${n}</div><div class="nm-votes">${liveVoteCounts[catId+'::'+n]||0} votes</div></div><button class="nm-del" onclick="deleteNominee('${catId}',${i})"><i class="fas fa-times"></i> Remove</button></div>`).join('')||'<div style="color:var(--sub);font-size:0.85rem;padding:10px 0">No nominees yet.</div>'}</div>`;
 }
 async function addNominee(){
-  const catId=document.getElementById('nmCatSelect').value;
-  const name=document.getElementById('newNomineeName').value.trim();
-  if(!name){showToast('Enter a nominee name');return;}
-  if(!nominees[catId]) nominees[catId]=[];
-  nominees[catId].push(name);
-  await saveNominees();
-  document.getElementById('newNomineeName').value='';
-  renderNomineeManager();
-  showToast('<i class="fas fa-check-circle"></i> Nominee added!');
+const catId=document.getElementById('nmCatSelect').value;
+const name=document.getElementById('newNomineeName').value.trim();
+if(!name){showToast('Enter a nominee name');return;}
+if(!nominees[catId]) nominees[catId]=[];
+nominees[catId].push(name);
+await saveNominees();
+document.getElementById('newNomineeName').value='';
+renderNomineeManager();
+showToast('<i class="fas fa-check-circle"></i> Nominee added!');
 }
 async function deleteNominee(catId,idx){
-  if(!confirm('Remove this nominee?')) return;
-  nominees[catId].splice(idx,1);
-  await saveNominees();renderNomineeManager();
-  showToast('<i class="fas fa-trash"></i> Nominee removed.');
+if(!confirm('Remove this nominee?')) return;
+nominees[catId].splice(idx,1);
+await saveNominees();renderNomineeManager();
+showToast('<i class="fas fa-trash"></i> Nominee removed.');
 }
 async function saveNominees(){await db.collection('settings').doc('nominees').set({data:nominees});}
 
@@ -1025,26 +967,18 @@ async function saveNominees(){await db.collection('settings').doc('nominees').se
 // MERCH
 // =============================================
 function renderMerchTable(){
-  const q=(document.getElementById('merchSearch')?.value||'').toLowerCase();
-  const item=document.getElementById('merchItemFilter')?.value||'';
-  const status=document.getElementById('merchStatusFilter')?.value||'';
-  const filtered=allMerch.filter(m=>{
-    if(item&&m.item!==item) return false;
-    if(status&&m.status!==status) return false;
-    if(q&&!`${m.name||''} ${m.phone||''} ${m.email||''}`.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  document.getElementById('merchCount').textContent=`${filtered.length} order${filtered.length!==1?'s':''}`;
-  document.getElementById('merchTableBody').innerHTML=filtered.map(m=>`<tr>
-    <td style="white-space:nowrap;font-size:0.78rem">${fmtTime(m.timestamp)}</td>
-    <td>${m.name||'-'}</td><td>${m.phone||'-'}</td>
-    <td style="font-size:0.77rem">${m.email||'-'}</td>
-    <td>${m.item==='gele'?'<span class="badge badge-gold"><i class="fas fa-hat-wizard"></i> Gele</span>':'<span class="badge badge-blue"><i class="fas fa-hat-cowboy"></i> Cap</span>'}</td>
-    <td>&#8358;${(m.price||0).toLocaleString()}</td>
-    <td style="font-size:0.77rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">${m.address||'-'}</td>
-    <td>${m.status==='fulfilled'?'<span class="badge badge-green"><i class="fas fa-check-circle"></i> Fulfilled</span>':'<span class="badge badge-gold"><i class="fas fa-clock"></i> Paid</span>'}</td>
-    <td>${m.status!=='fulfilled'?`<button class="btn-fulfill" onclick="fulfillOrder('${m.id}')"><i class="fas fa-check"></i> Fulfill</button>`:'-'}</td>
-  </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--sub)">No merch orders yet</td></tr>';
+const q=(document.getElementById('merchSearch')?.value||'').toLowerCase();
+const item=document.getElementById('merchItemFilter')?.value||'';
+const status=document.getElementById('merchStatusFilter')?.value||'';
+const filtered=allMerch.filter(m=>{
+if(item&&m.item!==item) return false;
+if(status&&m.status!==status) return false;
+if(q&&!`${m.name||''} ${m.phone||''} ${m.email||''}`.toLowerCase().includes(q)) return false; return true; }); document.getElementById('merchCount').textContent=`${filtered.length} order${filtered.length!==1?'s':''}`; document.getElementById('merchTableBody').innerHTML=filtered.map(m=>`<tr>
+<td style="white-space:nowrap;font-size:0.78rem">${fmtTime(m.timestamp)}</td><td>${m.name||'-'}</td><td>${m.phone||'-'}</td><td style="font-size:0.77rem">${m.email||'-'}</td>
+<td>${m.item==='gele'?'<span class="badge badge-gold"><i class="fas fa-hat-wizard"></i> Gele</span>':'<span class="badge badge-blue"><i class="fas fa-hat-cowboy"></i> Cap</span>'}</td><td>₦${(m.price||0).toLocaleString()}</td>
+<td style="font-size:0.77rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">${m.address||'-'}</td><td>${m.status==='fulfilled'?'<span class="badge badge-green"><i class="fas fa-check-circle"></i> Fulfilled</span>':'<span class="badge badge-gold"><i class="fas fa-clock"></i> Paid</span>'}</td>
+<td>${m.status!=='fulfilled'?`<button class="btn-fulfill" onclick="fulfillOrder('${m.id}')"><i class="fas fa-check"></i> Fulfill</button>`:'-'}</td>
+</tr>`).join('')||'<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--sub)">No merch orders yet</td></tr>';
 }
 async function fulfillOrder(id){await db.collection('merch_orders').doc(id).update({status:'fulfilled'});showToast('<i class="fas fa-check-circle"></i> Order fulfilled!');}
 function filterMerchTable(){renderMerchTable();}
@@ -1054,76 +988,66 @@ function exportMerchCSV(){downloadCSV([['Date','Name','Phone','Email','Item','Pr
 // BANNERS
 // =============================================
 async function loadBannersAdmin(){
-  try{const doc=await db.collection('settings').doc('banners').get();
-  if(doc.exists){const d=doc.data();['top','mid','bottom'].forEach(slot=>{if(d[slot]?.url){document.getElementById(`${slot}BannerUrl`).value=d[slot].url;document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${d[slot].url}" alt="Banner"/>`;}}); }}catch(e){}
-}
-async function saveBanner(slot){
-  const url=document.getElementById(`${slot}BannerUrl`).value.trim();
-  if(!url){showToast('Enter a banner URL');return;}
-  const snap=await db.collection('settings').doc('banners').get();
-  const current=snap.data()||{};current[slot]={url};
-  await db.collection('settings').doc('banners').set(current);
-  document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${url}" alt="Banner"/>`;
-  showToast(`<i class="fas fa-check-circle"></i> ${slot} banner saved!`);
+try{const doc=await db.collection('settings').doc('banners').get();
+if(doc.exists){const d=doc.data();['top','mid','bottom'].forEach(slot=>{if(d[slot]?.url){document.getElementById(`${slot}BannerUrl`).value=d[slot].url;document.getElementById(`${slot}BannerPreview`).innerHTML=`<img src="${d[slot].url}" alt="Banner"/>`;}}); }}catch(e){} } async function saveBanner(slot){ const url=document.getElementById(`${slot}BannerUrl`).value.trim(); if(!url){showToast('Enter a banner URL');return;} const snap=await db.collection('settings').doc('banners').get(); const current=snap.data()||{};current[slot]={url}; await db.collection('settings').doc('banners').set(current); showToast(`<i class="fas fa-check-circle"></i> ${slot} banner saved!`);
 }
 async function clearBanner(slot){
-  if(!confirm('Clear this banner?')) return;
-  const snap=await db.collection('settings').doc('banners').get();
-  const current=snap.data()||{};delete current[slot];
-  await db.collection('settings').doc('banners').set(current);
-  document.getElementById(`${slot}BannerUrl`).value='';
-  document.getElementById(`${slot}BannerPreview`).innerHTML='<i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i>';
-  showToast('<i class="fas fa-trash"></i> Banner cleared.');
+if(!confirm('Clear this banner?')) return;
+const snap=await db.collection('settings').doc('banners').get();
+const current=snap.data()||{};delete current[slot];
+await db.collection('settings').doc('banners').set(current);
+document.getElementById(`${slot}BannerUrl`).value=''; document.getElementById(`${slot}BannerPreview`).innerHTML='<i class="fas fa-image" style="font-size:1.5rem;opacity:0.4"></i>';
+showToast('<i class="fas fa-trash"></i> Banner cleared.');
 }
 
 // =============================================
 // SETTINGS
 // =============================================
 async function loadSettings(){
-  try{const doc=await db.collection('settings').doc('config').get();
-  if(doc.exists){const d=doc.data();const map={vote_base:'s_vote_base',vote_fee:'s_vote_fee',min_votes:'s_min_votes',gele_price:'s_gele_price',cap_price:'s_cap_price',event_date:'s_event_date',event_time:'s_event_time',event_venue:'s_event_venue',dress_code:'s_dress_code'};Object.entries(map).forEach(([k,id])=>{if(d[k]!==undefined){const el=document.getElementById(id);if(el)el.value=d[k];}});}}catch(e){}
+try{const doc=await db.collection('settings').doc('config').get();
+if(doc.exists){const d=doc.data();const map={vote_base:'s_vote_base',vote_fee:'s_vote_fee',min_votes:'s_min_votes',gele_price:'s_gele_price',cap_price:'s_cap_price',event_date:'s_event_date',event_time:'s_event_time',event_venue:'s_event_venue',dress_code:'s_dress_code'};Object.entries(map).forEach(([k,id])=>{if(d[k]!==undefined){const el=document.getElementById(id);if(el)el.value=d[k];}});}}catch(e){}
 }
 async function saveSettings(group){
-  const data={};
-  if(group==='voting'){data.vote_base=parseInt(document.getElementById('s_vote_base').value)||50;data.vote_fee=parseInt(document.getElementById('s_vote_fee').value)||20;data.min_votes=parseInt(document.getElementById('s_min_votes').value)||10;}
-  else if(group==='merch'){data.gele_price=parseInt(document.getElementById('s_gele_price').value)||5000;data.cap_price=parseInt(document.getElementById('s_cap_price').value)||3000;}
-  else if(group==='event'){data.event_date=document.getElementById('s_event_date').value;data.event_time=document.getElementById('s_event_time').value;data.event_venue=document.getElementById('s_event_venue').value;data.dress_code=document.getElementById('s_dress_code').value;}
-  await db.collection('settings').doc('config').set(data,{merge:true});
-  showToast('<i class="fas fa-check-circle"></i> Settings saved!');
+const data={};
+if(group==='voting'){data.vote_base=parseInt(document.getElementById('s_vote_base').value)||50;data.vote_fee=parseInt(document.getElementById('s_vote_fee').value)||20;data.min_votes=parseInt(document.getElementById('s_min_votes').value)||10;}
+else if(group==='merch'){data.gele_price=parseInt(document.getElementById('s_gele_price').value)||5000;data.cap_price=parseInt(document.getElementById('s_cap_price').value)||3000;}
+else if(group==='event'){data.event_date=document.getElementById('s_event_date').value;data.event_time=document.getElementById('s_event_time').value;data.event_venue=document.getElementById('s_event_venue').value;data.dress_code=document.getElementById('s_dress_code').value;}
+await db.collection('settings').doc('config').set(data,{merge:true});
+showToast('<i class="fas fa-check-circle"></i> Settings saved!');
 }
 async function confirmReset(type){
-  if(!confirm(`Are you sure you want to reset all ${type}? CANNOT be undone!`)) return;
-  if(!confirm(`Final confirmation: Delete ALL ${type} records?`)) return;
-  const col={votes:'votes',merch:'merch_orders',pending:'pending_payments'}[type]||type;
-  const snap=await db.collection(col).get();
-  const batch=db.batch();snap.forEach(doc=>batch.delete(doc.ref));
-  await batch.commit();
-  showToast(`<i class="fas fa-trash"></i> All ${type} reset.`);
+if(!confirm(`Are you sure you want to reset all ${type}? CANNOT be undone!`)) return; if(!confirm(`Final confirmation: Delete ALL ${type} records?`)) return;
+const col={votes:'votes',merch:'merch_orders',pending:'pending_payments'}[type]||type;
+const snap=await db.collection(col).get();
+const batch=db.batch();snap.forEach(doc=>batch.delete(doc.ref));
+await batch.commit();
+showToast(`<i class="fas fa-trash"></i> All ${type} reset.`);
 }
 
 // =============================================
 // UTILS
 // =============================================
 function fmtTime(ts){
-  if(!ts) return '-';
-  let d;
-  if(ts.toDate) d=ts.toDate();
-  else if(ts.seconds) d=new Date(ts.seconds*1000);
-  else if(typeof ts==='number') d=new Date(ts);
-  else return '-';
-  return d.toLocaleDateString('en-NG',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'});
+if(!ts) return '-';
+let d;
+if(ts.toDate) d=ts.toDate();
+else if(ts.seconds) d=new Date(ts.seconds*1000);
+else if(typeof ts==='number') d=new Date(ts);
+else return '-';
+return d.toLocaleDateString('en-NG',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'});
 }
 function downloadCSV(rows,filename){
-  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=filename;a.click();
-  URL.revokeObjectURL(url);
+const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+const blob=new Blob([csv],{type:'text/csv'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');a.href=url;a.download=filename;a.click();
+URL.revokeObjectURL(url);
 }
 function showToast(msg){
-  const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
-  clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),3500);
+const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
+clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),3500);
 }
+
 </script>
 </body>
-  </html>
+</html>
