@@ -261,7 +261,7 @@ nav{background:var(--navy);padding:10px 20px;display:flex;align-items:center;jus
 .rw-text{flex:1;min-width:0}
 .rw-powered{font-size:0.68rem;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase}
 .rw-wordmark{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;background:linear-gradient(90deg,#00ffc6,#b060ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.rw-tagline{font-size:0.7rem;color:rgba(255,255,255,0.45);margin-top:2px}
+.rw-tagline{font-size:0.7rem;color:#ffffff;margin-top:2px}
 .rw-cta-btn{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:white;border:none;border-radius:20px;padding:8px 14px;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform 0.2s;display:flex;align-items:center;gap:5px}
 .rw-cta-btn:hover{transform:scale(1.05)}
 
@@ -278,6 +278,10 @@ nav{background:var(--navy);padding:10px 20px;display:flex;align-items:center;jus
 /* REWARDER STRIP */
 .rewarder-strip{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;font-size:0.72rem;color:var(--sub);opacity:0.7}
 .rw-mini-word{font-family:'Baloo 2',cursive;font-weight:800;background:linear-gradient(90deg,#7c3aed,#1565c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rewarder-strip::before{content:'';display:inline-block;width:20px;height:20px;border-radius:5px;flex-shrink:0;background:url('https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg') center/cover no-repeat;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.rw-modal-foot{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;font-size:0.68rem;color:var(--sub);opacity:0.75;border-top:1px solid rgba(0,0,0,0.06)}
+.rw-modal-foot img{width:18px;height:18px;border-radius:5px;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.rw-foot-logo{width:16px;height:16px;border-radius:4px;object-fit:cover;vertical-align:middle;margin-right:4px;box-shadow:0 1px 3px rgba(0,0,0,0.15)}
 
 /* MERCH PAGE HERO */
 .merch-page-hero{background:linear-gradient(135deg,var(--navy),#1565c0);border-radius:20px;padding:32px 24px;text-align:center;color:white;margin-bottom:24px;position:relative;overflow:hidden}
@@ -393,6 +397,16 @@ nav{flex-wrap:nowrap}
 <button class="pending-confirm-btn" onclick="showPendingConfirm('merch')"><i class="fas fa-check"></i> I Have Paid</button>
 <button class="pending-cancel-btn" onclick="dismissPendingBanner('merch')"><i class="fas fa-times"></i> Dismiss</button>
 </div>
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="rw-tagline">Run your own awards,voting events,e-commerce and every other business site </div>
+</div>
+contact;09078139367
+</div>
 </div>
 
 <!-- PAGE: HOME -->
@@ -427,6 +441,18 @@ nav{flex-wrap:nowrap}
 </div>
 </div>
 
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="">Run your own awards, voting events, e-commerce and every other business site </div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
+</div>
+</div>
 <div class="sweet-strip">
 <div class="dc-title"><i class="fas fa-tshirt"></i> Dress Code</div>
 <div class="dc-text" id="dressCodeText">A Touch of <strong>White or Blue</strong> — Owambe Edition</div>
@@ -474,7 +500,7 @@ nav{flex-wrap:nowrap}
 <strong>SSOHIS Silver Scrolls '26</strong> — Lagos State University<br/>
 Students Society for the Study of History and International Studies<br/>
 <i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> Elite Hotel & Suites, Igboelerin · 3rd July, 2026<br/>
-<span style="margin-top:6px;display:block;opacity:0.4;font-size:0.75rem">Powered by Rewarder</span>
+<span style="margin-top:6px;display:block;opacity:0.4;font-size:0.75rem"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" class="rw-foot-logo"/>Powered by Rewarder</span>
 </footer>
 </div>
 
@@ -494,9 +520,6 @@ Students Society for the Study of History and International Studies<br/>
 </div>
 </div>
 
-<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
-<div class="banner-slot" id="vote-top-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
-</div>
 <div class="section" style="padding-top:0;padding-bottom:100px">
 <div class="categories-grid" id="categoriesGrid">
 <div class="loading"><div class="spinner"></div><span>Loading categories...</span></div>
@@ -504,9 +527,21 @@ Students Society for the Study of History and International Studies<br/>
 <div class="cat-pagination" id="catPagination"></div>
 </div>
 <div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
-<div class="banner-slot" id="vote-mid-banner"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
 </div>
-<div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — secure voting & payments</div>
+</div>
+</div>
+
 <div class="support-bar">
 <i class="fas fa-phone"></i> Trouble voting? Call/WhatsApp: <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a>
 </div>
@@ -537,10 +572,19 @@ Students Society for the Study of History and International Studies<br/>
 <button class="merch-buy-btn" onclick="openMerchModal('cap')"><i class="fas fa-shopping-cart"></i> Order Cap Now</button>
 </div>
 </div>
-<div class="banner-slot" id="merch-bottom-banner" style="margin-top:24px"><i class="fas fa-ad"></i> Advertisement — Your Banner Here</div>
+
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="rw-tagline">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
 </div>
-<div class="logo-showcase"><div class="logo-track" id="logoTrack2"></div></div>
-<div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span> — merch & vote, one platform</div>
+</div>
 <div class="support-bar"><i class="fas fa-phone"></i> Order issues? <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a></div>
 </div>
 
@@ -575,7 +619,19 @@ Students Society for the Study of History and International Studies<br/>
 </div>
 </div>
 <div class="support-bar"><i class="fas fa-phone"></i> General enquiries: <a class="sb-call" href="tel:+2349128346163"><i class="fas fa-phone-alt"></i> 0912 834 6163</a></div>
-<div class="rewarder-strip"><i class="fas fa-bolt"></i> Powered by <span class="rw-mini-word">REWARDER</span></div>
+
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="rw-tagline">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
+</div>
+</div>
 </div>
 
 <!-- VOTE CART FLOATING BAR -->
@@ -602,6 +658,7 @@ Students Society for the Study of History and International Studies<br/>
 <button class="modal-close" onclick="closeModal('voteModal')"><i class="fas fa-times"></i></button>
 </div>
 <div class="modal-body" id="modalBody"></div>
+<div class="rw-modal-foot"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder"/> Powered by <span class="rw-mini-word">REWARDER</span></div>
 </div>
 </div>
 
@@ -614,7 +671,19 @@ Students Society for the Study of History and International Studies<br/>
 <button class="modal-close" onclick="closeModal('cartModal')"><i class="fas fa-times"></i></button>
 </div>
 <div class="modal-body" id="cartModalBody"></div>
+
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="rw-tagline">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
 </div>
+</div></div>
 </div>
 
 <!-- SUCCESS MODAL -->
@@ -642,16 +711,18 @@ Students Society for the Study of History and International Studies<br/>
 </div>
 </div>
 
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
 <div class="rewarder-section">
-<div class="rewarder-logo-box"><div class="rw-placeholder">RW</div></div>
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
 <div class="rw-text">
 <div class="rw-powered">Powered by</div>
 <div class="rw-wordmark">REWARDER</div>
 <div class="rw-tagline">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
 </div>
-<button class="rw-cta-btn" onclick="window.open('https://rewarderhub.com','_blank')"><i class="fas fa-external-link-alt"></i> Try Free</button>
 </div>
-
 <button class="btn-secondary" onclick="closeModal('successModal')" style="margin-top:16px"><i class="fas fa-times"></i> Close</button>
 </div>
 </div>
@@ -697,6 +768,19 @@ Students Society for the Study of History and International Studies<br/>
 <button class="btn-secondary" onclick="closeModal('profileModal')"><i class="fas fa-times"></i> Cancel</button>
 </div>
 </div>
+
+<div style="max-width:1000px;margin:0 auto 16px;padding:0 20px">
+
+<div class="rewarder-section">
+<div class="rewarder-logo-box"><img src="https://i.ibb.co/5hHJ376v/IMG-20250902-WA0109.jpg" alt="Rewarder" style="width:100%;height:100%;object-fit:cover"/></div>
+<div class="rw-text">
+<div class="rw-powered">Powered by</div>
+<div class="rw-wordmark">REWARDER</div>
+<div class="rw-tagline">Run your own awards & voting events</div>
+</div><span class="hero-sub">
+Whatsapp:09078139367</span>
+</div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -715,7 +799,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 const FLW_PUB_KEY = "FLWPUBK-2a3845212c24d426fb9b4bcc4155ecd7-X";
-const VOTE_BASE=50,VOTE_FEE=20,VOTE_PRICE=70,MIN_VOTES=10;
+const VOTE_BASE=50,VOTE_FEE=20,VOTE_PRICE=70,MIN_VOTES=3;
 const GELE_PRICE=5000,CAP_PRICE=3000;
 const LS_USER='ssohis26_user',LS_PENDING='ssohis26_pending',LS_PENDING_MERCH='ssohis26_pending_merch';
 const CATS_PER_PAGE=8;
@@ -965,9 +1049,9 @@ const catName=catItems[0].catName;
 const rows=catItems.map(item=>`<div class="cart-nominee-row">
 <div class="cart-nominee-name"><i class="fas fa-user"></i> ${item.nominee}</div>
 <div class="cart-item-qty-row">
-<button class="qty-btn" onclick="updateCartItemQty('${item.id}',${item.votes}-10)"><i class="fas fa-minus"></i></button>
+<button class="qty-btn" onclick="updateCartItemQty('${item.id}',${item.votes}-3)"><i class="fas fa-minus"></i></button>
 <input class="qty-input" type="number" value="${item.votes}" onchange="updateCartItemQty('${item.id}',this.value)"/>
-<button class="qty-btn" onclick="updateCartItemQty('${item.id}',${item.votes}+10)"><i class="fas fa-plus"></i></button>
+<button class="qty-btn" onclick="updateCartItemQty('${item.id}',${item.votes}+3)"><i class="fas fa-plus"></i></button>
 <span class="cart-item-price">₦${item.amount.toLocaleString()}</span>
 <button class="cart-item-remove" onclick="removeFromCart('${item.id}')"><i class="fas fa-times"></i></button>
 </div>
@@ -1224,9 +1308,9 @@ ${picksList}
 ${selectedNominee?`<div class="vote-qty-section">
 <div class="vote-qty-label"><i class="fas fa-sliders-h"></i> Votes for <strong>${selectedNominee}</strong> (min ${MIN_VOTES})</div>
 <div class="qty-controls">
-<button class="qty-btn" onclick="changeQty(-10)"><i class="fas fa-minus"></i></button>
+<button class="qty-btn" onclick="changeQty(-3)"><i class="fas fa-minus"></i></button>
 <input class="qty-input" type="number" id="qtyInput" value="${voteQty}" onchange="setQty(this.value)"/>
-<button class="qty-btn" onclick="changeQty(10)"><i class="fas fa-plus"></i></button>
+<button class="qty-btn" onclick="changeQty(3)"><i class="fas fa-plus"></i></button>
 </div>
 <div class="qty-note"><i class="fas fa-info-circle"></i> ₦${VOTE_BASE} base + ₦${VOTE_FEE} fee per vote</div>
 <div class="price-total"><span><i class="fas fa-receipt"></i> Subtotal</span><span>₦${total.toLocaleString()}</span></div>
